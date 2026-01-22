@@ -19,6 +19,9 @@ function Login() {
     try {
       await signInWithEmailAndPassword(auth, email, password)
       setSuccess(true)
+
+      navigate("/dashboard")
+
     } catch (err) {
       setError(err.message)
     }
