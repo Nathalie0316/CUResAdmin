@@ -1,12 +1,11 @@
 import Login from "./pages/Login"
 import ProtectedRoute from "./components/ProtectedRoute";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
+import Dashboard from "./components/Dashboard";
 
 function App() {
-  return <Login />
-}
-
-/*<Routes>
+  return (
+  <Routes>
   <Route path="/login" element={<Login />} />
 
   <Route
@@ -17,7 +16,10 @@ function App() {
       </ProtectedRoute>
     }
   />
-</Routes> */
+  <Route path="*" element={<Navigate to="/login" replace />} />
+</Routes> 
+  )
+}
 
 export default App
 
