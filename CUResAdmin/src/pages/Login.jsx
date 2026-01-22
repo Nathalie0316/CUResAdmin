@@ -2,6 +2,8 @@ import { useState } from "react"
 import { signInWithEmailAndPassword } from "firebase/auth"
 import { auth } from "../firebase"
 import "./Login.css"
+import seal from "../assets/seal.png"
+
 
 function Login() {
   const [email, setEmail] = useState("")
@@ -25,7 +27,9 @@ function Login() {
   return (
     <div className="login-container">
       <div className="login-card">
-        <h1>CURES Admin</h1>
+        <img src={seal} alt="CU Seal" className="login-seal" />
+        <h1>CUResAdmin</h1>
+        <p>Please enter your CU Credentials to Log In!</p>
 
         <form onSubmit={handleLogin}>
           <input
