@@ -1,34 +1,53 @@
-import { useState } from "react"
-import { signInWithEmailAndPassword } from "firebase/auth"
-import { auth } from "../firebase"
-import "./Login.css"
-import seal from "../assets/seal.png"
+import { useState, useEffect } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase";
+import "./Login.css";
+import seal from "../assets/seal.png";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 function Login() {
-  
+  const { user, role } = useAuth();
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [error, setError] = useState("")
-  const [success, setSuccess] = useState(false)
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  
+  // CHANGED: Added loading state for button feedback
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e) => {
-    e.preventDefault()
-    setError("")
-    setSuccess(false)
+    e.preventDefault();
+    setError("");
+    setLoading(true);
 
     try {
-      await signInWithEmailAndPassword(auth, email, password)
-      setSuccess(true)
-
-      navigate("/dashboard")
-
+      await signInWithEmailAndPassword(auth, email, password);
+      // Success: useEffect will handle the redirect
     } catch (err) {
-      setError(err.message)
+      console.error(err);
+      // If the user is offline, tell them it's a network issue, not a wrong password.
+      if (err.code === "auth/network-request-failed") {
+        setError("Network error. Please check your internet connection.");
+      } else {
+        setError("Invalid email or password. Please try again.");
+      }
+      
+      setLoading(false);
     }
-  }
+  };
+
+  useEffect(() => {
+    if (user && role) {
+      const cleanRole = role.trim().toLowerCase();
+      if (cleanRole === "admin") {
+        navigate("/admin");
+      } else if (cleanRole === "ra") {
+        navigate("/ra");
+      }
+    }
+  }, [user, role, navigate]);
 
   return (
     <div className="login-container">
@@ -54,15 +73,16 @@ function Login() {
             required
           />
 
-          <button type="submit">Log In</button>
+          {/* CHANGED: Button disables while loading */}
+          <button type="submit" disabled={loading}>
+            {loading ? "Logging in..." : "Log In"}
+          </button>
 
           {error && <p className="login-error">{error}</p>}
-          {success && <p className="login-success">Login successful!</p>}
         </form>
       </div>
     </div>
-  )
+  );
 }
 
-export default Login
-
+export default Login;

@@ -1,18 +1,18 @@
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
 
-const Dashboard = () => {
+function AdminDashboard() {
   const handleLogout = async () => {
     await signOut(auth);
   };
 
   return (
     <div style={{ padding: "2rem" }}>
-      <h1>Temporary Dashboard</h1>
-      <p>You are logged in!</p>
+      <h1>Admin Dashboard</h1>
+
       <button onClick={handleLogout}>Log Out</button>
     </div>
   );
-};
+}
 
-export default Dashboard;
+export default AdminDashboard;
