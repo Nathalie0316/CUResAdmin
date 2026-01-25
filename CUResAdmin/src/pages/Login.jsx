@@ -14,7 +14,7 @@ function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   
-  // CHANGED: Added loading state for button feedback
+  // Loading state for button feedback
   const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e) => {
@@ -73,7 +73,7 @@ function Login() {
             required
           />
 
-          {/* CHANGED: Button disables while loading */}
+          {/* Button disables while loading */}
           <button type="submit" disabled={loading}>
             {loading ? "Logging in..." : "Log In"}
           </button>

@@ -12,28 +12,33 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
 useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+  const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+    setLoading(true); // Start loading whenever auth state changes
     setUser(currentUser);
 
-  if (currentUser) {
-    const userRef = doc(db, "users", currentUser.uid);
-    const userSnap = await getDoc(userRef);
+    if (currentUser) {
+      try {
+        const userRef = doc(db, "users", currentUser.uid);
+        const userSnap = await getDoc(userRef);
 
-    if (userSnap.exists()) {
-      setRole(userSnap.data().role);
+        if (userSnap.exists()) {
+          setRole(userSnap.data().role);
+        } else {
+          setRole(null);
+        }
+      } catch (error) {
+        console.error("Error fetching role:", error);
+        setRole(null);
+      }
     } else {
       setRole(null);
-      console.error("No user document found in Firestore");
     }
-  } else {
-    setRole(null);
-  }
 
-  setLoading(false);
-});
+    setLoading(false); // ONLY stop loading after the role check is DONE
+  });
 
-    return () => unsubscribe();
-  }, []);
+  return () => unsubscribe();
+}, []);
 
   return (
     <AuthContext.Provider value={{ user, role, loading }}>
