@@ -1,13 +1,14 @@
-import { StrictMode } from 'react'
+import { StrictMode } from 'react' // Added StrictMode import for development checks
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
-import './firebase.js'
-import { AuthProvider } from './context/AuthContext.jsx'
-import { BrowserRouter } from 'react-router-dom'
+import './firebase.js' // Import firebase config
+import { AuthProvider } from './context/AuthContext.jsx' // Import AuthProvider for authentication context
+import { BrowserRouter } from 'react-router-dom' // Import BrowserRouter for routing
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
+  /* Added StrictMode for highlighting potential problems in an application */
+  <StrictMode> 
     <BrowserRouter>
     <AuthProvider>
     <App />
