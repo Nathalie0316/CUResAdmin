@@ -33,7 +33,7 @@ function AdminDashboard() {
       <button className="btn-primary" onClick={() => navigate("/admin/huddles")}>
         Check Hall Huddles
       </button>
-      <button className="btn-primary" onClick={() => navigate("/admin/users")}>
+      <button className="btn-primary" onClick={() => navigate("/admin/manage-users")}>
         Manage Users
       </button>
 
