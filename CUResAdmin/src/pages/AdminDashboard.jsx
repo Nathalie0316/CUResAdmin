@@ -16,31 +16,45 @@ function AdminDashboard() {
     }
   };
 
-  return (
-    <div className="dashboard-container">
-      <img src={seal} alt="Bruin Head Logo" className="dashboard-bearlogo" />
+ return (
+  <div className="fluid-dash-page">
+    <div className="fluid-dash-card">
       
-      <h1>Welcome to CUResLife!</h1>
-      <p>Administration Dashboard</p>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', marginTop: '10px' }}>
+        <img src={seal} alt="Logo" className="fluid-dash-logo-large" style={{ marginBottom: '15px' }} />
+        
+        <h2 style={{ fontSize: '1rem', color: 'rgb(55, 55, 55)', margin: '0', fontWeight: '600', letterSpacing: '0.5px'}}>
+          CUResLife
+        </h2>
+        
+        <h1 style={{ fontSize: '2.2rem', margin: '2px 0 25px 0', fontWeight: '800', color: 'rgb(0, 0, 0)' }}>
+          Admin Portal
+        </h1>
+      </div>
 
-      {/* Admin Specific Buttons */}
-      <button className="btn-primary" onClick={() => navigate("/admin/roomchecks")}>
-        Check Roomchecks
-      </button>
-      <button className="btn-primary" onClick={() => navigate("/admin/checkouts")}>
-        Check Dorm Checkouts
-      </button>
-      <button className="btn-primary" onClick={() => navigate("/admin/huddles")}>
-        Check Hall Huddles
-      </button>
-      <button className="btn-primary" onClick={() => navigate("/admin/manage-users")}>
-        Manage Users
-      </button>
+      <div className="fluid-menu-grid">
+        <button className="fluid-dash-btn" onClick={() => navigate("/admin/roomchecks")}>
+          Review Roomchecks
+        </button>
+        <button className="fluid-dash-btn" onClick={() => navigate("/admin/checkouts")}>
+          Review Checkouts
+        </button>
+        <button className="fluid-dash-btn" onClick={() => navigate("/admin/huddles")}>
+          Hall Huddle Logs
+        </button>
+        <button className="fluid-dash-btn" onClick={() => navigate("/admin/manage-users")}>
+          Manage Users
+        </button>
+      </div>
 
-      <button className="btn-logout" onClick={handleLogout}>
-        Log Out
-      </button>
+      <div className="fluid-logout-wrap">
+        <button className="fluid-dash-logout-btn" onClick={handleLogout}>
+          Log Out
+        </button>
+      </div>
+
     </div>
+  </div>
   );
 }
 

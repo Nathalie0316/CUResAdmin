@@ -5,6 +5,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import RADashboard from "./pages/RADashboard";
 import { useAuth } from "./context/AuthContext";
 import EditUser from "./pages/EditUser";
+import RoomCheckForm from "./pages/RoomCheckForm";
 
 // New Page Imports for User Management
 import ManageUsers from "./pages/ManageUsers";
@@ -92,6 +93,16 @@ function App() {
         element={
           <ProtectedRoute allowedRole="RA">
             <RADashboard />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Route for submitting weekly roomchecks. Restricted to RA access only. */}
+      <Route
+        path="/ra/room-check"
+        element={
+          <ProtectedRoute allowedRole="RA">
+            <RoomCheckForm />
           </ProtectedRoute>
         }
       />

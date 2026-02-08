@@ -17,27 +17,45 @@ function RADashboard() {
   };
 
   return (
-    <div className="dashboard-container">
-      <img src={seal} alt="Bruin Head Logo" className="dashboard-bearlogo" />
+  <div className="fluid-dash-page">
+    <div className="fluid-dash-card">
       
-      <h1>Welcome to CUResLife!</h1>
-      <p>What are working on today?</p>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', marginTop: '10px' }}>
+        <img src={seal} alt="Logo" className="fluid-dash-logo-large" style={{ marginBottom: '8px' }} />
+        
+        <h2 style={{ fontSize: '1rem', color: 'rgb(55, 55, 55)', margin: '0', fontWeight: '600', letterSpacing: '0.5px' }}>
+          CUResLife
+        </h2>
+        
+        <h1 style={{ fontSize: '2.2rem', margin: '2px 0 10px 0', fontWeight: '800', color: 'rgb(0, 0, 0)' }}>
+          RA Dashboard
+        </h1>
 
-      {/* RA Specific Buttons */}
-      <button className="btn-primary" onClick={() => navigate("/ra/roomchecks")}>
-        Roomchecks
-      </button>
-      <button className="btn-primary" onClick={() => navigate("/ra/checkouts")}>
-        Dorm Checkouts
-      </button>
-      <button className="btn-primary" onClick={() => navigate("/ra/huddle-reports")}>
-        Hall Huddle Reports
-      </button>
+        <p style={{ textAlign: 'center', color: 'rgb(55, 55, 55)', margin: '0 0 25px 0', fontSize: '0.95rem' }}>
+          What are you working on today?
+        </p>
+      </div>
 
-      <button className="btn-logout" onClick={handleLogout}>
-        Log Out
-      </button>
+      <div className="fluid-menu-grid">
+        <button className="fluid-dash-btn" onClick={() => navigate("/ra/room-check")}>
+          Roomchecks
+        </button>
+        <button className="fluid-dash-btn" onClick={() => navigate("/ra/checkouts")}>
+          Dorm Checkouts
+        </button>
+        <button className="fluid-dash-btn" onClick={() => navigate("/ra/huddle-reports")}>
+          Hall Huddle Reports
+        </button>
+      </div>
+
+      <div className="fluid-logout-wrap">
+        <button className="fluid-dash-logout-btn" onClick={handleLogout}>
+          Log Out
+        </button>
+      </div>
+
     </div>
+  </div>
   );
 }
 

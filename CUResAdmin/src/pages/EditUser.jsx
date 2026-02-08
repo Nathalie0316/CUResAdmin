@@ -4,23 +4,55 @@ import { db } from "../firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import "./ManageUsers.css";
 
+// Define the building and floor relationship
+const areaData = {
+  "Griffith": ["1st Floor", "2nd Floor", "3rd Floor"],
+  "Stevens": ["1st Floor", "2nd Floor", "3rd Floor", "4th Floor"],
+  "Lee": ["1st Floor", "2nd Floor", "3rd Floor"],
+  "Patterson": ["1st Floor", "2nd Floor", "3rd Floor", "4th Floor"]
+};
+
 function EditUser() {
   const { id } = useParams();
   const navigate = useNavigate();
+  
+  // Local state for the dynamic dropdowns
+  const [selectedBuilding, setSelectedBuilding] = useState("");
+  const [selectedFloor, setSelectedFloor] = useState("");
+
   const [formData, setFormData] = useState({ name: "", role: "", area: "" });
   const [loading, setLoading] = useState(true);
 
+  // Fetch user data and initialize the dropdowns
   useEffect(() => {
     const fetchUser = async () => {
       const docRef = doc(db, "users", id);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
-        setFormData(docSnap.data());
+        const data = docSnap.data();
+        setFormData(data);
+
+        // Split the "Building > Floor" string to pre-fill dropdowns
+        if (data.area && data.area.includes(" > ")) {
+          const [building, floor] = data.area.split(" > ");
+          setSelectedBuilding(building);
+          setSelectedFloor(floor);
+        }
       }
       setLoading(false);
     };
     fetchUser();
   }, [id]);
+
+  // Synchronize building/floor selection back into the main formData.area string
+  useEffect(() => {
+    if (selectedBuilding && selectedFloor) {
+      setFormData(prev => ({
+        ...prev,
+        area: `${selectedBuilding} > ${selectedFloor}`
+      }));
+    }
+  }, [selectedBuilding, selectedFloor]);
 
   const handleUpdate = async (e) => {
     e.preventDefault();
@@ -48,34 +80,50 @@ function EditUser() {
             onChange={(e) => setFormData({...formData, name: e.target.value})}
           />
         </div>
+        
         <div className="form-group">
           <label>Role:</label>
           <select value={formData.role} onChange={(e) => setFormData({...formData, role: e.target.value})}>
-            <option value="">Select Area</option>
             <option value="RA">Residential Assistant</option>
             <option value="Admin">Administrator</option>
           </select>
         </div>
+
+        {/* Select Building */}
         <div className="form-group">
-          <label>Area:</label>
-          <select value={formData.area} onChange={(e) => setFormData({...formData, area: e.target.value})}>
-            <option value="">Select Area</option>
-            <option value="Griffith > 1st Floor">Griffith 1st</option>
-            <option value="Griffith > 2nd Floor">Griffith 2nd</option>
-            <option value="Griffith > 3rd Floor">Griffith 3rd</option>
-            <option value="Stevens > 1st Floor">Stevens 1st</option>
-            <option value="Stevens > 2nd Floor">Stevens 2nd</option>
-            <option value="Stevens > 3rd Floor">Stevens 3rd</option>
-            <option value="Stevens > 4th Floor">Stevens 4th</option>
-            <option value="Lee > 1st Floor">Lee 1st</option>
-            <option value="Lee > 2nd Floor">Lee 2nd</option>
-            <option value="Lee > 3rd Floor">Lee 3rd</option>
-            <option value="Patterson > 1st Floor">Patterson 1st</option>
-            <option value="Patterson > 2nd Floor">Patterson 2nd</option>
-            <option value="Patterson > 3rd Floor">Patterson 3rd</option>
-            <option value="Patterson > 4th Floor">Patterson 4th</option>
+          <label>Building:</label>
+          <select 
+            required 
+            value={selectedBuilding}
+            onChange={(e) => {
+              setSelectedBuilding(e.target.value);
+              setSelectedFloor(""); // Reset floor if building changes
+            }}
+          >
+            <option value="">Select Building</option>
+            {Object.keys(areaData).map((building) => (
+              <option key={building} value={building}>{building}</option>
+            ))}
           </select>
         </div>
+
+        {/* Select Floor */}
+        {selectedBuilding && (
+          <div className="form-group" style={{ animation: "fadeIn 0.3s ease-in-out" }}>
+            <label>Floor:</label>
+            <select 
+              required 
+              value={selectedFloor}
+              onChange={(e) => setSelectedFloor(e.target.value)}
+            >
+              <option value="">Select Floor</option>
+              {areaData[selectedBuilding].map((floor) => (
+                <option key={floor} value={floor}>{floor}</option>
+              ))}
+            </select>
+          </div>
+        )}
+
         <button type="submit" className="btn-edit" style={{marginTop: '20px'}}>Save Changes</button>
       </form>
     </div>

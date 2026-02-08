@@ -1,76 +1,92 @@
-.dashboard-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start; 
+.fluid-dash-page {
   min-height: 100vh;
-  padding: 40px 20px;
-  background-color: rgb(255, 255, 255);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  text-align: center;
-  animation: fadeIn 0.5s ease-in-out;
+  display: flex;
+  justify-content: center;
+  background-color: rgb(253, 253, 253); 
+  padding: 20px;
+  box-sizing: border-box;
 }
 
-@keyframes fadeIn {
+/* Match the 900px width of the Roomchecks page */
+.fluid-dash-card {
+  width: 100%;
+  max-width: 900px; 
+  background: rgb(255, 255, 255);
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Keep logo and buttons centered */
+  animation: dashFadeIn 0.4s ease-out;
+}
+
+@keyframes dashFadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-.dashboard-bearlogo {
-  width: 140px; 
-  margin-bottom: 30px;
+/* Keep the menu grid a smaller size so buttons don't stretch to 900px wide */
+.fluid-menu-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 15px;
+  width: 100%;
+  max-width: 700px; /* Keeps the buttons at mobile friendly size */
 }
 
-.dashboard-container h1 {
-  font-size: 1.8rem;
-  margin-bottom: 8px;
-  color: #000;
-  font-weight: bold;
+@media (min-width: 768px) {
+  .fluid-menu-grid {
+    grid-template-columns: 1fr 1fr; 
+  }
 }
 
-.dashboard-container p {
-  font-size: 1rem;
-  color: #333;
-  margin-bottom: 40px;
+.fluid-dash-logo-large {
+  width: 110px; 
+  height: auto;
 }
 
-.btn-primary {
+.fluid-dash-btn {
   background-color: rgb(0, 24, 104);
-  color: white;
+  color: rgb(255, 255, 255);
   width: 100%;
-  max-width: 320px;
-  padding: 16px;
-  margin-bottom: 16px;
+  padding: 18px 15px;
   border: none;
-  border-radius: 6px;
-  font-size: 1.1rem;
-  font-weight: 600;
+  border-radius: 12px;
+  font-size: 1.05rem;
+  font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  transition: background-color 0.2s, transform 0.1s;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0, 24, 104, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
-.btn-primary:active {
-  transform: scale(0.98); /* Tactile click feel */
+.fluid-dash-btn:hover {
+  background-color: rgb(0, 16, 74);
+  transform: translateY(-2px);
 }
 
-/* Logout Button */
-.btn-logout {
-  background-color: rgb(255, 202, 0); 
-  color: white;
+.fluid-logout-wrap {
+  margin-top: 3rem;
   width: 100%;
-  max-width: 160px;
-  padding: 12px;
-  margin-top: 30px;
+  max-width: 700px; /* Match the button grid width */
+  display: flex;
+  justify-content: center;
+  border-top: 1px solid #eee;
+  padding-top: 2rem;
+}
+
+.fluid-dash-logout-btn {
+  width: 100%;
+  padding: 14px;
+  background: rgb(255, 202, 0);
+  color: rgb(255, 255, 255);
   border: none;
-  border-radius: 6px;
+  border-radius: 10px;
   font-size: 1rem;
-  font-weight: bold;
+  font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  text-transform: capitalize;
-}
-
-.btn-logout:active {
-  transform: scale(0.96);
 }

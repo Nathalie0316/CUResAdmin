@@ -58,39 +58,40 @@ function Login() {
   }, [user, role, navigate]); // Dependencies: runs when user, role, or navigate function changes.
 
   return (
-    <div className="login-container">
-      <div className="login-card">
-        <img src={seal} alt="CU Seal" className="login-seal" />
-        <h1>CUResAdmin</h1>
-        <p>Please enter your CU Credentials to Log In!</p>
+  <div className="fluid-login-container">
+    <div className="fluid-login-card">
+      <img src={seal} alt="CU Seal" className="fluid-login-seal" />
+      <h1 className="fluid-login-title">CUResAdmin</h1>
+      <p className="fluid-login-subtitle">Please enter your CU Credentials to Log In!</p>
 
-        <form onSubmit={handleLogin}>
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+      <form className="fluid-login-form" onSubmit={handleLogin}>
+        <input
+          className="fluid-login-input"
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
 
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+        <input
+          className="fluid-login-input"
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
 
-          {/* Button disables while loading */}
-          <button type="submit" disabled={loading}>
-            {loading ? "Logging in..." : "Log In"}
-          </button>
-          {/* Only show the error message paragraph if the 'error' state has text. */}
-          {error && <p className="login-error">{error}</p>}
-        </form>
-      </div>
+        <button className="fluid-login-btn" type="submit" disabled={loading}>
+          {loading ? "Logging in..." : "Log In"}
+        </button>
+        
+        {error && <p className="fluid-login-error">{error}</p>}
+      </form>
     </div>
-  );
+  </div>
+);
 }
 
 export default Login;

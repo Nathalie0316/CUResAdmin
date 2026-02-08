@@ -2,6 +2,7 @@ import { initializeApp } from "firebase/app" // Import initializeApp from fireba
 import { getAuth } from "firebase/auth" // Import getAuth from firebase/auth
 import { getFirestore } from "firebase/firestore" // Import getFirestore from firebase/firestore
 import { setPersistence, browserLocalPersistence } from "firebase/auth"; // Import setPersistence and browserLocalPersistence
+import { getStorage } from "firebase/storage";
 
 // App specific Firebase configuration
 const firebaseConfig = {
@@ -27,5 +28,7 @@ setPersistence(auth, browserLocalPersistence)
 
 // Initialize the Firestore database and export it 
 export const db = getFirestore(app)
+
+export const storage = getStorage(app);
 
 console.log("Firebase initialized.")
