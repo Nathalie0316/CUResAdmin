@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 // Import initializeApp and deleteApp to create a "temporary" connection to Firebase.
 import { initializeApp, deleteApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword, signOut } from "firebase/auth"; 
+import seal from "../assets/bearlogo.png"; 
 import "./ManageUsers.css";
 
 const firebaseConfig = {
@@ -98,79 +99,92 @@ function AddUser() {
   };
 
   return (
-    <div className="manage-container">
-      <button className="back-link" onClick={() => navigate("/admin/manage-users")}>Back</button>
-      
-      <h1 className="form-title">Add New User</h1>
-
-      <form className="add-user-form" onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>Name:</label>
-          <input 
-            type="text" 
-            placeholder="Input value here"
-            required
-            onChange={(e) => setFormData({...formData, name: e.target.value})}
-          />
+    <div className="fluid-dash-page">
+      <div className="fluid-dash-card">
+        
+        <div className="fluid-header">
+          <button className="back-link" onClick={() => navigate("/admin/manage-users")}>
+            Back
+          </button>
+          <h1>Add New User</h1>
         </div>
 
-        <div className="form-group">
-          <label>Email:</label>
-          <input 
-            type="email" 
-            placeholder="Input value here"
-            required
-            onChange={(e) => setFormData({...formData, email: e.target.value})}
-          />
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+          <img src={seal} alt="Logo" className="fluid-dash-logo-large" style={{ marginBottom: '8px' }} />
+          <h2 style={{ fontSize: '1rem', color: '#666', margin: '0 0 20px 0', fontWeight: '600', textTransform: 'uppercase' }}>
+            Administration
+          </h2>
         </div>
 
-        <div className="form-group">
-          <label>Role:</label>
-          <select onChange={(e) => setFormData({...formData, role: e.target.value})}>
-            <option value="RA">Residential Assistant</option>
-            <option value="Admin">Administrator</option>
-          </select>
-        </div>
+        <form className="add-user-form" style={{ width: '100%', maxWidth: '450px' }} onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label>Name:</label>
+            <input 
+              type="text" 
+              placeholder="Full Name"
+              required
+              onChange={(e) => setFormData({...formData, name: e.target.value})}
+            />
+          </div>
 
-        {/* Select Building */}
-        <div className="form-group">
-          <label>Building:</label>
-          <select 
-            required 
-            value={selectedBuilding}
-            onChange={(e) => {
-              setSelectedBuilding(e.target.value);
-              setSelectedFloor(""); // Reset floor if building changes
-            }}
-          >
-            <option value="">Select Building</option>
-            {Object.keys(areaData).map((building) => (
-              <option key={building} value={building}>{building}</option>
-            ))}
-          </select>
-        </div>
+          <div className="form-group">
+            <label>Email:</label>
+            <input 
+              type="email" 
+              placeholder="Email Address"
+              required
+              onChange={(e) => setFormData({...formData, email: e.target.value})}
+            />
+          </div>
 
-        {/* Select Floor (Conditionally Rendered by Building Selection) */}
-        {selectedBuilding && (
-          <div className="form-group" style={{ animation: "fadeIn 0.3s ease-in-out" }}>
-            <label>Floor:</label>
+          <div className="form-group">
+            <label>Role:</label>
+            <select onChange={(e) => setFormData({...formData, role: e.target.value})}>
+              <option value="RA">Residential Assistant</option>
+              <option value="Admin">Administrator</option>
+            </select>
+          </div>
+
+          {/* Select Building */}
+          <div className="form-group">
+            <label>Building:</label>
             <select 
               required 
-              value={selectedFloor}
-              onChange={(e) => setSelectedFloor(e.target.value)}
+              value={selectedBuilding}
+              onChange={(e) => {
+                setSelectedBuilding(e.target.value);
+                setSelectedFloor(""); // Reset floor if building changes
+              }}
             >
-              <option value="">Select Floor</option>
-              {areaData[selectedBuilding].map((floor) => (
-                <option key={floor} value={floor}>{floor}</option>
+              <option value="">Select Building</option>
+              {Object.keys(areaData).map((building) => (
+                <option key={building} value={building}>{building}</option>
               ))}
             </select>
           </div>
-        )}
 
-        <button type="submit" className="btn-add-new" disabled={loading}>
-          {loading ? "Creating..." : "Add User"}
-        </button>
-      </form>
+          {/* Select Floor (Conditionally Rendered by Building Selection) */}
+          {selectedBuilding && (
+            <div className="form-group" style={{ animation: "fadeIn 0.3s ease-in-out" }}>
+              <label>Floor:</label>
+              <select 
+                required 
+                value={selectedFloor}
+                onChange={(e) => setSelectedFloor(e.target.value)}
+              >
+                <option value="">Select Floor</option>
+                {areaData[selectedBuilding].map((floor) => (
+                  <option key={floor} value={floor}>{floor}</option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          <button type="submit" className="btn-add-new" style={{ marginTop: '20px' }} disabled={loading}>
+            {loading ? "Creating..." : "Add User"}
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

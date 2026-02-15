@@ -6,6 +6,8 @@ import RADashboard from "./pages/RADashboard";
 import { useAuth } from "./context/AuthContext";
 import EditUser from "./pages/EditUser";
 import RoomCheckForm from "./pages/RoomCheckForm";
+import DormCheckout from "./pages/DormCheckout"; 
+import HallHuddle from "./pages/HallHuddle"; 
 
 // New Page Imports for User Management
 import ManageUsers from "./pages/ManageUsers";
@@ -103,6 +105,24 @@ function App() {
         element={
           <ProtectedRoute allowedRole="RA">
             <RoomCheckForm />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/ra/dorm-checkouts"
+        element={
+          <ProtectedRoute allowedRole="RA">
+            <DormCheckout />
+          </ProtectedRoute>
+        }
+      />
+
+       <Route
+        path="/ra/hall-huddle"
+        element={
+          <ProtectedRoute allowedRole="RA">
+            <HallHuddle />
           </ProtectedRoute>
         }
       />

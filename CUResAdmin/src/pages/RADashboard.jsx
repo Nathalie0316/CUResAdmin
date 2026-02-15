@@ -40,10 +40,10 @@ function RADashboard() {
         <button className="fluid-dash-btn" onClick={() => navigate("/ra/room-check")}>
           Roomchecks
         </button>
-        <button className="fluid-dash-btn" onClick={() => navigate("/ra/checkouts")}>
+        <button className="fluid-dash-btn" onClick={() => navigate("/ra/dorm-checkouts")}>
           Dorm Checkouts
         </button>
-        <button className="fluid-dash-btn" onClick={() => navigate("/ra/huddle-reports")}>
+        <button className="fluid-dash-btn" onClick={() => navigate("/ra/hall-huddle")}>
           Hall Huddle Reports
         </button>
       </div>
