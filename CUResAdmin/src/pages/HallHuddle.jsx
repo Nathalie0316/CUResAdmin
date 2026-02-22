@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import seal from "../assets/bearlogo.png";
 import "./RAForms.css";
+// This is the basic structure of the HallHuddle page with form state management and navigation. Still need to import Firebase functions and context to handle form submission and user data.
 
+// State to hold all form data in a single object.
 function HallHuddle() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -15,11 +17,12 @@ function HallHuddle() {
     responses: ""
   });
 
+  // Handle form submission (currently just logs data and shows an alert, I will replace with actual submission logic later).
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Huddle Submitted:", formData);
     alert("Hall Huddle Report Submitted!");
-    navigate("/ra-dashboard");
+    navigate("/ra-dashboard"); // Redirect back to RA Dashboard after submission.
   };
 
   return (

@@ -6,22 +6,26 @@ import seal from "../assets/bearlogo.png"; // Import your logo
 import "./ManageUsers.css";
 
 function ManageUsers() {
+  // Local state to hold the list of users fetched from Firestore.
   const [users, setUsers] = useState([]);
+  // Manage loading state to show a message while fetching users from the database.
   const [loading, setLoading] = useState(true);
+  // Initialize the navigate function.
   const navigate = useNavigate();
 
+  // Effect that runs once when the component mounts to fetch the list of users from Firestore.
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, "users"));
-        setUsers(querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+        const querySnapshot = await getDocs(collection(db, "users")); // Fetch all documents from the "users" collection in Firestore.
+        setUsers(querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))); // Map the documents to an array of user objects with their ID included.
       } catch (err) {
         console.error(err);
       } finally {
-        setLoading(false);
+        setLoading(false); // Set loading to false after the fetch is complete.
       }
     };
-    fetchUsers();
+    fetchUsers(); // Call the function to fetch users when the component mounts.
   }, []);
 
   return (
@@ -56,10 +60,11 @@ function ManageUsers() {
             ) : (
               users.map(user => (
                 <button 
-                  key={user.id} 
+                  key={user.id} // Each button navigates to the Edit User page for that specific user using their ID.
                   className="user-item-btn"
                   onClick={() => navigate(`/admin/manage-users/${user.id}`)}
                 >
+                  {/* Fallback text if the user has no name */}
                   {user.name || "Unnamed User"}
                   <span className="user-arrow">→</span>
                 </button>

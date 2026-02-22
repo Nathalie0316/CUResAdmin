@@ -1,21 +1,27 @@
 import { useNavigate } from "react-router-dom";
 import "./RAForms.css";
 import { useState, useRef } from "react"; // Added useRef
+// This is the basic structure of the RoomCheckForm page with form state management and navigation. Still need to import Firebase functions and context to handle form submission and user data.
 
 function RoomCheckForm() {
   const navigate = useNavigate();
   const [building, setBuilding] = useState("");
   const [floor, setFloor] = useState("");
+  // State to hold the resident information for up to 3 residents.
   const [residents, setResidents] = useState([
     { name: "", status: "", reason: "" },
     { name: "", status: "", reason: "" },
     { name: "", status: "", reason: "" },
   ]);
+
+  // Refs for photo uploads (to track if they have been uploaded for now)
   const roomPhotoRef = useRef(null);
   const bathPhotoRef = useRef(null);
+  // Local state to hold the selected photos (for demonstration purposes, I will just store the file objects here).
   const [roomPhoto, setRoomPhoto] = useState(null);
   const [bathPhoto, setBathPhoto] = useState(null);
 
+  // Function to update the status of a resident (Pass/Fail) and toggle it on/off when the dot is clicked. If toggling off, it clears the status. If changing from Fail to Pass, it also clears the reason.
   const updateStatus = (index, status) => {
     const newRes = [...residents];
     const currentStatus = newRes[index].status;
@@ -25,8 +31,9 @@ function RoomCheckForm() {
     if (newRes[index].status !== "Fail") {
       newRes[index].reason = "";
     }
-    setResidents(newRes);
+    setResidents(newRes); // Update the state with the new resident information.
   };
+  // Function to update the reason for failure for a resident when they fail the room check. This updates the specific resident's reason in the state.
   const updateReason = (index, text) => {
     const newRes = [...residents];
     newRes[index].reason = text;

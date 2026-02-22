@@ -108,7 +108,7 @@ function App() {
           </ProtectedRoute>
         }
       />
-
+      {/* Route for dorm checkout form.*/}
       <Route
         path="/ra/dorm-checkouts"
         element={
@@ -117,7 +117,7 @@ function App() {
           </ProtectedRoute>
         }
       />
-
+      {/* Route for Hall Huddle form. */}
        <Route
         path="/ra/hall-huddle"
         element={
@@ -127,7 +127,7 @@ function App() {
         }
       />
 
-      {/* Catch-all Route: If a user types a random URL, redirect them back to safety (Login). */}
+      {/* Catch-all Route: If a user types a random URL, redirect them back to Login. */}
       <Route path="*" element={<Navigate to="/login" />} />
     </Routes>
   );

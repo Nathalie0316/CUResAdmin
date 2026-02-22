@@ -2,27 +2,31 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import seal from "../assets/bearlogo.png";
 import "./RAForms.css";
+// Still need to import Firebase functions and context to handle form submission and user data, but this is the basic structure of the DormCheckout page with form state management and navigation.
 
 function DormCheckout() {
   const navigate = useNavigate();
+
+  // State to hold all form data in a single object for easier management and submission.
   const [formData, setFormData] = useState({
     date: "",
     checkoutType: "",
     building: "",
-    floor: null,
+    floor: null, 
     roomNumber: "",
     residentName: "",
-    allCriteriaMet: null,
+    allCriteriaMet: null, // true for pass, false for fail, null for not selected.
     roomKey: "",
     closetKey: "",
     repairs: ""
   });
 
+  // State to manage loading status during form submission to prevent multiple submissions.
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Submitting Checkout:", formData);
+    console.log("Submitting Checkout:", formData); // Log form data to console for debugging purposes (I will replace with actual submission logic later).
     alert("Checkout Submitted!");
-    navigate("/ra-dashboard");
+    navigate("/ra-dashboard"); // Redirect back to RA Dashboard after submission.
   };
 
   return (

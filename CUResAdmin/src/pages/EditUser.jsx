@@ -24,7 +24,7 @@ function EditUser() {
   const [formData, setFormData] = useState({ name: "", role: "", area: "" });
   const [loading, setLoading] = useState(true);
 
-  // Fetch user data and initialize the dropdowns
+  // Fetch user data and initialize the dropdowns based on the "Building > Floor" format in the area field.
   useEffect(() => {
     const fetchUser = async () => {
       const docRef = doc(db, "users", id);
@@ -33,7 +33,7 @@ function EditUser() {
         const data = docSnap.data();
         setFormData(data);
 
-        // Split the "Building > Floor" string to pre-fill dropdowns
+        // Split the "Building > Floor" string to pre-fill dropdowns.
         if (data.area && data.area.includes(" > ")) {
           const [building, floor] = data.area.split(" > ");
           setSelectedBuilding(building);
@@ -55,6 +55,7 @@ function EditUser() {
     }
   }, [selectedBuilding, selectedFloor]);
 
+  // Handle form submission to update the user document in Firestore.
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
@@ -66,6 +67,7 @@ function EditUser() {
     }
   };
 
+  // Show loading state while fetching user data.
   if (loading) return <div className="fluid-dash-page"><p>Loading...</p></div>;
 
   return (

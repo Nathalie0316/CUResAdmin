@@ -8,6 +8,7 @@ import { getAuth, createUserWithEmailAndPassword, signOut } from "firebase/auth"
 import seal from "../assets/bearlogo.png"; 
 import "./ManageUsers.css";
 
+// Firebase configuration for the secondary app (same as main).
 const firebaseConfig = {
   apiKey: "AIzaSyCimMqW13cbnEqfNDRQ6G8PKC_FiI7IwDs",
   authDomain: "curesadmin.firebaseapp.com",
@@ -36,7 +37,7 @@ function AddUser() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    password: "TemporaryPassword123!",
+    password: "TemporaryPassword123!", // Default password for new users (should be changed on first login, I have to add an option for this).
     role: "RA",
     area: ""
   });
@@ -94,7 +95,7 @@ function AddUser() {
       console.error(err);
       alert("Error: " + err.message);
     } finally {
-      setLoading(false);
+      setLoading(false); // End loading state regardless of success or failure to re-enable the form.
     }
   };
 

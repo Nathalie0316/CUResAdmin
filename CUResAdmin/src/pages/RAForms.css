@@ -100,7 +100,7 @@
   resize: none;
 }
 
-/* --- Buttons & Selection Grids --- */
+/* Buttons & Selection Grids */
 .fluid-btn, .fluid-floor-btn {
   background: rgb(0, 24, 104);
   color: rgb(255, 255, 255);

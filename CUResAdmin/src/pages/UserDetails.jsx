@@ -6,26 +6,32 @@ import seal from "../assets/bearlogo.png";
 import "./ManageUsers.css";
 
 function UserDetails() {
-  const { id } = useParams();
+  // Get the user ID from the URL parameters and initialize navigation.
+  const { id } = useParams(); // Get the user ID from the URL parameters. (useParams is a hook from react-router-dom that allows us to access the dynamic segments of the URL, in this case, the user ID.)
   const navigate = useNavigate();
+  // Local state to hold the user data fetched from Firestore.
   const [userData, setUserData] = useState(null);
 
+  // Effect that runs when the component mounts to fetch the user data from Firestore based on the ID from the URL. 
   useEffect(() => {
     const fetchUser = async () => {
-      const docRef = doc(db, "users", id);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) setUserData(docSnap.data());
+      const docRef = doc(db, "users", id); // Create a reference to the specific user document.
+      const docSnap = await getDoc(docRef); // Fetch the document snapshot from Firestore.
+      if (docSnap.exists()) setUserData(docSnap.data()); // If the document exists, set the userData state with the data from Firestore.
     };
-    fetchUser();
-  }, [id]);
+    fetchUser(); 
+  }, [id]); // The effect depends on the "id" parameter, so it will re-run if the ID changes.
 
+  // Function to handle user removal. 
   const handleRemove = async () => {
+    // Confirm with the admin before deleting the user document from Firestore. 
     if (window.confirm("Are you sure you want to remove this user?")) {
-      await deleteDoc(doc(db, "users", id));
-      navigate("/admin/manage-users");
+      await deleteDoc(doc(db, "users", id)); // Delete the user document from Firestore using the ID.
+      navigate("/admin/manage-users"); // After deletion, navigate back to the Manage Users page.
     }
   };
 
+  // If userData is still null (because it's loading), show a loading message. 
   if (!userData) return <div className="fluid-dash-page"><p>Loading...</p></div>;
 
   return (

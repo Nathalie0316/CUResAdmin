@@ -60,13 +60,13 @@
 /* Fluid Grid System */
 .form-grid {
   display: flex;
-  flex-direction: column; /* Mobile first */
+  flex-direction: column;
   gap: 30px;
 }
 
 @media (min-width: 768px) {
   .form-grid {
-    flex-direction: row; /* Two columns on desktop */
+    flex-direction: row;
   }
   .form-column {
     flex: 1;
