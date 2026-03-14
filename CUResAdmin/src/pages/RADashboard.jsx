@@ -46,6 +46,9 @@ function RADashboard() {
         <button className="fluid-dash-btn" onClick={() => navigate("/ra/hall-huddle")}>
           Hall Huddle Reports
         </button>
+        <button className="fluid-dash-btn" onClick={() => navigate("/profile")}>
+          Profile Management
+        </button>
       </div>
 
       <div className="fluid-logout-wrap">

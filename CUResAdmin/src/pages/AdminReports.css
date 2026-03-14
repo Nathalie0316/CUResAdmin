@@ -1,0 +1,165 @@
+/* Full Page Wrapper */
+.fluid-dash-page {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Keeps card at top, allows scrolling */
+  background: rgb(253, 253, 253);
+  padding: 40px 20px;
+  box-sizing: border-box;
+}
+
+/* The Main Card */
+.fluid-dash-card {
+  width: 100%;
+  max-width: 1200px; /* Increased for table space */
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header match to RA Form */
+.fluid-header {
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid rgb(240, 240, 240);
+}
+
+.fluid-header h1 {
+  flex: 1;
+  text-align: center;
+  margin: 0;
+  font-size: 1.8rem;
+  color: rgb(51, 51, 51);
+}
+
+/* HORIZONTAL FILTER BAR - This stops the bunching */
+.fluid-filter-bar {
+  display: flex;
+  flex-direction: row; /* Force horizontal */
+  flex-wrap: wrap;     /* Wrap on mobile */
+  gap: 15px;
+  background: rgb(250, 250, 250);
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  border: 1px solid rgb(235, 235, 235);
+  align-items: flex-end;
+}
+
+.filter-group {
+  flex: 1; /* Each takes equal space */
+  min-width: 150px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fluid-label-sm {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: rgb(51, 51, 51);
+  text-transform: uppercase;
+}
+
+.fluid-input-sm {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid rgb(221, 221, 221);
+  border-radius: 8px;
+  background: white;
+  font-family: inherit;
+}
+
+.fluid-reset-btn {
+  background: rgb(245, 245, 245);
+  border: 1px solid rgb(224, 224, 224);
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  height: 42px;
+}
+
+/* TABLE STYLING */
+.fluid-table-container {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid rgb(240, 240, 240);
+  border-radius: 12px;
+}
+
+.fluid-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 900px; /* Prevents squishing */
+}
+
+.fluid-table th {
+  background: rgb(250, 250, 250);
+  padding: 15px;
+  text-align: left;
+  font-weight: 700;
+  color: rgb(100, 100, 100);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  border-bottom: 2px solid rgb(240, 240, 240);
+}
+
+.fluid-table td {
+  padding: 15px;
+  border-bottom: 1px solid rgb(245, 245, 245);
+  font-size: 0.95rem;
+}
+
+/* BADGES & MODALS */
+.fluid-badge {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.75rem;
+}
+
+.fluid-badge.pass { background: #e6ffed; color: #28a745; }
+
+.fail-btn {
+  background: rgb(0, 24, 104);
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  display: flex; justify-content: center; align-items: center;
+  z-index: 1000;
+}
+
+.fluid-modal-card {
+  background: white;
+  width: 90%;
+  max-width: 450px;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.fluid-absent-box {
+  background: rgb(250, 250, 250);
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid rgb(235, 235, 235);
+  margin-top: 1rem;
+}

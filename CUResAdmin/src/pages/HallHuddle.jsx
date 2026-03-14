@@ -1,41 +1,63 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import seal from "../assets/bearlogo.png";
+import { db, auth } from "../firebase"; 
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import "./RAForms.css";
-// This is the basic structure of the HallHuddle page with form state management and navigation. Still need to import Firebase functions and context to handle form submission and user data.
 
-// State to hold all form data in a single object.
 function HallHuddle() {
   const navigate = useNavigate();
+  const [uploading, setUploading] = useState(false);
+
   const [formData, setFormData] = useState({
-    date: "",
+    date: new Date().toISOString().split('T')[0],
     building: "",
-    floor: null,
+    floor: "",
     allPresent: null,
     absentList: "",
     engagementNotes: "",
     responses: ""
   });
 
-  // Handle form submission (currently just logs data and shows an alert, I will replace with actual submission logic later).
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Huddle Submitted:", formData);
-    alert("Hall Huddle Report Submitted!");
-    navigate("/ra-dashboard"); // Redirect back to RA Dashboard after submission.
+
+    // Validation
+    if (!formData.building || !formData.floor || formData.allPresent === null) {
+      return alert("Please select Building, Floor, and Attendance status.");
+    }
+
+    setUploading(true);
+
+    try {
+      // Submit to lowercase 'hallhuddles' to match your Firestore Rules
+      const docRef = await addDoc(collection(db, "hallhuddles"), {
+        ...formData,
+        floor: Number(formData.floor),
+        submittedBy: auth.currentUser?.email || "Unknown RA",
+        createdAt: serverTimestamp(),
+      });
+
+      if (docRef.id) {
+        alert("Hall Huddle Report Submitted!");
+        navigate("/ra-dashboard");
+      }
+    } catch (error) {
+      console.error("Huddle Submission Error:", error);
+      alert(`Submission Failed: ${error.message}`);
+    } finally {
+      setUploading(false);
+    }
   };
 
   return (
     <div className="fluid-container">
       <div className="fluid-card">
-        
         <div className="fluid-header">
           <button className="back-link" onClick={() => navigate(-1)}>Back</button>
           <h1>Hall Huddle Reporting</h1>
         </div>
 
         <form onSubmit={handleSubmit}>
-          
           <div className="form-grid">
             
             {/* Left Column: Logistics */}
@@ -44,40 +66,51 @@ function HallHuddle() {
               <input 
                 type="date" 
                 className="fluid-input" 
+                value={formData.date}
                 required
                 onChange={(e) => setFormData({...formData, date: e.target.value})} 
               />
 
-              <label className="fluid-label">Building</label>
-              <div className="fluid-selection-grid">
-                {["Griffith", "Stevens", "Lee", "Patterson"].map(b => (
-                  <button 
-                    key={b}
-                    type="button"
-                    className={`fluid-btn ${formData.building === b ? 'active' : ''}`}
-                    onClick={() => setFormData({...formData, building: b})}
-                  >
-                    {b} Hall
-                  </button>
-                ))}
+              {/* DROPDOWN STYLE - SIDE BY SIDE */}
+              <label className="fluid-label">Location</label>
+              <div className="fluid-row" style={{ display: 'flex', gap: '10px', marginBottom: '1.5rem' }}>
+                <select 
+                  className="fluid-input" 
+                  style={{ flex: 2 }}
+                  value={formData.building}
+                  onChange={(e) => setFormData({...formData, building: e.target.value})}
+                  required
+                >
+                  <option value="">Select Building</option>
+                  <option value="Griffith">Griffith</option>
+                  <option value="Stevens">Stevens</option>
+                  <option value="Lee">Lee</option>
+                  <option value="Patterson">Patterson</option>
+                </select>
+
+                <select 
+                  className="fluid-input" 
+                  style={{ flex: 1 }}
+                  value={formData.floor}
+                  onChange={(e) => setFormData({...formData, floor: e.target.value})}
+                  required
+                >
+                  <option value="">Floor</option>
+                  {[1, 2, 3, 4].map(f => <option key={f} value={f}>{f}</option>)}
+                </select>
               </div>
 
-              <label className="fluid-label">Floor Number</label>
-              <div className="fluid-row" style={{ justifyContent: 'flex-start' }}>
-                {[1, 2, 3, 4].map(f => (
-                  <button 
-                    key={f}
-                    type="button"
-                    className={`fluid-floor-btn ${formData.floor === f ? 'active' : ''}`}
-                    onClick={() => setFormData({...formData, floor: f})}
-                  >
-                    {f}
-                  </button>
-                ))}
-              </div>
+              <label className="fluid-label">How did you promote engagement?</label>
+              <textarea 
+                className="fluid-textarea" 
+                placeholder="e.g. Door-to-door, GroupMe, Snacks..." 
+                value={formData.engagementNotes}
+                onChange={(e) => setFormData({...formData, engagementNotes: e.target.value})} 
+                required
+              />
             </div>
 
-            {/* Right Column: Attendance & Engagement */}
+            {/* Right Column: Attendance & Feedback */}
             <div className="form-column">
               <label className="fluid-label">All residents present?</label>
               <div className="fluid-status-group" style={{ marginBottom: '1.5rem' }}>
@@ -98,37 +131,31 @@ function HallHuddle() {
               </div>
 
               {formData.allPresent === false && (
-                <div className="fail-reason-box">
-                  <label className="fluid-label">List residents who were absent:</label>
+                <div className="fail-reason-box" style={{ marginBottom: '1.5rem' }}>
+                  <label className="fluid-label">Absent Residents:</label>
                   <textarea 
                     className="fluid-textarea" 
-                    placeholder="Type names here..." 
+                    placeholder="List names..." 
+                    value={formData.absentList}
                     onChange={(e) => setFormData({...formData, absentList: e.target.value})} 
                   />
                 </div>
               )}
 
-              <label className="fluid-label">How did you promote engagement?</label>
+              <label className="fluid-label">What were 3 responses/feedback items?</label>
               <textarea 
                 className="fluid-textarea" 
-                placeholder="Type here..." 
-                onChange={(e) => setFormData({...formData, engagementNotes: e.target.value})} 
-              />
-
-              <label className="fluid-label">What were 3 responses you received?</label>
-              <textarea 
-                className="fluid-textarea" 
-                placeholder="Type here..." 
+                placeholder="1. They want more events... 2. Quiet hours issues... 3. AC concerns..." 
+                value={formData.responses}
                 onChange={(e) => setFormData({...formData, responses: e.target.value})} 
+                required
               />
             </div>
           </div>
 
-          {/* Submit Button */}
-          <button type="submit" className="fluid-submit-btn">
-            Submit Report
+          <button type="submit" className="fluid-submit-btn" disabled={uploading}>
+            {uploading ? "Submitting..." : "Submit Huddle Report"}
           </button>
-
         </form>
       </div>
     </div>

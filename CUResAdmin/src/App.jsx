@@ -8,8 +8,14 @@ import EditUser from "./pages/EditUser";
 import RoomCheckForm from "./pages/RoomCheckForm";
 import DormCheckout from "./pages/DormCheckout"; 
 import HallHuddle from "./pages/HallHuddle"; 
+import Profile from "./pages/Profile"; // New Profile Management Page for RAs
 
-// New Page Imports for User Management
+// New Page Imports for Logs for Admins
+import HallHuddleLogs from "./pages/HallHuddleLogs";
+import CheckoutLogs from "./pages/CheckoutLogs";
+import RoomCheckLogs from "./pages/RoomCheckLogs";
+
+// Page Imports for User Management
 import ManageUsers from "./pages/ManageUsers";
 import UserDetails from "./pages/UserDetails";
 import AddUser from "./pages/AddUser";
@@ -88,6 +94,36 @@ function App() {
        }
       />
 
+        {/* Hall Huddle Logs Page */}
+      <Route
+        path="/admin/huddles"
+        element={
+          <ProtectedRoute allowedRole="admin">
+            <HallHuddleLogs />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Checkout Logs Page */}
+      <Route
+        path="/admin/checkouts"
+        element={
+          <ProtectedRoute allowedRole="admin">
+            <CheckoutLogs />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Room Check Logs Page */}
+      <Route
+        path="/admin/roomchecks"
+        element={
+          <ProtectedRoute allowedRole="admin">
+            <RoomCheckLogs />
+          </ProtectedRoute>
+        }
+      />
+
       {/* --- RA ROUTES --- */}
       {/* Defines the RA path. Wrapped in ProtectedRoute to ensure only 'RA' roles can enter. */}
       <Route
@@ -123,6 +159,15 @@ function App() {
         element={
           <ProtectedRoute allowedRole="RA">
             <HallHuddle />
+          </ProtectedRoute>
+        }
+      />
+      {/* Route for Profile Management */}
+       <Route
+        path="/profile"
+        element={
+          <ProtectedRoute allowedRole="RA">
+            <Profile />
           </ProtectedRoute>
         }
       />
