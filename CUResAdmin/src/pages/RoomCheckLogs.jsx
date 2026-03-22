@@ -10,10 +10,13 @@ function RoomCheckLogs() {
   const [loading, setLoading] = useState(true);
   const [selectedCheck, setSelectedCheck] = useState(null);
 
-  // Filter state for building and floor (I am trying out these filters to see if they work best or should use others).
+  // Filter state for building and floor (Finalized filters).
   const [filters, setFilters] = useState({
-    building: "",
-    floor: ""
+  building: "",
+  floor: "",
+  startDate: "",
+  endDate: "",
+  search: ""
   });
 
   // Real-time listener to fetch room check logs from Firestore, ordered by creation date (newest first).
@@ -27,11 +30,34 @@ function RoomCheckLogs() {
     return () => unsubscribe();
   }, []);
 
-  // Apply filters to the checks based on selected building and floor.
+  // Apply filters to the checks.
   const filteredChecks = checks.filter(c => {
-    const matchesBuilding = filters.building === "" || c.building === filters.building;
-    const matchesFloor = filters.floor === "" || String(c.floor) === filters.floor;
-    return matchesBuilding && matchesFloor;
+    const matchesBuilding = 
+      filters.building === "" || c.building === filters.building;
+
+    const matchesFloor = 
+      filters.floor === "" || String(c.floor) === filters.floor;
+
+    const matchesSearch =
+      filters.search === "" ||
+        c.roomNumber?.toString().includes(filters.search) ||
+        c.residents?.some(r =>
+          r.name.toLowerCase().includes(filters.search));
+
+    const checkDate = c.date;
+      const matchesStart =
+        !filters.startDate || checkDate >= filters.startDate;
+
+      const matchesEnd =
+        !filters.endDate || checkDate <= filters.endDate;
+
+    return (
+      matchesBuilding && 
+      matchesFloor && 
+      matchesSearch && 
+      matchesStart && 
+      matchesEnd
+    );
   });
 
   return (
@@ -40,7 +66,7 @@ function RoomCheckLogs() {
         
         <div className="fluid-header">
           <button className="back-link" onClick={() => navigate("/admin")}>Back</button>
-          <h1>Room Check Logs</h1>
+          <h1>Roomcheck Logs</h1>
         </div>
 
         {/* Fluid Filter Bar */}
@@ -64,7 +90,50 @@ function RoomCheckLogs() {
             </select>
           </div>
 
-          <button className="fluid-reset-btn" onClick={() => setFilters({building: "", floor: ""})}>Reset</button>
+          {/* Added Search Bar*/}
+          <div className="filter-group">
+            <label className="fluid-label-sm">Search</label>
+            <input
+              type="text"
+              className="fluid-input-sm"
+              placeholder="Resident or Room #"
+              value={filters.search}
+              onChange={(e) => setFilters({ ...filters, search: e.target.value.toLowerCase() })}
+            />
+          </div>
+
+          {/* Added Start Date */}
+          <div className="filter-group">
+            <label className="fluid-label-sm">Start Date</label>
+            <input
+              type="date"
+              className="fluid-input-sm"
+              value={filters.startDate}
+              onChange={(e) => setFilters({ ...filters, startDate: e.target.value })}
+            />
+          </div>
+
+          {/* AddedEnd Date */}
+          <div className="filter-group">
+            <label className="fluid-label-sm">End Date</label>
+            <input
+              type="date"
+              className="fluid-input-sm"
+              value={filters.endDate}
+              onChange={(e) => setFilters({ ...filters, endDate: e.target.value })}
+            />
+          </div>
+
+          <button className="fluid-reset-btn" onClick={() => 
+            setFilters({
+              building: "", 
+              floor: "",
+              search: "",
+              startDate: "",
+              endDate: ""
+              })}>
+                Reset
+          </button>
         </div>
 
         <div className="fluid-table-container">
@@ -86,7 +155,12 @@ function RoomCheckLogs() {
                   
                   return (
                     <tr key={c.id}>
-                      <td><strong>{c.building} {c.floor}</strong></td>
+                      <td>
+                        <div><strong>{c.building} {c.floor}</strong></div>
+                        <div style={{ fontSize: "0.85rem", color: "rgb(65, 64, 64)" }}>
+                          Room Number: {c.roomNumber}
+                        </div>
+                      </td>
                       <td style={{ fontSize: '0.85rem' }}>
                         {c.residents?.map((r, idx) => (
                           <div key={idx} style={{ color: r.status === 'Fail' ? '#d32f2f' : '#388e3c' }}>
@@ -96,12 +170,12 @@ function RoomCheckLogs() {
                       </td>
                       <td>
                         <span className={`fluid-badge ${!anyFail ? 'pass' : 'fail'}`}>
-                          {anyFail ? 'ACTION REQ' : 'ALL PASS'}
+                          {anyFail ? 'ACTION REQUIRED' : 'ALL PASS'}
                         </span>
                       </td>
                       <td>
                         <small>{c.submittedBy?.split('@')[0]}</small><br/>
-                        <small style={{color: '#777'}}>{c.date}</small>
+                        <small style={{color: 'rgb(65, 64, 64)'}}>{c.date}</small>
                       </td>
                       <td>
                         <button 

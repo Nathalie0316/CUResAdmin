@@ -42,14 +42,16 @@
 /* Keep inputs from stretching 900px wide */
 .fluid-login-form {
   width: 100%;
-  max-width: 420px; /* Keeps the login fields at a normal size */
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem; /* ✅ handles spacing between fields */
 }
 
 .fluid-login-input {
   width: 100%;
   height: 52px;
   padding: 12px 16px;
-  margin-bottom: 1.2rem;
   border-radius: 10px;
   border: 1px solid rgb(224, 224, 224);
   font-size: 1rem;
@@ -59,7 +61,7 @@
 
 .fluid-login-input:focus {
   outline: none;
-  border-color: rgb(255, 202, 0); 
+  border-color: rgb(0, 24, 104); 
 }
 
 .fluid-login-btn {
@@ -73,11 +75,17 @@
   font-weight: 700;
   cursor: pointer;
   margin-top: 0.5rem;
-  transition: transform 0.1s active, background 0.2s ease;
+  transition: all 0.2s ease; 
+  box-shadow: 0 4px 10px rgba(0, 24, 104, 0.1); 
 }
 
 .fluid-login-btn:hover {
   background: rgb(0, 18, 78);
+  transform: translateY(-2px); 
+}
+
+.fluid-login-btn:active {
+  transform: translateY(1px); /* press down */
 }
 
 .fluid-login-btn:disabled {
@@ -91,4 +99,54 @@
   margin-top: 1rem;
   text-align: center;
   font-weight: 500;
+}
+
+.password-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-input-wrapper .fluid-login-input {
+  padding-right: 45px; /* space for eye icon */
+}
+
+.password-input-wrapper button {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  height: 100%;
+}
+
+.eye-toggle-btn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%) scale(1);
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  transition: all 0.2s ease;
+}
+
+/* Hover */
+.eye-toggle-btn:hover {
+  color: rgb(0, 24, 104);
+  transform: translateY(-50%) scale(1.15);
+}
+
+/* Click */
+.eye-toggle-btn:active {
+  transform: translateY(-50%) scale(0.95);
 }

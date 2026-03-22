@@ -44,20 +44,19 @@ function UserDetails() {
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', marginBottom: '30px' }}>
-          <img src={seal} alt="Logo" className="fluid-dash-logo-large" style={{ marginBottom: '15px' }} />
           <h1 style={{ fontSize: '2.4rem', margin: '0', fontWeight: '800', color: '#000' }}>{userData.name}</h1>
-          <span style={{ fontSize: '1.1rem', color: '#666', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '1px' }}>
+          <span style={{ fontSize: '1.0rem', color: 'rgb(0, 40, 104)', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '1px' }}>
             {userData.role}
           </span>
         </div>
 
         <div style={{ width: '100%', maxWidth: '450px' }}>
           <div className="detail-row" style={{ borderBottom: '1px solid #f0f0f0', paddingBottom: '15px' }}>
-            <label>Email:</label>
+            <label>Email: </label>
             <a href={`mailto:${userData.email}`} style={{ color: '#001868', fontWeight: '600' }}>{userData.email}</a>
           </div>
           <div className="detail-row" style={{ borderBottom: '1px solid #f0f0f0', paddingBottom: '15px', paddingTop: '15px' }}>
-            <label>Assigned Area:</label>
+            <label>Assigned Area: </label>
             <span style={{ fontWeight: '600', color: '#333' }}>{userData.area || "Not Assigned"}</span>
           </div>
 

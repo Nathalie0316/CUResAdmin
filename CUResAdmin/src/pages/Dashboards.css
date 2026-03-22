@@ -42,7 +42,7 @@
 }
 
 .fluid-dash-logo-large {
-  width: 110px; 
+  width: 300px; 
   height: auto;
 }
 
@@ -69,16 +69,21 @@
   transform: translateY(-2px);
 }
 
+.fluid-dash-btn:active {
+  transform: translateY(1px); /* push down when clicked */
+}
+
 .fluid-logout-wrap {
-  margin-top: 3rem;
+  margin-top: 1.5rem;
   width: 100%;
   max-width: 700px; /* Match the button grid width */
   display: flex;
   justify-content: center;
   border-top: 1px solid #eee;
-  padding-top: 2rem;
+  padding-top: 1rem;
 }
 
+/* LOGOUT BUTTON (with hover) */
 .fluid-dash-logout-btn {
   width: 100%;
   padding: 14px;
@@ -89,4 +94,15 @@
   font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
+  transition: all 0.2s ease; 
+  box-shadow: 0 4px 10px rgba(255, 202, 0, 0.2); /* polish */
+}
+
+.fluid-dash-logout-btn:hover {
+  background: rgb(230, 180, 0); 
+  transform: translateY(-2px); 
+}
+
+.fluid-dash-logout-btn:active {
+  transform: translateY(1px); 
 }

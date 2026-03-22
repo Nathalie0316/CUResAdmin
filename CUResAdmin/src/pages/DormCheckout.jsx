@@ -9,6 +9,13 @@ function DormCheckout() {
   const navigate = useNavigate();
   const [uploading, setUploading] = useState(false);
 
+  const areaData = {
+  Griffith: [1, 2, 3],
+  Stevens: [1, 2, 3, 4],
+  Lee: [1, 2, 3],
+  Patterson: [1, 2, 3, 4]
+  };
+
   const [formData, setFormData] = useState({
     date: new Date().toISOString().split('T')[0],
     checkoutType: "",
@@ -106,7 +113,13 @@ function DormCheckout() {
                   className="fluid-input" 
                   style={{ flex: 2 }}
                   value={formData.building}
-                  onChange={(e) => setFormData({...formData, building: e.target.value})}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      building: e.target.value,
+                      floor: "" // 🔥 reset floor
+                    })
+                  }
                   required
                 >
                   <option value="">Select Building</option>
@@ -117,21 +130,26 @@ function DormCheckout() {
                 </select>
 
                 <select 
-                  className="fluid-input" 
-                  style={{ flex: 1 }}
-                  value={formData.floor}
-                  onChange={(e) => setFormData({...formData, floor: e.target.value})}
-                  required
-                >
-                  <option value="">Floor</option>
-                  {[1, 2, 3, 4].map(f => <option key={f} value={f}>{f}</option>)}
-                </select>
+                className="fluid-input" 
+                style={{ flex: 1 }}
+                value={formData.floor}
+                onChange={(e) => setFormData({ ...formData, floor: e.target.value })}
+                required
+                disabled={!formData.building} // 🔥 disables until building selected
+              >
+                <option value="">Floor</option>
+                {formData.building &&
+                  areaData[formData.building].map(f => (
+                    <option key={f} value={f}>{f}</option>
+                  ))
+                }
+              </select>
               </div>
 
               <div className="fluid-row" style={{ gap: '10px' }}>
                 <div style={{ flex: 1 }}>
                   <label className="fluid-label">Room #</label>
-                  <input type="text" className="fluid-input" placeholder="302B" onChange={(e) => setFormData({...formData, roomNumber: e.target.value})} />
+                  <input type="text" className="fluid-input" placeholder="GH302" onChange={(e) => setFormData({...formData, roomNumber: e.target.value})} />
                 </div>
                 <div style={{ flex: 2 }}>
                   <label className="fluid-label">Resident Name</label>
@@ -161,12 +179,30 @@ function DormCheckout() {
               <label className="fluid-label">Final Inspection Status</label>
               <div className="fluid-status-group" style={{ marginBottom: '1.5rem' }}>
                 <div className="status-item">
-                  PASS
-                  <div className={`fluid-dot ${formData.allCriteriaMet === true ? 'active-pass' : ''}`} onClick={() => setFormData({...formData, allCriteriaMet: true})} />
+                  <span style={{ fontSize: '10px', fontWeight: 'bold' }}>Pass</span>
+                  <div
+                    className={`fluid-dot ${formData.allCriteriaMet === true ? 'active-pass' : ''}`}
+                    onClick={() =>
+                      setFormData({
+                        ...formData,
+                        allCriteriaMet:
+                          formData.allCriteriaMet === true ? null : true
+                      })
+                    }
+                  />
                 </div>
                 <div className="status-item">
-                  FAIL
-                  <div className={`fluid-dot ${formData.allCriteriaMet === false ? 'active-fail' : ''}`} onClick={() => setFormData({...formData, allCriteriaMet: false})} />
+                  <span style={{ fontSize: '10px', fontWeight: 'bold' }}>Fail</span>
+                  <div
+                    className={`fluid-dot ${formData.allCriteriaMet === false ? 'active-fail' : ''}`}
+                    onClick={() =>
+                      setFormData({
+                        ...formData,
+                        allCriteriaMet:
+                          formData.allCriteriaMet === false ? null : false
+                      })
+                    }
+                  />
                 </div>
               </div>
 

@@ -11,6 +11,14 @@ function RoomCheckForm() {
   const [building, setBuilding] = useState("");
   const [floor, setFloor] = useState("");
   const [uploading, setUploading] = useState(false);
+  const [roomNumber, setRoomNumber] = useState("");
+
+  const areaData = {
+    Griffith: [1, 2, 3],
+    Stevens: [1, 2, 3, 4],
+    Lee: [1, 2, 3],
+    Patterson: [1, 2, 3, 4]
+  };
 
   const [residents, setResidents] = useState([
     { name: "", status: "", reason: "" },
@@ -54,6 +62,9 @@ function RoomCheckForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!building || !floor) return alert("Please select a building and floor.");
+    if (!roomPhoto || !bathPhoto) return alert("Please upload both room and bathroom photos.");
+    if (!roomNumber) return alert("Please enter the room number.");
+    if (residents.some(r => r.name && !r.status)) return alert("Please set Pass/Fail status for all entered residents.");
     
     setUploading(true);
 
@@ -68,6 +79,7 @@ function RoomCheckForm() {
         date,
         building,
         floor: Number(floor),
+        roomNumber,
         residents: residents.filter(r => r.name !== ""), 
         roomPhotoUrl: roomUrl,
         bathPhotoUrl: bathUrl,
@@ -118,7 +130,7 @@ function RoomCheckForm() {
                   className="fluid-input" 
                   style={{ flex: 2 }} 
                   value={building}
-                  onChange={(e) => setBuilding(e.target.value)}
+                  onChange={(e) => { setBuilding(e.target.value); setFloor(""); }}
                   required
                 >
                   <option value="">Select Building</option>
@@ -134,11 +146,27 @@ function RoomCheckForm() {
                   value={floor}
                   onChange={(e) => setFloor(e.target.value)}
                   required
+                  disabled={!building} // optional: disables until building selected
                 >
                   <option value="">Floor</option>
-                  {[1, 2, 3, 4].map(f => <option key={f} value={f}>{f}</option>)}
+                  {building &&
+                    areaData[building].map(f => (
+                      <option key={f} value={f}>{f}</option>
+                    ))
+                  }
                 </select>
               </div>
+
+              {/* Added Room Number Input */}
+              <label className="fluid-label">Room Number</label>
+              <input
+                type="text"
+                className="fluid-input"
+                placeholder="e.g. GH204"
+                value={roomNumber}
+                onChange={(e) => setRoomNumber(e.target.value)}
+                required
+              />
 
               <div className="upload-grid" style={{marginTop: '20px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px'}}>
                 <div className="upload-box" style={{textAlign: 'center'}}>

@@ -110,13 +110,6 @@ function AddUser() {
           <h1>Add New User</h1>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
-          <img src={seal} alt="Logo" className="fluid-dash-logo-large" style={{ marginBottom: '8px' }} />
-          <h2 style={{ fontSize: '1rem', color: '#666', margin: '0 0 20px 0', fontWeight: '600', textTransform: 'uppercase' }}>
-            Administration
-          </h2>
-        </div>
-
         <form className="add-user-form" style={{ width: '100%', maxWidth: '450px' }} onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Name:</label>

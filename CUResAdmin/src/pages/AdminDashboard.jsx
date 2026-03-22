@@ -2,6 +2,8 @@ import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import seal from "../assets/bearlogo.png"; 
+import culogo from "../assets/campus-life-horizontal.png";
+import { useState, useEffect } from "react";
 import "./Dashboards.css";
 
 function AdminDashboard() {
@@ -16,20 +18,32 @@ function AdminDashboard() {
     }
   };
 
- return (
+  const [adminName, setAdminName] = useState("");
+    useEffect(() => {
+      const user = auth.currentUser;
+      if (user) {
+        setAdminName(user.displayName || user.email.split("@")[0]);
+      }
+    }, []);
+  
+  return(
   <div className="fluid-dash-page">
     <div className="fluid-dash-card">
       
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', marginTop: '10px' }}>
-        <img src={seal} alt="Logo" className="fluid-dash-logo-large" style={{ marginBottom: '15px' }} />
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', marginTop: '10px' }}>
+                {/* New CL Logo to replace bear logo */}
+                <img src={culogo} alt="CLLogo" className="fluid-dash-logo-large" style={{ marginBottom: '8px' }} /> 
+                
+                {/* Added a Greeting for the specific Admin with their name*/}
         
-        <h2 style={{ fontSize: '1rem', color: 'rgb(55, 55, 55)', margin: '0', fontWeight: '600', letterSpacing: '0.5px'}}>
-          CUResLife
-        </h2>
-        
-        <h1 style={{ fontSize: '2.2rem', margin: '2px 0 25px 0', fontWeight: '800', color: 'rgb(0, 0, 0)' }}>
-          Admin Portal
-        </h1>
+                <p1 style={{ fontSize: '1.5rem', marginTop: '40px', marginBottom: '2px' , fontWeight: '600', color: 'rgb(0, 0, 0)' }}>
+                  Welcome, {adminName}!
+                </p1>
+                <p1 style={{ fontSize: '2rem', marginTop: '10px', marginBottom: '5px' , fontWeight: '800', color: 'rgb(0, 40, 104)' }}>
+                  Admin Dashboard
+                </p1>
+      </div>          
       </div>
 
       <div className="fluid-menu-grid">

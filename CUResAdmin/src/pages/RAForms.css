@@ -8,6 +8,7 @@
   box-sizing: border-box;
 }
 
+/* CARD */
 .fluid-card {
   width: 100%;
   max-width: 900px; 
@@ -15,16 +16,22 @@
   padding: 2rem;
   border-radius: 16px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  animation: fadeInUp 0.4s ease-out;
 }
 
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* HEADER */
 .fluid-header {
   display: flex;
   align-items: center;
   position: relative; 
-  padding: 1rem 0;
-  margin-bottom: 2rem;
-  border-bottom: 2px solid rgb(240, 240, 240);
-  min-height: 60px;
+  padding: 0.8rem 0;
+  margin-bottom: 1.8rem;
+  border-bottom: 1px solid rgb(235, 235, 235);
 }
 
 .back-link {
@@ -45,6 +52,11 @@
 
 .back-link:hover {
   background: rgb(238, 238, 238);
+  transform: translateY(-1px);
+}
+
+.back-link:active {
+  transform: translateY(1px);
 }
 
 .fluid-header h1 {
@@ -54,6 +66,7 @@
   font-size: 1.6rem;
 }
 
+/* FORM LAYOUT */
 .form-grid {
   display: flex;
   flex-direction: column; 
@@ -69,70 +82,67 @@
   }
 }
 
+/* LABELS + INPUTS */
 .fluid-label {
   display: block;
   font-weight: 700;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   color: rgb(51, 51, 51);
 }
 
 .fluid-input {
   width: 100%;
-  padding: 14px;
-  border: 1px solid rgb(221, 221, 221);
-  border-radius: 8px;
-  background: rgb(250, 250, 250);
-  margin-bottom: 1.5rem;
+  height: 52px; /* match login */
+  padding: 12px 16px;
+  border-radius: 10px; /* match login */
+  border: 1px solid rgb(224, 224, 224);
+  background: rgb(255, 255, 255); /* match login */
+  font-size: 1rem;
   box-sizing: border-box;
   font-family: inherit;
+  margin-bottom: 1.4rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+.fluid-input:focus {
+  outline: none;
+  border-color: rgb(0, 24, 104);
+  box-shadow: 0 0 0 2px rgba(0, 24, 104, 0.15);
+}
+
+/* TEXTAREA */
 .fluid-textarea {
   width: 100%;
-  padding: 12px;
-  border: 1px solid rgb(240, 240, 240);
-  border-radius: 8px;
-  background: rgb(255, 255, 255); 
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid rgb(224, 224, 224);
+  background: rgb(255, 255, 255);
   font-family: inherit;
-  font-size: 0.9rem;
-  min-height: 80px;
+  font-size: 0.95rem;
+  min-height: 90px;
   box-sizing: border-box;
   resize: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Buttons & Selection Grids */
-.fluid-btn, .fluid-floor-btn {
-  background: rgb(0, 24, 104);
-  color: rgb(255, 255, 255);
-  border: none;
-  padding: 12px;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  height: 40px;
-  transition: background 0.2s;
+.fluid-textarea:focus {
+  outline: none;
+  border-color: rgb(0, 24, 104);
+  box-shadow: 0 0 0 2px rgba(0, 24, 104, 0.15);
 }
 
-.fluid-floor-btn {
-  width: 70px;
+.fluid-input:hover,
+.fluid-textarea:hover {
+  border-color: rgb(180, 180, 180);
 }
 
-.fluid-btn.active, .fluid-floor-btn.active {
-  background: rgb(0, 163, 255) !important; 
-}
-
-.fluid-selection-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  margin-bottom: 1.5rem;
-}
-
+/* ROWS */
 .fluid-row {
   display: flex;
   gap: 15px; 
 }
 
+/* STATUS (PASS/FAIL) */
 .fluid-status-group {
   display: flex;
   gap: 12px;
@@ -148,13 +158,22 @@
 }
 
 .fluid-dot {
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
   background: rgb(238, 238, 238);
   border-radius: 50%;
   margin-top: 5px;
   border: 1px solid rgb(221, 221, 221);
   cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.fluid-dot:hover {
+  transform: scale(1.1);
+}
+
+.fluid-dot:active {
+  transform: scale(0.95);
 }
 
 .fluid-dot.active-pass {
@@ -167,6 +186,67 @@
   border-color: rgb(0, 24, 104) !important;
 }
 
+/* RESIDENT BLOCK */
+.resident-container {
+  margin-bottom: 1.8rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 1.2rem;
+}
+
+.fluid-resident-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+}
+
+/* FAIL BOX */
+.fail-reason-box {
+  animation: fadeInDown 0.25s ease-out;
+  margin-top: 8px;
+  margin-bottom: 12px;
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* UPLOAD */
+.upload-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  text-align: center;
+}
+
+.icon-btn {
+  background: rgb(250, 250, 250);
+  border: 2px dashed rgb(220, 220, 220);
+  border-radius: 12px;
+  padding: 18px;
+  font-size: 1.6rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.icon-btn:hover {
+  transform: translateY(-2px);
+  border-color: rgb(0, 24, 104);
+  background: rgb(245, 247, 255);
+}
+
+.icon-btn:active {
+  transform: translateY(1px);
+}
+
+.icon-btn.uploaded {
+  border-color: rgb(0, 24, 104);
+  background: rgb(235, 240, 255);
+}
+
+/* SUBMIT BUTTON */
 .fluid-submit-btn {
   width: 100%;
   padding: 16px;
@@ -178,33 +258,14 @@
   font-weight: 700;
   cursor: pointer;
   margin-top: 2rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 10px rgba(255, 202, 0, 0.2);
 }
 
-.upload-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  text-align: center;
+.fluid-submit-btn:hover {
+  transform: translateY(-2px);
 }
 
-.icon-btn {
-  background: rgb(240, 240, 240);
-  border: 1px dashed rgb(204, 204, 204);
-  border-radius: 8px;
-  padding: 15px;
-  font-size: 1.5rem;
-  cursor: pointer;
-  transition: all 0.2s;
-  width: 100%; 
-}
-
-.fail-reason-box {
-  animation: fadeInDown 0.3s ease-out;
-  margin-top: -10px;
-  margin-bottom: 15px;
-}
-
-@keyframes fadeInDown {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
+.fluid-submit-btn:active {
+  transform: translateY(1px);
 }

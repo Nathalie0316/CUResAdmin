@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { db } from "../firebase";
 import { collection, getDocs } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-import seal from "../assets/bearlogo.png"; // Import your logo
+// import seal from "../assets/bearlogo.png"; // Import your logo
 import "./ManageUsers.css";
 
 function ManageUsers() {
@@ -38,14 +38,6 @@ function ManageUsers() {
             Back
           </button>
           <h1>Manage Users</h1>
-        </div>
-
-        {/* Stacked Branding Section */}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
-          <img src={seal} alt="Logo" className="fluid-dash-logo-large" style={{ marginBottom: '8px' }} />
-          <h2 style={{ fontSize: '1rem', color: '#666', margin: '0', fontWeight: '600', letterSpacing: '0.5px', textTransform: 'uppercase' }}>
-            Administration
-          </h2>
         </div>
 
         {/* Action Section */}

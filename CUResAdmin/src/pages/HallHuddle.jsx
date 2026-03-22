@@ -8,6 +8,13 @@ function HallHuddle() {
   const navigate = useNavigate();
   const [uploading, setUploading] = useState(false);
 
+  const areaData = {
+    Griffith: [1, 2, 3],
+    Stevens: [1, 2, 3, 4],
+    Lee: [1, 2, 3],
+    Patterson: [1, 2, 3, 4]
+  };
+
   const [formData, setFormData] = useState({
     date: new Date().toISOString().split('T')[0],
     building: "",
@@ -21,7 +28,6 @@ function HallHuddle() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validation
     if (!formData.building || !formData.floor || formData.allPresent === null) {
       return alert("Please select Building, Floor, and Attendance status.");
     }
@@ -29,7 +35,6 @@ function HallHuddle() {
     setUploading(true);
 
     try {
-      // Submit to lowercase 'hallhuddles' to match your Firestore Rules
       const docRef = await addDoc(collection(db, "hallhuddles"), {
         ...formData,
         floor: Number(formData.floor),
@@ -60,7 +65,7 @@ function HallHuddle() {
         <form onSubmit={handleSubmit}>
           <div className="form-grid">
             
-            {/* Left Column: Logistics */}
+            {/* LEFT COLUMN */}
             <div className="form-column">
               <label className="fluid-label">Date</label>
               <input 
@@ -68,17 +73,25 @@ function HallHuddle() {
                 className="fluid-input" 
                 value={formData.date}
                 required
-                onChange={(e) => setFormData({...formData, date: e.target.value})} 
+                onChange={(e) =>
+                  setFormData(prev => ({ ...prev, date: e.target.value }))
+                } 
               />
 
-              {/* DROPDOWN STYLE - SIDE BY SIDE */}
               <label className="fluid-label">Location</label>
               <div className="fluid-row" style={{ display: 'flex', gap: '10px', marginBottom: '1.5rem' }}>
+                
                 <select 
                   className="fluid-input" 
                   style={{ flex: 2 }}
                   value={formData.building}
-                  onChange={(e) => setFormData({...formData, building: e.target.value})}
+                  onChange={(e) =>
+                    setFormData(prev => ({
+                      ...prev,
+                      building: e.target.value,
+                      floor: ""
+                    }))
+                  }
                   required
                 >
                   <option value="">Select Building</option>
@@ -92,11 +105,18 @@ function HallHuddle() {
                   className="fluid-input" 
                   style={{ flex: 1 }}
                   value={formData.floor}
-                  onChange={(e) => setFormData({...formData, floor: e.target.value})}
+                  onChange={(e) =>
+                    setFormData(prev => ({ ...prev, floor: e.target.value }))
+                  }
                   required
+                  disabled={!formData.building}
                 >
                   <option value="">Floor</option>
-                  {[1, 2, 3, 4].map(f => <option key={f} value={f}>{f}</option>)}
+                  {formData.building &&
+                    areaData[formData.building].map(f => (
+                      <option key={f} value={f}>{f}</option>
+                    ))
+                  }
                 </select>
               </div>
 
@@ -105,28 +125,44 @@ function HallHuddle() {
                 className="fluid-textarea" 
                 placeholder="e.g. Door-to-door, GroupMe, Snacks..." 
                 value={formData.engagementNotes}
-                onChange={(e) => setFormData({...formData, engagementNotes: e.target.value})} 
+                onChange={(e) =>
+                  setFormData(prev => ({ ...prev, engagementNotes: e.target.value }))
+                } 
                 required
               />
             </div>
 
-            {/* Right Column: Attendance & Feedback */}
+            {/* RIGHT COLUMN ✅ FIXED */}
             <div className="form-column">
               <label className="fluid-label">All residents present?</label>
+
               <div className="fluid-status-group" style={{ marginBottom: '1.5rem' }}>
+                
                 <div className="status-item">
-                  YES
+                  <span style={{ fontSize: '10px', fontWeight: 'bold' }}>YES</span>
                   <div 
                     className={`fluid-dot ${formData.allPresent === true ? 'active-pass' : ''}`} 
-                    onClick={() => setFormData({...formData, allPresent: true})}
-                  ></div>
+                    onClick={() =>
+                      setFormData(prev => ({
+                        ...prev,
+                        allPresent: prev.allPresent === true ? null : true,
+                        absentList: "" // clears when switching to YES
+                      }))
+                    }
+                  />
                 </div>
+
                 <div className="status-item">
-                  NO
+                  <span style={{ fontSize: '10px', fontWeight: 'bold' }}>NO</span>
                   <div 
                     className={`fluid-dot ${formData.allPresent === false ? 'active-fail' : ''}`} 
-                    onClick={() => setFormData({...formData, allPresent: false})}
-                  ></div>
+                    onClick={() =>
+                      setFormData(prev => ({
+                        ...prev,
+                        allPresent: prev.allPresent === false ? null : false
+                      }))
+                    }
+                  />
                 </div>
               </div>
 
@@ -137,7 +173,9 @@ function HallHuddle() {
                     className="fluid-textarea" 
                     placeholder="List names..." 
                     value={formData.absentList}
-                    onChange={(e) => setFormData({...formData, absentList: e.target.value})} 
+                    onChange={(e) =>
+                      setFormData(prev => ({ ...prev, absentList: e.target.value }))
+                    } 
                   />
                 </div>
               )}
@@ -147,7 +185,9 @@ function HallHuddle() {
                 className="fluid-textarea" 
                 placeholder="1. They want more events... 2. Quiet hours issues... 3. AC concerns..." 
                 value={formData.responses}
-                onChange={(e) => setFormData({...formData, responses: e.target.value})} 
+                onChange={(e) =>
+                  setFormData(prev => ({ ...prev, responses: e.target.value }))
+                } 
                 required
               />
             </div>

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { auth } from "../firebase";
 import { updatePassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import "./Profile.css";
 
 function Profile() {
   const [newPassword, setNewPassword] = useState("");
@@ -47,7 +48,7 @@ function Profile() {
 
         <form onSubmit={handlePasswordChange}>
           <label className="fluid-label">New Password</label>
-          <div style={{ position: 'relative' }}>
+          <div className="profile-password-wrapper">
             <input 
               type={showPassword ? "text" : "password"} // Switch input type based on showPassword state to toggle visibility.
               className="fluid-input" 
@@ -55,25 +56,12 @@ function Profile() {
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
               required
-              style={{ paddingRight: '45px' }} // Space for the toggle icon (I need to adjust this)
             />
             {/* SVG toggle button */}
             <button 
+              className="profile-eye-toggle-btn"
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              style={{
-                position: 'absolute',
-                right: '10px',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                padding: '5px',
-                color: '#666'
-              }}
             >
               {showPassword ? (
                 /* Hidden SVG */
