@@ -122,7 +122,7 @@ function RoomCheckForm() {
           </button>
 
           <h1 className="form-title">
-            Weekly Roomcheck Form
+            Roomcheck Form
           </h1>
 
         </div>
