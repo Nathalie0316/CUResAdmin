@@ -58,15 +58,29 @@ function HallHuddle() {
     <div className="fluid-container">
       <div className="fluid-card">
         <div className="fluid-header">
-          <button className="back-link" onClick={() => navigate(-1)}>Back</button>
-          <h1>Hall Huddle Reporting</h1>
+          <button className="back-link" onClick={() => navigate(-1)}>
+            <svg 
+              width="18" 
+              height="18" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke="currentColor" 
+              strokeWidth="2"
+            >
+              <path d="M15 18l-6-6 6-6"></path>
+            </svg>
+          </button>
+          <h1 className="fluid-title">Hall Huddle Report</h1>
         </div>
 
-        <form onSubmit={handleSubmit}>
-          <div className="form-grid">
+        <form 
+          onSubmit={handleSubmit} 
+          style={{ display: "flex", flexDirection: "column" }}
+        >
+          <div className="form-grid" style={{ marginBottom: "1.5rem" }}>
             
             {/* LEFT COLUMN */}
-            <div className="form-column">
+            <div className="form-column form-stack">
               <label className="fluid-label">Date</label>
               <input 
                 type="date" 
@@ -78,47 +92,67 @@ function HallHuddle() {
                 } 
               />
 
-              <label className="fluid-label">Location</label>
-              <div className="fluid-row" style={{ display: 'flex', gap: '10px', marginBottom: '1.5rem' }}>
-                
-                <select 
-                  className="fluid-input" 
-                  style={{ flex: 2 }}
-                  value={formData.building}
-                  onChange={(e) =>
-                    setFormData(prev => ({
-                      ...prev,
-                      building: e.target.value,
-                      floor: ""
-                    }))
-                  }
-                  required
-                >
-                  <option value="">Select Building</option>
-                  <option value="Griffith">Griffith</option>
-                  <option value="Stevens">Stevens</option>
-                  <option value="Lee">Lee</option>
-                  <option value="Patterson">Patterson</option>
-                </select>
+              <label className="fluid-label">Building & Floor</label>
 
-                <select 
-                  className="fluid-input" 
-                  style={{ flex: 1 }}
-                  value={formData.floor}
-                  onChange={(e) =>
-                    setFormData(prev => ({ ...prev, floor: e.target.value }))
-                  }
-                  required
-                  disabled={!formData.building}
-                >
-                  <option value="">Floor</option>
-                  {formData.building &&
-                    areaData[formData.building].map(f => (
-                      <option key={f} value={f}>{f}</option>
-                    ))
-                  }
-                </select>
-              </div>
+                <div className="fluid-row" style={{ gap: '10px', marginBottom: '1.2rem' }}>
+
+                  {/* BUILDING */}
+                  <div className="select-wrapper" style={{ flex: 2 }}>
+                    <select 
+                      className="fluid-input"
+                      value={formData.building}
+                      onChange={(e) =>
+                        setFormData(prev => ({
+                          ...prev,
+                          building: e.target.value,
+                          floor: ""
+                        }))
+                      }
+                      required
+                    >
+                      <option value="">Select Building</option>
+                      <option value="Griffith">Griffith</option>
+                      <option value="Stevens">Stevens</option>
+                      <option value="Lee">Lee</option>
+                      <option value="Patterson">Patterson</option>
+                    </select>
+
+                    {/* Custom Arrow */}
+                    <span className="select-arrow">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M6 9l6 6 6-6"></path>
+                      </svg>
+                    </span>
+                  </div>
+
+                  {/* FLOOR */}
+                  <div className="select-wrapper" style={{ flex: 1 }}>
+                    <select 
+                      className="fluid-input"
+                      value={formData.floor}
+                      onChange={(e) =>
+                        setFormData(prev => ({ ...prev, floor: e.target.value }))
+                      }
+                      required
+                      disabled={!formData.building}
+                    >
+                      <option value="">Floor</option>
+                      {formData.building &&
+                        areaData[formData.building].map(f => (
+                          <option key={f} value={f}>{f}</option>
+                        ))
+                      }
+                    </select>
+
+                    {/* Custom Arrow */}
+                    <span className="select-arrow">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M6 9l6 6 6-6"></path>
+                      </svg>
+                    </span>
+                  </div>
+
+                </div>
 
               <label className="fluid-label">How did you promote engagement?</label>
               <textarea 
@@ -132,14 +166,15 @@ function HallHuddle() {
               />
             </div>
 
-            {/* RIGHT COLUMN ✅ FIXED */}
-            <div className="form-column">
+            {/* RIGHT COLUMN FIXED */}
+            <div className="form-column form-stack">
+              <div className="status-header-row section-spacing">
               <label className="fluid-label">All residents present?</label>
 
               <div className="fluid-status-group" style={{ marginBottom: '1.5rem' }}>
-                
+                <div className="fluid-status-group status-offset">
                 <div className="status-item">
-                  <span style={{ fontSize: '10px', fontWeight: 'bold' }}>YES</span>
+                  <span className="status-label">Yes</span>
                   <div 
                     className={`fluid-dot ${formData.allPresent === true ? 'active-pass' : ''}`} 
                     onClick={() =>
@@ -150,10 +185,10 @@ function HallHuddle() {
                       }))
                     }
                   />
-                </div>
+              </div>
 
                 <div className="status-item">
-                  <span style={{ fontSize: '10px', fontWeight: 'bold' }}>NO</span>
+                  <span className="status-label">No</span>
                   <div 
                     className={`fluid-dot ${formData.allPresent === false ? 'active-fail' : ''}`} 
                     onClick={() =>
@@ -163,8 +198,10 @@ function HallHuddle() {
                       }))
                     }
                   />
+                  </div>
                 </div>
               </div>
+            </div>
 
               {formData.allPresent === false && (
                 <div className="fail-reason-box" style={{ marginBottom: '1.5rem' }}>
@@ -194,7 +231,7 @@ function HallHuddle() {
           </div>
 
           <button type="submit" className="fluid-submit-btn" disabled={uploading}>
-            {uploading ? "Submitting..." : "Submit Huddle Report"}
+            {uploading ? "Submitting..." : "Submit Report"}
           </button>
         </form>
       </div>

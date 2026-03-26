@@ -210,7 +210,7 @@ function DormCheckout() {
             </div>
 
             <div className="form-column">
-             <div className="upload-grid" style={{ marginTop: '20px', gap: '15px' }}>
+             <div className="upload-grid section-spacing">
               {/* ROOM PHOTO */}
               <div className="upload-box" onClick={() => !roomPhoto && roomPhotoRef.current.click()}>
                 <input 
@@ -292,7 +292,7 @@ function DormCheckout() {
               </div>
             </div>
 
-              <div className="status-header-row">
+              <div className="status-header-row section-spacing">
                 <label className="fluid-label" style={{ marginBottom: 0 }}>
                   Final Inspection Status
                 </label>
@@ -345,7 +345,7 @@ function DormCheckout() {
                   )}
               </div>
 
-              <div className="fluid-row" style={{ gap: '10px' }}>
+              <div className="fluid-row section-spacing" style={{ gap: '10px' }}>
                 <div style={{ flex: 1 }}>
                   <label className="fluid-label">Room Key Number</label>
                   <input type="text" className="fluid-input" placeholder="e.g. GH204 A" onChange={(e) => setFormData({...formData, roomKey: e.target.value})} />
@@ -356,8 +356,14 @@ function DormCheckout() {
                 </div>
               </div>
 
-              <label className="fluid-label">Repairs/Notes:</label>
-              <textarea className="fluid-textarea" placeholder="List any repairs needed or any other notes..." onChange={(e) => setFormData({...formData, repairs: e.target.value})} />
+              <div className="section-spacing">
+                <label className="fluid-label">Repairs/Notes:</label>
+                <textarea 
+                  className="fluid-textarea" 
+                  placeholder="Describe damages..." 
+                  onChange={(e) => setFormData({...formData, repairs: e.target.value})} 
+                />
+              </div>
             </div>
           </div>
 

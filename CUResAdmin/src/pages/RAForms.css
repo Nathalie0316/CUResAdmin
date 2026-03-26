@@ -3,6 +3,7 @@
   min-height: 100vh;
   display: flex;
   justify-content: center;
+  align-items: flex-start;
   background: rgb(253, 253, 253);
   padding: 20px;
   box-sizing: border-box;
@@ -11,17 +12,24 @@
 /* CARD */
 .fluid-card {
   width: 100%;
-  max-width: 900px; 
+  max-width: 900px;
   background: rgb(255, 255, 255);
   padding: 2rem;
   border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-  animation: fadeInUp 0.4s ease-out;
+  border: 1px solid rgb(235, 235, 235);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04);
+  animation: cardFadeIn 0.4s ease-out;
 }
 
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+@keyframes cardFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* HEADER */
@@ -478,3 +486,30 @@ WORK IN PROGRESS - TITLE CENTERING
 .full-width-section .fluid-label {
   display: block;
 }
+
+.section-spacing {
+  margin-bottom: 1.8rem;
+}
+
+/*--------------------------------------*/
+/* ADDED SPECIFICALLY FOR DORM CHECKOUT */
+/*--------------------------------------*/
+
+.fluid-title {
+  flex: 1;
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: rgb(0, 24, 104);
+  margin: 0;
+}
+
+/*
+.form-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+} */
+
+
+

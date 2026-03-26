@@ -10,20 +10,27 @@
 /* Match the 900px width of the Roomchecks page */
 .fluid-dash-card {
   width: 100%;
-  max-width: 900px; 
+  max-width: 900px;
   background: rgb(255, 255, 255);
   padding: 2rem;
   border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgb(235, 235, 235);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04);
   display: flex;
   flex-direction: column;
-  align-items: center; /* Keep logo and buttons centered */
-  animation: dashFadeIn 0.4s ease-out;
+  align-items: center;
+  animation: cardFadeIn 0.4s ease-out;
 }
 
-@keyframes dashFadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+@keyframes cardFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Keep the menu grid a smaller size so buttons don't stretch to 900px wide */
