@@ -103,7 +103,7 @@ WORK IN PROGRESS - TITLE CENTERING
 .fluid-label {
   display: block;
   font-weight: 700;
-  margin-bottom: 6px;
+  margin-bottom: 12px;
   color: rgb(51, 51, 51);
 }
 
@@ -421,12 +421,9 @@ WORK IN PROGRESS - TITLE CENTERING
 .status-header-row {
   border-top: 1px solid rgb(238, 238, 238);
   padding-top: 12px;
-  border-bottom: 1px solid rgb(238, 238, 238) ;;
-}
-
-.status-header-row {
-  margin-top: 20px;  /* create space from upload grid */
-  margin-bottom: 1.5rem;
+  border-bottom: 1px solid rgb(238, 238, 238);
+  margin-top: 16px;
+  margin-bottom: 0.75rem;
 }
 
 .status-offset {
@@ -511,5 +508,11 @@ WORK IN PROGRESS - TITLE CENTERING
   gap: 18px;
 } */
 
+.form-column-right {
+  padding-top: 15px;
+}
 
+.huddle-textarea {
+  min-height: 118px;
+}
 

@@ -122,13 +122,14 @@ function RoomCheckForm() {
           </button>
 
           <h1 className="form-title">
-            Roomcheck Form
+            Roomchecks
           </h1>
 
         </div>
 
         <form onSubmit={handleSubmit}>
           <div className="form-grid">
+            
             {/* Left Column: Logistics */}
             <div className="form-column">
               <label className="fluid-label">Date</label>

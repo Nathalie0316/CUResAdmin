@@ -70,7 +70,7 @@ function HallHuddle() {
               <path d="M15 18l-6-6 6-6"></path>
             </svg>
           </button>
-          <h1 className="fluid-title">Hall Huddle Report</h1>
+          <h1 className="fluid-title">Hall Huddles</h1>
         </div>
 
         <form 
@@ -156,8 +156,8 @@ function HallHuddle() {
 
               <label className="fluid-label">How did you promote engagement?</label>
               <textarea 
-                className="fluid-textarea" 
-                placeholder="e.g. Door-to-door, GroupMe, Snacks..." 
+                className="fluid-textarea huddle-textarea" 
+                placeholder="e.g. I encouraged everyone to share their thoughts by..." 
                 value={formData.engagementNotes}
                 onChange={(e) =>
                   setFormData(prev => ({ ...prev, engagementNotes: e.target.value }))
@@ -167,47 +167,45 @@ function HallHuddle() {
             </div>
 
             {/* RIGHT COLUMN FIXED */}
-            <div className="form-column form-stack">
+            <div className="form-column form-stack form-column-right">
               <div className="status-header-row section-spacing">
-              <label className="fluid-label">All residents present?</label>
+                <label className="fluid-label">All residents present?</label>
 
-              <div className="fluid-status-group" style={{ marginBottom: '1.5rem' }}>
                 <div className="fluid-status-group status-offset">
-                <div className="status-item">
-                  <span className="status-label">Yes</span>
-                  <div 
-                    className={`fluid-dot ${formData.allPresent === true ? 'active-pass' : ''}`} 
-                    onClick={() =>
-                      setFormData(prev => ({
-                        ...prev,
-                        allPresent: prev.allPresent === true ? null : true,
-                        absentList: "" // clears when switching to YES
-                      }))
-                    }
-                  />
-              </div>
+                  <div className="status-item">
+                    <span className="status-label">Yes</span>
+                    <div 
+                      className={`fluid-dot ${formData.allPresent === true ? 'active-pass' : ''}`} 
+                      onClick={() =>
+                        setFormData(prev => ({
+                          ...prev,
+                          allPresent: prev.allPresent === true ? null : true,
+                          absentList: ""
+                        }))
+                      }
+                    />
+                  </div>
 
-                <div className="status-item">
-                  <span className="status-label">No</span>
-                  <div 
-                    className={`fluid-dot ${formData.allPresent === false ? 'active-fail' : ''}`} 
-                    onClick={() =>
-                      setFormData(prev => ({
-                        ...prev,
-                        allPresent: prev.allPresent === false ? null : false
-                      }))
-                    }
-                  />
+                  <div className="status-item">
+                    <span className="status-label">No</span>
+                    <div 
+                      className={`fluid-dot ${formData.allPresent === false ? 'active-fail' : ''}`} 
+                      onClick={() =>
+                        setFormData(prev => ({
+                          ...prev,
+                          allPresent: prev.allPresent === false ? null : false
+                        }))
+                      }
+                    />
                   </div>
                 </div>
               </div>
-            </div>
 
               {formData.allPresent === false && (
                 <div className="fail-reason-box" style={{ marginBottom: '1.5rem' }}>
                   <label className="fluid-label">Absent Residents:</label>
                   <textarea 
-                    className="fluid-textarea" 
+                    className="fluid-textarea huddle-textarea" 
                     placeholder="List names..." 
                     value={formData.absentList}
                     onChange={(e) =>
@@ -219,8 +217,8 @@ function HallHuddle() {
 
               <label className="fluid-label">What were 3 responses/feedback items?</label>
               <textarea 
-                className="fluid-textarea" 
-                placeholder="1. They want more events... 2. Quiet hours issues... 3. AC concerns..." 
+                className="fluid-textarea huddle-textarea" 
+                placeholder="e.g. Students agreed with the devotional..."
                 value={formData.responses}
                 onChange={(e) =>
                   setFormData(prev => ({ ...prev, responses: e.target.value }))

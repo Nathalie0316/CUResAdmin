@@ -1,3 +1,17 @@
+.profile-card {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.profile-section {
+  margin-bottom: 1.5rem;
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+}
+
 .profile-password-wrapper {
   position: relative;
   width: 100%;
@@ -10,25 +24,56 @@
 .profile-eye-toggle-btn {
   position: absolute;
   right: 12px;
-  top: 50%;
-  transform: translateY(-50%) scale(1);
+  top: 0;
+  height: 75%; 
   background: none;
   border: none;
   cursor: pointer;
   display: flex;
-  align-items: center;
+  align-items: center; 
   justify-content: center;
-  color: #666;
+  color: rgb(102, 102, 102);
   transition: all 0.2s ease;
 }
 
 /* Hover */
 .profile-eye-toggle-btn:hover {
   color: rgb(0, 24, 104);
-  transform: translateY(-50%) scale(1.15);
+  transform: scale(1.15);
 }
 
 /* Click */
 .profile-eye-toggle-btn:active {
-  transform: translateY(-50%) scale(0.95);
+  transform: scale(0.95);
+}
+
+.profile-submit-btn {
+  width: 100%;
+  margin-top: 1.8rem;
+  padding: 14px;
+  background: rgb(0, 24, 104);
+  color: rgb(255, 255, 255);
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0, 24, 104, 0.12);
+}
+
+.profile-submit-btn:hover {
+  background: rgb(0, 18, 78);
+  transform: translateY(-2px);
+}
+
+.profile-submit-btn:active {
+  transform: translateY(1px);
+}
+
+.profile-submit-btn:disabled {
+  background: rgb(224, 224, 224);
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
 }

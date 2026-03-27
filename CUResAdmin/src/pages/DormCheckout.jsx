@@ -97,7 +97,7 @@ function DormCheckout() {
           </button>
 
           <h1 className="header-title">
-            Dorm Checkout Form
+            Checkouts
           </h1>
         </div>
 
@@ -119,7 +119,12 @@ function DormCheckout() {
                     key={type}
                     type="button"
                     className={`fluid-btn ${formData.checkoutType === type ? 'active' : ''}`}
-                    onClick={() => setFormData({...formData, checkoutType: type})}
+                    onClick={() =>
+                      setFormData(prev => ({
+                        ...prev,
+                        checkoutType: prev.checkoutType === type ? "" : type
+                      }))
+                    }
                   >
                     {type}
                   </button>
