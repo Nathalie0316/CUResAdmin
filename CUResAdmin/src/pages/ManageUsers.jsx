@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { db } from "../firebase";
 import { collection, getDocs } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-// import seal from "../assets/bearlogo.png"; // Import your logo
+import PageTransition from "../components/PageTransition";
 import "./ManageUsers.css";
 
 function ManageUsers() {
@@ -29,43 +29,45 @@ function ManageUsers() {
   }, []);
 
   return (
-    <div className="fluid-dash-page">
-      <div className="fluid-dash-card">
-        
-        {/* Header with Top-Left Back Button */}
-        <div className="fluid-header">
-          <button className="back-link" onClick={() => navigate("/admin")}>
-            Back
-          </button>
-          <h1>Manage Users</h1>
-        </div>
+    <PageTransition>
+      <div className="fluid-dash-page">
+        <div className="fluid-dash-card">
+          
+          {/* Header with Top-Left Back Button */}
+          <div className="fluid-header">
+            <button className="back-link" onClick={() => navigate("/admin")}>
+              Back
+            </button>
+            <h1>Manage Users</h1>
+          </div>
 
-        {/* Action Section */}
-        <div className="manage-action-container">
-          <button className="btn-add-new" onClick={() => navigate("/admin/manage-users/add")}>
-            + Add New User
-          </button>
+          {/* Action Section */}
+          <div className="manage-action-container">
+            <button className="btn-add-new" onClick={() => navigate("/admin/manage-users/add")}>
+              + Add New User
+            </button>
 
-          <div className="user-button-list">
-            {loading ? (
-              <p style={{ marginTop: '20px', color: '#666' }}>Loading Users...</p>
-            ) : (
-              users.map(user => (
-                <button 
-                  key={user.id} // Each button navigates to the Edit User page for that specific user using their ID.
-                  className="user-item-btn"
-                  onClick={() => navigate(`/admin/manage-users/${user.id}`)}
-                >
-                  {/* Fallback text if the user has no name */}
-                  {user.name || "Unnamed User"}
-                  <span className="user-arrow">→</span>
-                </button>
-              ))
-            )}
+            <div className="user-button-list">
+              {loading ? (
+                <p style={{ marginTop: '20px', color: '#666' }}>Loading Users...</p>
+              ) : (
+                users.map(user => (
+                  <button 
+                    key={user.id} // Each button navigates to the Edit User page for that specific user using their ID.
+                    className="user-item-btn"
+                    onClick={() => navigate(`/admin/manage-users/${user.id}`)}
+                  >
+                    {/* Fallback text if the user has no name */}
+                    {user.name || "Unnamed User"}
+                    <span className="user-arrow">→</span>
+                  </button>
+                ))
+              )}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </PageTransition>
   );
 }
 

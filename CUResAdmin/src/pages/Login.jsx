@@ -5,6 +5,7 @@ import "./Login.css";
 import seal from "../assets/seal.png";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext"; // Import useAuth to access authentication context and roles
+import PageTransition from "../components/PageTransition"; 
 
 function Login() {
   // Pull the current user object and their role from the global AuthContext.
@@ -60,55 +61,57 @@ function Login() {
   }, [user, role, navigate]); // Dependencies: runs when user, role, or navigate function changes.
 
   return (
-  <div className="fluid-login-container">
-    <div className="fluid-login-card">
-      <img src={seal} alt="CU Seal" className="fluid-login-seal" />
-      <h1 className="fluid-login-title">CUResAdmin</h1>
-      <p className="fluid-login-subtitle">Please enter your CU Credentials to Log In!</p>
+    <PageTransition>
+      <div className="fluid-login-container">
+        <div className="fluid-login-card">
+          <img src={seal} alt="CU Seal" className="fluid-login-seal" />
+          <h1 className="fluid-login-title">CUResAdmin</h1>
+          <p className="fluid-login-subtitle">Please enter your CU Credentials to Log In!</p>
 
-      <form className="fluid-login-form" onSubmit={handleLogin}>
-        <input
-          className="fluid-login-input"
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-      
-        {/* Wrapped password input for the toggle button */}
-        <div className="password-input-wrapper">
-          <input
-            className="fluid-login-input"
-            // Dynamic type based on showPassword state to toggle visibility
-            type={showPassword ? "text" : "password"}
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          {/* Toggle Button */}
-          <button 
-            type="button" 
-            onClick={() => setShowPassword(!showPassword)}
-            className="eye-toggle-btn"
-          >
-            {showPassword ? (
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
-            ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-            )}
-          </button>
+          <form className="fluid-login-form" onSubmit={handleLogin}>
+            <input
+              className="fluid-login-input"
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          
+            {/* Wrapped password input for the toggle button */}
+            <div className="password-input-wrapper">
+              <input
+                className="fluid-login-input"
+                // Dynamic type based on showPassword state to toggle visibility
+                type={showPassword ? "text" : "password"}
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              {/* Toggle Button */}
+              <button 
+                type="button" 
+                onClick={() => setShowPassword(!showPassword)}
+                className="eye-toggle-btn"
+              >
+                {showPassword ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                )}
+              </button>
+            </div>
+
+            <button className="fluid-login-btn" type="submit" disabled={loading}>
+              {loading ? "Logging in..." : "Log In"}
+            </button>
+            
+            {error && <p className="fluid-login-error">{error}</p>}
+          </form>
         </div>
-
-        <button className="fluid-login-btn" type="submit" disabled={loading}>
-          {loading ? "Logging in..." : "Log In"}
-        </button>
-        
-        {error && <p className="fluid-login-error">{error}</p>}
-      </form>
-    </div>
-  </div>
+      </div>
+    </PageTransition>
 );
 }
 

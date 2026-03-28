@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { db } from "../firebase";
 import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
 import "./AdminReports.css"; // Styling all log pages consistently
+import PageTransition from "../components/PageTransition";
 
 function HallHuddleLogs() {
   const navigate = useNavigate();
@@ -42,103 +43,105 @@ function HallHuddleLogs() {
   });
 
   return (
-    <div className="fluid-dash-page">
-      <div className="fluid-dash-card">
-        
-        <div className="fluid-header">
-          <button className="back-link" onClick={() => navigate("/admin")}>Back</button>
-          <h1>Hall Huddle Logs</h1>
-        </div>
-
-        {/* Fluid Filter Bar */}
-        <div className="fluid-filter-bar">
-          <div className="filter-group">
-            <label className="fluid-label-sm">Building</label>
-            <select className="fluid-input-sm" value={filters.building} onChange={(e) => setFilters({...filters, building: e.target.value})}>
-              <option value="">All Buildings</option>
-              <option value="Griffith">Griffith</option>
-              <option value="Stevens">Stevens</option>
-              <option value="Lee">Lee</option>
-              <option value="Patterson">Patterson</option>
-            </select>
+    <PageTransition>
+      <div className="fluid-dash-page">
+        <div className="fluid-dash-card">
+          
+          <div className="fluid-header">
+            <button className="back-link" onClick={() => navigate("/admin")}>Back</button>
+            <h1>Hall Huddle Logs</h1>
           </div>
 
-          <div className="filter-group">
-            <label className="fluid-label-sm">Floor</label>
-            <select className="fluid-input-sm" value={filters.floor} onChange={(e) => setFilters({...filters, floor: e.target.value})}>
-              <option value="">All</option>
-              {[1, 2, 3, 4].map(f => <option key={f} value={f}>{f}</option>)}
-            </select>
+          {/* Fluid Filter Bar */}
+          <div className="fluid-filter-bar">
+            <div className="filter-group">
+              <label className="fluid-label-sm">Building</label>
+              <select className="fluid-input-sm" value={filters.building} onChange={(e) => setFilters({...filters, building: e.target.value})}>
+                <option value="">All Buildings</option>
+                <option value="Griffith">Griffith</option>
+                <option value="Stevens">Stevens</option>
+                <option value="Lee">Lee</option>
+                <option value="Patterson">Patterson</option>
+              </select>
+            </div>
+
+            <div className="filter-group">
+              <label className="fluid-label-sm">Floor</label>
+              <select className="fluid-input-sm" value={filters.floor} onChange={(e) => setFilters({...filters, floor: e.target.value})}>
+                <option value="">All</option>
+                {[1, 2, 3, 4].map(f => <option key={f} value={f}>{f}</option>)}
+              </select>
+            </div>
+
+            <div className="filter-group">
+              <label className="fluid-label-sm">From</label>
+              <input type="date" className="fluid-input-sm" value={filters.startDate} onChange={(e) => setFilters({...filters, startDate: e.target.value})} />
+            </div>
+
+            <div className="filter-group">
+              <label className="fluid-label-sm">To</label>
+              <input type="date" className="fluid-input-sm" value={filters.endDate} onChange={(e) => setFilters({...filters, endDate: e.target.value})} />
+            </div>
+
+            <button className="fluid-reset-btn" onClick={() => setFilters({building: "", floor: "", startDate: "", endDate: ""})}>
+              Reset
+            </button>
           </div>
 
-          <div className="filter-group">
-            <label className="fluid-label-sm">From</label>
-            <input type="date" className="fluid-input-sm" value={filters.startDate} onChange={(e) => setFilters({...filters, startDate: e.target.value})} />
-          </div>
-
-          <div className="filter-group">
-            <label className="fluid-label-sm">To</label>
-            <input type="date" className="fluid-input-sm" value={filters.endDate} onChange={(e) => setFilters({...filters, endDate: e.target.value})} />
-          </div>
-
-          <button className="fluid-reset-btn" onClick={() => setFilters({building: "", floor: "", startDate: "", endDate: ""})}>
-            Reset
-          </button>
-        </div>
-
-        <div className="fluid-table-container">
-          {loading ? <p>Loading logs...</p> : (
-            <table className="fluid-table">
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Location</th>
-                  <th>RA</th>
-                  <th>Attendance</th>
-                  <th>Engagement</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredHuddles.map(h => (
-                  <tr key={h.id}>
-                    <td>{h.date}</td>
-                    <td><strong>{h.building}</strong> {h.floor}</td>
-                    <td>{h.submittedBy?.split('@')[0]}</td>
-                    <td>
-                      {h.allPresent ? (
-                        <span className="fluid-badge pass">Full</span>
-                      ) : (
-                        <button className="fail-btn" onClick={() => setSelectedHuddle(h)}>Absences</button>
-                      )}
-                    </td>
-                    <td>{h.engagementNotes}</td>
+          <div className="fluid-table-container">
+            {loading ? <p>Loading logs...</p> : (
+              <table className="fluid-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Location</th>
+                    <th>RA</th>
+                    <th>Attendance</th>
+                    <th>Engagement</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-        </div>
+                </thead>
+                <tbody>
+                  {filteredHuddles.map(h => (
+                    <tr key={h.id}>
+                      <td>{h.date}</td>
+                      <td><strong>{h.building}</strong> {h.floor}</td>
+                      <td>{h.submittedBy?.split('@')[0]}</td>
+                      <td>
+                        {h.allPresent ? (
+                          <span className="fluid-badge pass">Full</span>
+                        ) : (
+                          <button className="fail-btn" onClick={() => setSelectedHuddle(h)}>Absences</button>
+                        )}
+                      </td>
+                      <td>{h.engagementNotes}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
 
-        {/* Modal for viewing absent residents */}
-        {selectedHuddle && (
-          <div className="modal-overlay" onClick={() => setSelectedHuddle(null)}>
-            <div className="fluid-modal-card" onClick={(e) => e.stopPropagation()}>
-              <div className="fluid-header">
-                <h2>Attendance</h2>
-                <button className="back-link" onClick={() => setSelectedHuddle(null)}>X</button>
-              </div>
-              <div className="modal-body">
-                <p><strong>Building:</strong> {selectedHuddle.building} {selectedHuddle.floor}</p>
-                <div className="fluid-absent-box">
-                  <label className="fluid-label-sm">Absent Residents:</label>
-                  <p style={{marginTop: '10px'}}>{selectedHuddle.absentList || "None listed."}</p>
+          {/* Modal for viewing absent residents */}
+          {selectedHuddle && (
+            <div className="modal-overlay" onClick={() => setSelectedHuddle(null)}>
+              <div className="fluid-modal-card" onClick={(e) => e.stopPropagation()}>
+                <div className="fluid-header">
+                  <h2>Attendance</h2>
+                  <button className="back-link" onClick={() => setSelectedHuddle(null)}>X</button>
+                </div>
+                <div className="modal-body">
+                  <p><strong>Building:</strong> {selectedHuddle.building} {selectedHuddle.floor}</p>
+                  <div className="fluid-absent-box">
+                    <label className="fluid-label-sm">Absent Residents:</label>
+                    <p style={{marginTop: '10px'}}>{selectedHuddle.absentList || "None listed."}</p>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
-    </div>
+    </PageTransition>
   );
 }
 

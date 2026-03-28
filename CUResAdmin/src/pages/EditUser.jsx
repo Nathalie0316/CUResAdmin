@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { db } from "../firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import seal from "../assets/bearlogo.png"; 
 import "./ManageUsers.css";
+import PageTransition from "../components/PageTransition";
 
 // Define the building and floor relationship
 const areaData = {
@@ -71,75 +71,73 @@ function EditUser() {
   if (loading) return <div className="fluid-dash-page"><p>Loading...</p></div>;
 
   return (
-    <div className="fluid-dash-page">
-      <div className="fluid-dash-card">
-        
-        <div className="fluid-header">
-          <button className="back-link" onClick={() => navigate(-1)}>Back</button>
-          <h1>Edit User</h1>
-        </div>
-
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
-          <img src={seal} alt="Logo" className="fluid-dash-logo-large" style={{ marginBottom: '8px' }} />
-        </div>
-
-        <form className="add-user-form" style={{ width: '100%', maxWidth: '450px', marginTop: '20px' }} onSubmit={handleUpdate}>
-          <div className="form-group">
-            <label>Name:</label>
-            <input 
-              type="text" 
-              value={formData.name}
-              onChange={(e) => setFormData({...formData, name: e.target.value})}
-            />
-          </div>
+    <PageTransition>
+      <div className="fluid-dash-page">
+        <div className="fluid-dash-card">
           
-          <div className="form-group">
-            <label>Role:</label>
-            <select value={formData.role} onChange={(e) => setFormData({...formData, role: e.target.value})}>
-              <option value="RA">Residential Assistant</option>
-              <option value="Admin">Administrator</option>
-            </select>
+          <div className="fluid-header">
+            <button className="back-link" onClick={() => navigate(-1)}>Back</button>
+            <h1>Edit User</h1>
           </div>
 
-          {/* Select Building */}
-          <div className="form-group">
-            <label>Building:</label>
-            <select 
-              required 
-              value={selectedBuilding}
-              onChange={(e) => {
-                setSelectedBuilding(e.target.value);
-                setSelectedFloor(""); // Reset floor if building changes
-              }}
-            >
-              <option value="">Select Building</option>
-              {Object.keys(areaData).map((building) => (
-                <option key={building} value={building}>{building}</option>
-              ))}
-            </select>
-          </div>
+          <form className="add-user-form" style={{ width: '100%', maxWidth: '450px', marginTop: '20px' }} onSubmit={handleUpdate}>
+            <div className="form-group">
+              <label>Name:</label>
+              <input 
+                type="text" 
+                value={formData.name}
+                onChange={(e) => setFormData({...formData, name: e.target.value})}
+              />
+            </div>
+            
+            <div className="form-group">
+              <label>Role:</label>
+              <select value={formData.role} onChange={(e) => setFormData({...formData, role: e.target.value})}>
+                <option value="RA">Residential Assistant</option>
+                <option value="Admin">Administrator</option>
+              </select>
+            </div>
 
-          {/* Select Floor */}
-          {selectedBuilding && (
-            <div className="form-group" style={{ animation: "fadeIn 0.3s ease-in-out" }}>
-              <label>Floor:</label>
+            {/* Select Building */}
+            <div className="form-group">
+              <label>Building:</label>
               <select 
                 required 
-                value={selectedFloor}
-                onChange={(e) => setSelectedFloor(e.target.value)}
+                value={selectedBuilding}
+                onChange={(e) => {
+                  setSelectedBuilding(e.target.value);
+                  setSelectedFloor(""); // Reset floor if building changes
+                }}
               >
-                <option value="">Select Floor</option>
-                {areaData[selectedBuilding].map((floor) => (
-                  <option key={floor} value={floor}>{floor}</option>
+                <option value="">Select Building</option>
+                {Object.keys(areaData).map((building) => (
+                  <option key={building} value={building}>{building}</option>
                 ))}
               </select>
             </div>
-          )}
 
-          <button type="submit" className="btn-edit" style={{marginTop: '30px'}}>Save Changes</button>
-        </form>
+            {/* Select Floor */}
+            {selectedBuilding && (
+              <div className="form-group" style={{ animation: "fadeIn 0.3s ease-in-out" }}>
+                <label>Floor:</label>
+                <select 
+                  required 
+                  value={selectedFloor}
+                  onChange={(e) => setSelectedFloor(e.target.value)}
+                >
+                  <option value="">Select Floor</option>
+                  {areaData[selectedBuilding].map((floor) => (
+                    <option key={floor} value={floor}>{floor}</option>
+                  ))}
+                </select>
+              </div>
+            )}
+
+            <button type="submit" className="btn-edit" style={{marginTop: '30px'}}>Save Changes</button>
+          </form>
+        </div>
       </div>
-    </div>
+    </PageTransition>
   );
 }
 
