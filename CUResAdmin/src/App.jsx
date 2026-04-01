@@ -175,6 +175,15 @@ function App() {
           }
         />
 
+        <Route
+          path="/admin/profile"
+          element={
+            <ProtectedRoute allowedRole="admin">
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+
         {/* Catch-all Route: If a user types a random URL, redirect them back to Login. */}
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>

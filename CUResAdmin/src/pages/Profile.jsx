@@ -3,6 +3,7 @@ import { auth } from "../firebase";
 import { updatePassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import PageTransition from "../components/PageTransition";
+import { useAuth } from "../context/AuthContext";
 import "./Profile.css";
 
 function Profile() {
@@ -10,6 +11,7 @@ function Profile() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { role } = useAuth();
 
   const handlePasswordChange = async (e) => {
     e.preventDefault();
@@ -25,7 +27,13 @@ function Profile() {
       await updatePassword(user, newPassword);
       alert("Password updated successfully!");
       setNewPassword("");
-      navigate("/ra-dashboard");
+
+      if (role?.toLowerCase() === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/ra");
+      }
+
     } catch (error) {
       console.error(error);
       alert(

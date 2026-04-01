@@ -60,6 +60,9 @@ function AdminDashboard() {
             <button className="fluid-dash-btn" onClick={() => navigate("/admin/manage-users")}>
               Manage Users
             </button>
+            <button className="fluid-dash-btn" onClick={() => navigate("/admin/profile")}>
+              Profile Management
+            </button>
           </div>
 
           <div className="fluid-logout-wrap">
