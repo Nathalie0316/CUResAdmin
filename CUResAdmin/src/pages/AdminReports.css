@@ -4,52 +4,79 @@
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: flex-start; /* Align to top */
+  align-items: flex-start;
   background: rgb(253, 253, 253);
-  padding: 40px 20px;
+  padding: 20px;
   box-sizing: border-box;
 }
 
 /* Main Card */
 .fluid-dash-card {
   width: 100%;
-  max-width: 1200px; 
-  background: white;
+  max-width: 900px;
+  background: rgb(255, 255, 255);
   padding: 2rem;
   border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgb(235, 235, 235);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04);
   display: flex;
   flex-direction: column;
 }
 
-/* Header match to RA Form */
+/* Header match to RA Forms */
 .fluid-header {
+  position: relative;
   display: flex;
   align-items: center;
-  position: relative;
-  padding-bottom: 1rem;
-  margin-bottom: 2rem;
-  border-bottom: 2px solid rgb(240, 240, 240);
+  padding: 0.8rem 0;
+  margin-bottom: 1.8rem;
+  border-bottom: 1px solid rgb(235, 235, 235);
 }
 
-.fluid-header h1 {
+.fluid-title {
   flex: 1;
   text-align: center;
   margin: 0;
-  font-size: 1.8rem;
-  color: rgb(51, 51, 51);
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: rgb(0, 24, 104);
+}
+
+/* Back Link Styling */
+.back-link {
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 30px;
+  background: rgb(0, 24, 104);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0, 24, 104, 0.1);
+}
+
+.back-link:hover {
+  background: rgb(0, 18, 78);
+  transform: translateY(-2px);
+}
+
+.back-link:active {
+  transform: translateY(1px);
 }
 
 /* HORIZONTAL FILTER BAR */
 .fluid-filter-bar {
   display: flex;
-  flex-direction: row; /* Force horizontal */
-  flex-wrap: wrap;     /* Wrap on mobile */
+  flex-wrap: wrap;
   gap: 15px;
   background: rgb(250, 250, 250);
-  padding: 20px;
+  padding: 18px;
   border-radius: 12px;
-  margin-bottom: 2rem;
+  margin-bottom: 1.8rem;
   border: 1px solid rgb(235, 235, 235);
   align-items: flex-end;
 }
@@ -69,37 +96,65 @@
   text-transform: uppercase;
 }
 
+/* Styling for Filters bar*/
 .fluid-input-sm {
   width: 100%;
-  padding: 10px;
-  border: 1px solid rgb(221, 221, 221);
+  height: 42px;
+  padding: 10px 12px;
+  border: 1px solid rgb(224, 224, 224);
   border-radius: 8px;
-  background: white;
+  background: rgb(255, 255, 255);
   font-family: inherit;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+.fluid-input-sm:focus {
+  outline: none;
+  border-color: rgb(0, 24, 104);
+  box-shadow: 0 0 0 2px rgba(0, 24, 104, 0.15);
+}
+
+.fluid-input-sm:hover {
+  border-color: rgb(180, 180, 180);
+}
+
+/* Styling for Reset button */
 .fluid-reset-btn {
+  height: 42px;
+  padding: 0 18px;
   background: rgb(245, 245, 245);
   border: 1px solid rgb(224, 224, 224);
-  padding: 10px 20px;
   border-radius: 8px;
   font-weight: 700;
+  color: rgb(60, 60, 60);
   cursor: pointer;
-  height: 42px;
+  transition: all 0.2s ease;
+}
+
+.fluid-reset-btn:hover {
+  background: rgb(238, 238, 238);
+  transform: translateY(-2px);
+}
+
+.fluid-reset-btn:active {
+  transform: translateY(1px);
 }
 
 /* Table Styling */
 .fluid-table-container {
   width: 100%;
   overflow-x: auto;
-  border: 1px solid rgb(240, 240, 240);
+  border: 1px solid rgb(235, 235, 235);
   border-radius: 12px;
+  background: white;
 }
 
 .fluid-table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 900px; 
+  min-width: 900px;
 }
 
 .fluid-table th {
@@ -108,36 +163,42 @@
   text-align: left;
   font-weight: 700;
   color: rgb(100, 100, 100);
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   text-transform: uppercase;
-  border-bottom: 2px solid rgb(240, 240, 240);
+  border-bottom: 1px solid rgb(235, 235, 235);
 }
 
 .fluid-table td {
   padding: 15px;
   border-bottom: 1px solid rgb(245, 245, 245);
   font-size: 0.95rem;
+  vertical-align: middle;
+}
+
+.fluid-table tbody tr:hover {
+  background: rgb(252, 252, 252);
 }
 
 /* Badges & Modals */
 .fluid-badge {
+  display: inline-block;
   padding: 6px 12px;
-  border-radius: 6px;
+  border-radius: 999px;
   font-weight: 700;
   font-size: 0.75rem;
 }
 
-.fluid-badge.pass { background: #e6ffed; color: #28a745; }
-
-.fail-btn {
-  background: rgb(0, 24, 104);
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
-  cursor: pointer;
+.fluid-badge.pass {
+  background: rgb(230, 255, 237);
+  color: rgb(40, 167, 69);
 }
 
+.fluid-badge.fail {
+  background: rgb(255, 235, 235);
+  color: rgb(180, 40, 40);
+}
+
+/* Modal Overlay */
 .modal-overlay {
   position: fixed;
   top: 0; left: 0; width: 100%; height: 100%;
@@ -148,12 +209,13 @@
 }
 
 .fluid-modal-card {
-  background: white;
+  background: rgb(255, 255, 255);
   width: 90%;
-  max-width: 450px;
+  max-width: 800px;
   border-radius: 16px;
+  border: 1px solid rgb(235, 235, 235);
   padding: 2rem;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
 .fluid-absent-box {
@@ -162,4 +224,27 @@
   border-radius: 8px;
   border: 1px solid rgb(235, 235, 235);
   margin-top: 1rem;
+}
+
+/* "View Photos" Buttons Styling */
+.admin-action-btn {
+  background: rgb(0, 24, 104);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0, 24, 104, 0.1);
+}
+
+.admin-action-btn:hover {
+  background: rgb(0, 18, 78);
+  transform: translateY(-2px);
+}
+
+.admin-action-btn:active {
+  transform: translateY(1px);
 }

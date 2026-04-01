@@ -67,8 +67,20 @@ function RoomCheckLogs() {
         <div className="fluid-dash-card">
           
           <div className="fluid-header">
-            <button className="back-link" onClick={() => navigate("/admin")}>Back</button>
-            <h1>Roomcheck Logs</h1>
+            <button className="back-link" onClick={() => navigate("/admin")}>
+              <svg 
+                width="18" 
+                height="18" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                stroke="currentColor" 
+                strokeWidth="2"
+              >
+                <path d="M15 18l-6-6 6-6"></path>
+              </svg>
+            </button>
+
+            <h1 className="fluid-title">Roomcheck Logs</h1>
           </div>
 
           {/* Fluid Filter Bar */}
@@ -172,7 +184,7 @@ function RoomCheckLogs() {
                         </td>
                         <td>
                           <span className={`fluid-badge ${!anyFail ? 'pass' : 'fail'}`}>
-                            {anyFail ? 'ACTION REQUIRED' : 'ALL PASS'}
+                            {anyFail ? 'PARTIAL FAIL' : 'ALL PASS'}
                           </span>
                         </td>
                         <td>
@@ -181,8 +193,7 @@ function RoomCheckLogs() {
                         </td>
                         <td>
                           <button 
-                            className="fail-btn" 
-                            style={{ background: 'rgb(0, 24, 104)', padding: '6px 12px' }} 
+                            className="admin-action-btn"
                             onClick={() => setSelectedCheck(c)}
                           >
                             View Details
