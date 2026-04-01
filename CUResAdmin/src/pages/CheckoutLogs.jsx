@@ -11,12 +11,15 @@ function CheckoutLogs() {
   const [loading, setLoading] = useState(true);
   const [selectedLog, setSelectedLog] = useState(null);
 
-  // Filter state for building, checkout type, and pass/fail status (I am trying out these filters to see if they work best or should use others).
+  // Filter state MODIFIED
   const [filters, setFilters] = useState({
-    building: "",
-    type: "",
-    status: "" 
-  });
+  building: "",
+  floor: "",
+  type: "",
+  startDate: "",
+  endDate: "",
+  search: ""
+});
 
   // Real-time listener to fetch checkout logs from Firestore, ordered by creation date (newest first).
   useEffect(() => {
@@ -29,15 +32,42 @@ function CheckoutLogs() {
     return () => unsubscribe();
   }, []);
 
-  // Apply filters to the checkouts based on selected building, checkout type, and pass/fail status.
+  // Apply filters to the checkouts.
   const filteredCheckouts = checkouts.filter(c => {
-    const matchesBuilding = filters.building === "" || c.building === filters.building;
-    const matchesType = filters.type === "" || c.checkoutType === filters.type;
-    const matchesStatus = filters.status === "" || 
-      (filters.status === "pass" ? c.allCriteriaMet === true : c.allCriteriaMet === false);
+    const matchesBuilding =
+      filters.building === "" || c.building === filters.building;
 
-    return matchesBuilding && matchesType && matchesStatus;
-  });
+    const matchesFloor =
+      filters.floor === "" || String(c.floor) === filters.floor;
+
+    const matchesType =
+      filters.type === "" || c.checkoutType === filters.type;
+
+    const checkoutDate = c.date || "";
+    const matchesStartDate =
+      filters.startDate === "" || checkoutDate >= filters.startDate;
+
+    const matchesEndDate =
+      filters.endDate === "" || checkoutDate <= filters.endDate;
+
+    const searchText = filters.search.trim().toLowerCase();
+    const residentName = c.residentName?.toLowerCase() || "";
+    const roomNumber = c.roomNumber?.toLowerCase() || "";
+
+    const matchesSearch =
+      searchText === "" ||
+      residentName.includes(searchText) ||
+      roomNumber.includes(searchText);
+
+  return (
+    matchesBuilding &&
+    matchesFloor &&
+    matchesType &&
+    matchesStartDate &&
+    matchesEndDate &&
+    matchesSearch
+  );
+});
 
   return (
     <PageTransition>
@@ -52,8 +82,27 @@ function CheckoutLogs() {
           {/* Fluid Filter Bar */}
           <div className="fluid-filter-bar">
             <div className="filter-group">
+              <label className="fluid-label-sm">Search</label>
+              <input
+                className="fluid-input-sm"
+                type="text"
+                placeholder="Resident name or room #"
+                value={filters.search}
+                onChange={(e) =>
+                  setFilters({ ...filters, search: e.target.value })
+                }
+              />
+            </div>
+
+            <div className="filter-group">
               <label className="fluid-label-sm">Building</label>
-              <select className="fluid-input-sm" value={filters.building} onChange={(e) => setFilters({...filters, building: e.target.value})}>
+              <select
+                className="fluid-input-sm"
+                value={filters.building}
+                onChange={(e) =>
+                  setFilters({ ...filters, building: e.target.value, floor: "" })
+                }
+              >
                 <option value="">All Buildings</option>
                 <option value="Griffith">Griffith</option>
                 <option value="Stevens">Stevens</option>
@@ -63,8 +112,32 @@ function CheckoutLogs() {
             </div>
 
             <div className="filter-group">
+              <label className="fluid-label-sm">Floor</label>
+              <select
+                className="fluid-input-sm"
+                value={filters.floor}
+                onChange={(e) =>
+                  setFilters({ ...filters, floor: e.target.value })
+                }
+              >
+                <option value="">All Floors</option>
+                {[1, 2, 3, 4].map((f) => (
+                  <option key={f} value={f}>
+                    {f}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="filter-group">
               <label className="fluid-label-sm">Type</label>
-              <select className="fluid-input-sm" value={filters.type} onChange={(e) => setFilters({...filters, type: e.target.value})}>
+              <select
+                className="fluid-input-sm"
+                value={filters.type}
+                onChange={(e) =>
+                  setFilters({ ...filters, type: e.target.value })
+                }
+              >
                 <option value="">All Types</option>
                 <option value="Official">Official</option>
                 <option value="Winter">Winter</option>
@@ -73,15 +146,42 @@ function CheckoutLogs() {
             </div>
 
             <div className="filter-group">
-              <label className="fluid-label-sm">Status</label>
-              <select className="fluid-input-sm" value={filters.status} onChange={(e) => setFilters({...filters, status: e.target.value})}>
-                <option value="">All Statuses</option>
-                <option value="pass">PASS</option>
-                <option value="fail">FAIL</option>
-              </select>
+              <label className="fluid-label-sm">Start Date</label>
+              <input
+                className="fluid-input-sm"
+                type="date"
+                value={filters.startDate}
+                onChange={(e) =>
+                  setFilters({ ...filters, startDate: e.target.value })
+                }
+              />
             </div>
 
-            <button className="fluid-reset-btn" onClick={() => setFilters({building: "", type: "", status: ""})}>
+            <div className="filter-group">
+              <label className="fluid-label-sm">End Date</label>
+              <input
+                className="fluid-input-sm"
+                type="date"
+                value={filters.endDate}
+                onChange={(e) =>
+                  setFilters({ ...filters, endDate: e.target.value })
+                }
+              />
+            </div>
+
+            <button
+              className="fluid-reset-btn"
+              onClick={() =>
+                setFilters({
+                  building: "",
+                  floor: "",
+                  type: "",
+                  startDate: "",
+                  endDate: "",
+                  search: ""
+                })
+              }
+            >
               Reset
             </button>
           </div>
@@ -106,7 +206,7 @@ function CheckoutLogs() {
                         <strong>{c.residentName}</strong><br/>
                         <small style={{color: '#777'}}>{c.submittedBy?.split('@')[0]}</small>
                       </td>
-                      <td>{c.building} {c.roomNumber}</td>
+                      <td>{c.building} {c.floor} {c.roomNumber}</td>
                       <td>{c.checkoutType}</td>
                       <td>
                         <span className={`fluid-badge ${c.allCriteriaMet ? 'pass' : 'fail'}`}>
