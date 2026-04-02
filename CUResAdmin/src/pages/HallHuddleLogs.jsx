@@ -122,7 +122,7 @@ function HallHuddleLogs() {
                         {h.allPresent ? (
                           <span className="fluid-badge pass">Full</span>
                         ) : (
-                          <button className="fail-btn" onClick={() => setSelectedHuddle(h)}>Absences</button>
+                          <button className="fluid-badge fail" onClick={() => setSelectedHuddle(h)}>Absences</button>
                         )}
                       </td>
                       <td>{h.engagementNotes}</td>
