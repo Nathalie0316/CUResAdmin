@@ -73,12 +73,12 @@
   display: flex;
   flex-wrap: wrap;
   gap: 15px;
-  background: rgb(250, 250, 250);
+  background: rgb(203, 203, 203); 
   padding: 18px;
   border-radius: 12px;
   margin-bottom: 1.8rem;
-  border: 1px solid rgb(235, 235, 235);
   align-items: flex-end;
+  box-shadow: 0 6px 16px rgba(0, 24, 104, 0.15)
 }
 
 .filter-group {
@@ -90,10 +90,11 @@
 }
 
 .fluid-label-sm {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 700;
-  color: rgb(51, 51, 51);
+  color: rgb(255, 255, 255); 
   text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 /* Styling for Filters bar*/
@@ -101,43 +102,48 @@
   width: 100%;
   height: 42px;
   padding: 10px 12px;
-  border: 1px solid rgb(224, 224, 224);
   border-radius: 8px;
+  border: none;
   background: rgb(255, 255, 255);
+  color: rgb(50, 50, 50);
   font-family: inherit;
   font-size: 0.9rem;
   box-sizing: border-box;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: all 0.2s ease;
 }
 
+/* Hover */
+.fluid-input-sm:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Focus */
 .fluid-input-sm:focus {
   outline: none;
-  border-color: rgb(0, 24, 104);
-  box-shadow: 0 0 0 2px rgba(0, 24, 104, 0.15);
-}
-
-.fluid-input-sm:hover {
-  border-color: rgb(180, 180, 180);
+  box-shadow: 0 0 0 1px rgba(0, 24, 104, 0.4);
 }
 
 /* Styling for Reset button */
 .fluid-reset-btn {
   height: 42px;
   padding: 0 18px;
-  background: rgb(245, 245, 245);
-  border: 1px solid rgb(224, 224, 224);
+  background: rgb(255, 255, 255);
+  color: rgb(0, 24, 104);
+  border: none;
   border-radius: 8px;
   font-weight: 700;
-  color: rgb(60, 60, 60);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
+/* Hover */
 .fluid-reset-btn:hover {
-  background: rgb(238, 238, 238);
   transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
 }
 
+/* Click */
 .fluid-reset-btn:active {
   transform: translateY(1px);
 }
@@ -158,14 +164,14 @@
 }
 
 .fluid-table th {
-  background: rgb(250, 250, 250);
+  background: rgb(0, 24, 104);
   padding: 15px;
   text-align: left;
   font-weight: 700;
-  color: rgb(100, 100, 100);
+  color: rgb(255, 255, 255);
   font-size: 0.8rem;
   text-transform: uppercase;
-  border-bottom: 1px solid rgb(235, 235, 235);
+  border-bottom: 1px solid rgb(0, 24, 104);
 }
 
 .fluid-table td {
@@ -176,7 +182,7 @@
 }
 
 .fluid-table tbody tr:hover {
-  background: rgb(252, 252, 252);
+  background: rgb(249, 250, 254);
 }
 
 /* Badges & Modals */
@@ -247,4 +253,42 @@
 
 .admin-action-btn:active {
   transform: translateY(1px);
+}
+
+/* SELECT */
+.select-wrapper {
+  position: relative;
+  width: 100%;
+  height: 42px;
+}
+
+.select-wrapper select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 100%;
+  height: 100%;
+  padding-right: 40px;
+}
+
+.select-arrow {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%) scale(1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  color: rgb(88, 88, 88);
+  transition: all 0.2s ease;
+}
+
+.select-wrapper:hover .select-arrow {
+  color: rgb(0, 24, 104);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.select-wrapper select:disabled + .select-arrow {
+  opacity: 0.4;
 }

@@ -11,6 +11,14 @@ function CheckoutLogs() {
   const [loading, setLoading] = useState(true);
   const [selectedLog, setSelectedLog] = useState(null);
 
+  // Area Data
+  const areaData = {
+    Griffith: [1, 2, 3],
+    Stevens: [1, 2, 3, 4],
+    Lee: [1, 2, 3],
+    Patterson: [1, 2, 3, 4]
+  };
+
   // Filter state MODIFIED
   const [filters, setFilters] = useState({
   building: "",
@@ -93,70 +101,98 @@ function CheckoutLogs() {
 
           {/* Fluid Filter Bar */}
           <div className="fluid-filter-bar">
-            <div className="filter-group">
-              <label className="fluid-label-sm">Search</label>
-              <input
-                className="fluid-input-sm"
-                type="text"
-                placeholder="Resident name or room #"
-                value={filters.search}
-                onChange={(e) =>
-                  setFilters({ ...filters, search: e.target.value })
-                }
-              />
-            </div>
 
+            {/* BUILDING */}
             <div className="filter-group">
               <label className="fluid-label-sm">Building</label>
-              <select
-                className="fluid-input-sm"
-                value={filters.building}
-                onChange={(e) =>
-                  setFilters({ ...filters, building: e.target.value, floor: "" })
-                }
-              >
-                <option value="">All Buildings</option>
-                <option value="Griffith">Griffith</option>
-                <option value="Stevens">Stevens</option>
-                <option value="Lee">Lee</option>
-                <option value="Patterson">Patterson</option>
-              </select>
+              <div className="select-wrapper">
+                <select
+                  className="fluid-input-sm"
+                  value={filters.building}
+                  onChange={(e) =>
+                    setFilters({
+                      ...filters,
+                      building: e.target.value,
+                      floor: ""
+                    })
+                  }
+                >
+                  <option value="">All Buildings</option>
+                  <option value="Griffith">Griffith</option>
+                  <option value="Stevens">Stevens</option>
+                  <option value="Lee">Lee</option>
+                  <option value="Patterson">Patterson</option>
+                </select>
+
+                <span className="select-arrow">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M6 9l6 6 6-6"></path>
+                  </svg>
+                </span>
+              </div>
             </div>
 
+            {/* FLOOR */}
             <div className="filter-group">
               <label className="fluid-label-sm">Floor</label>
-              <select
-                className="fluid-input-sm"
-                value={filters.floor}
-                onChange={(e) =>
-                  setFilters({ ...filters, floor: e.target.value })
-                }
-              >
-                <option value="">All Floors</option>
-                {[1, 2, 3, 4].map((f) => (
-                  <option key={f} value={f}>
-                    {f}
-                  </option>
-                ))}
-              </select>
+              <div className="select-wrapper">
+                <select
+                  className="fluid-input-sm"
+                  value={filters.floor}
+                  onChange={(e) =>
+                    setFilters({
+                      ...filters,
+                      floor: e.target.value
+                    })
+                  }
+                  disabled={!filters.building}
+                >
+                  <option value="">All Floors</option>
+                  {filters.building &&
+                    areaData[filters.building].map((f) => (
+                      <option key={f} value={f}>
+                        {f}
+                      </option>
+                    ))}
+                </select>
+
+                <span className="select-arrow">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M6 9l6 6 6-6"></path>
+                  </svg>
+                </span>
+              </div>
             </div>
 
+            {/* TYPE */}
             <div className="filter-group">
               <label className="fluid-label-sm">Type</label>
-              <select
-                className="fluid-input-sm"
-                value={filters.type}
-                onChange={(e) =>
-                  setFilters({ ...filters, type: e.target.value })
-                }
-              >
-                <option value="">All Types</option>
-                <option value="Official">Official</option>
-                <option value="Winter">Winter</option>
-                <option value="Moving">Moving</option>
-              </select>
+              <div className="select-wrapper">
+                <select
+                  className="fluid-input-sm"
+                  value={filters.type}
+                  onChange={(e) =>
+                    setFilters({
+                      ...filters,
+                      type: e.target.value
+                    })
+                  }
+                >
+                  <option value="">All Types</option>
+                  <option value="Official">Official</option>
+                  <option value="Winter">Winter</option>
+                  <option value="Moving">Moving</option>
+                </select>
+
+                <span className="select-arrow">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M6 9l6 6 6-6"></path>
+                  </svg>
+                </span>
+              </div>
             </div>
 
+            {/* START DATE */}
             <div className="filter-group">
               <label className="fluid-label-sm">Start Date</label>
               <input
@@ -164,11 +200,15 @@ function CheckoutLogs() {
                 type="date"
                 value={filters.startDate}
                 onChange={(e) =>
-                  setFilters({ ...filters, startDate: e.target.value })
+                  setFilters({
+                    ...filters,
+                    startDate: e.target.value
+                  })
                 }
               />
             </div>
 
+            {/* END DATE */}
             <div className="filter-group">
               <label className="fluid-label-sm">End Date</label>
               <input
@@ -176,12 +216,34 @@ function CheckoutLogs() {
                 type="date"
                 value={filters.endDate}
                 onChange={(e) =>
-                  setFilters({ ...filters, endDate: e.target.value })
+                  setFilters({
+                    ...filters,
+                    endDate: e.target.value
+                  })
                 }
               />
             </div>
 
+            {/* SEARCH */}
+            <div className="filter-group search-group">
+              <label className="fluid-label-sm">Search</label>
+              <input
+                className="fluid-input-sm"
+                type="text"
+                placeholder="Name/Room Number"
+                value={filters.search}
+                onChange={(e) =>
+                  setFilters({
+                    ...filters,
+                    search: e.target.value
+                  })
+                }
+              />
+            </div>
+
+            {/* RESET */}
             <button
+              type="button"
               className="fluid-reset-btn"
               onClick={() =>
                 setFilters({
