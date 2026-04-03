@@ -224,6 +224,26 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
+.modal-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  color: rgb(0, 24, 104);
+  justify-content: center; /* center title */
+}
+
+.modal-header .back-link {
+  position: absolute;
+  left: 0;
+}
+
+.fluid-title-sm {
+  margin: 0;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
 .fluid-absent-box {
   background: rgb(250, 250, 250);
   padding: 15px;

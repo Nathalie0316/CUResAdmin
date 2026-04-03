@@ -10,6 +10,7 @@ function CheckoutLogs() {
   const [checkouts, setCheckouts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedLog, setSelectedLog] = useState(null);
+  const [visibleCount, setVisibleCount] = useState(5);
 
   // Area Data
   const areaData = {
@@ -39,6 +40,10 @@ function CheckoutLogs() {
     });
     return () => unsubscribe();
   }, []);
+
+  useEffect(() => {
+    setVisibleCount(5);
+  }, [filters]);
 
   // Apply filters to the checkouts.
   const filteredCheckouts = checkouts.filter(c => {
@@ -76,6 +81,8 @@ function CheckoutLogs() {
     matchesSearch
   );
 });
+
+const visibleCheckouts = filteredCheckouts.slice(0, visibleCount);
 
   return (
     <PageTransition>
@@ -265,42 +272,96 @@ function CheckoutLogs() {
               <table className="fluid-table">
                 <thead>
                   <tr>
+                    <th>Date & RA</th>
                     <th>Resident</th>
                     <th>Location</th>
                     <th>Type</th>
                     <th>Status</th>
+                    <th>Keys</th>
                     <th>Notes</th>
                     <th>Photos</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredCheckouts.map(c => (
+                  {visibleCheckouts.map(c => (
                     <tr key={c.id}>
+                      {/* DATE + RA */}
                       <td>
-                        <strong>{c.residentName}</strong><br/>
-                        <small style={{color: '#777'}}>{c.submittedBy?.split('@')[0]}</small>
+                        <div style={{ fontSize: "0.90rem", color: "rgb(0, 24, 104)" }}> 
+                          <strong>
+                          {c.date || "No date"}
+                          </strong>
+                        </div>
+                        <div style={{ fontSize: "0.85rem", color: "rgb(119, 119, 119)" }}>
+                          {c.submittedBy?.split("@")[0] || "Unknown RA"}
+                        </div>
                       </td>
-                      <td>{c.building} {c.floor} {c.roomNumber}</td>
-                      <td>{c.checkoutType}</td>
+
+                      {/* RESIDENT */}
+                      <td>
+                        <strong>{c.residentName || "No resident"}</strong>
+                      </td>
+
+                      {/* LOCATION */}
+                      <td>
+                        <div style={{ fontSize: "0.85rem", color: "rgb(119, 119, 119)" }}>
+                          {c.building} {c.floor}
+                        </div>
+                        <div>
+                          {c.roomNumber}
+                        </div>
+                      </td>
+
+                      {/* TYPE */}
+                      <td>
+                        <div style={{ color:"rgb(0, 24, 104)" }}>
+                          <strong>
+                            {c.checkoutType}
+                          </strong>
+                        </div>
+                      </td>
+
+                      {/* STATUS */}
                       <td>
                         <span className={`fluid-badge ${c.allCriteriaMet ? 'pass' : 'fail'}`}>
                           {c.allCriteriaMet ? 'PASS' : 'FAIL'}
                         </span>
                       </td>
-                      {/* Notes Column */}
-                      <td style={{ maxWidth: '200px' }}>
-                        <div style={{ 
-                          fontSize: '0.85rem', 
-                          whiteSpace: 'nowrap', 
-                          overflow: 'hidden', 
-                          textOverflow: 'ellipsis',
-                          color: '#444' 
-                        }} title={c.repairs}>
-                          {c.repairs || <span style={{color: '#ccc'}}>No notes</span>}
+
+                      {/* KEYS */}
+                      <td>
+                        <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                          
+                          <div style={{ fontSize: "0.80rem", color: "rgb(0, 0, 0)" }}>
+                            <strong>Room:</strong> {c.roomKey || "-"}
+                          </div>
+
+                          <div style={{ fontSize: "0.80rem", color: "rgb(0, 0, 0)" }}>
+                            <strong>Closet:</strong> {c.closetKey || "-"}
+                          </div>
+
                         </div>
                       </td>
+
+                      {/* NOTES */}
+                      <td style={{ maxWidth: '200px' }}>
+                        <div
+                          style={{
+                            fontSize: '0.85rem',
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            color: 'rgb(68, 68, 68)'
+                          }}
+                          title={c.repairs}
+                        >
+                          {c.repairs || <span style={{ color: 'rgb(204, 204, 204)' }}>No notes</span>}
+                        </div>
+                      </td>
+
+                      {/* PHOTOS */}
                       <td>
-                        <button 
+                        <button
                           className="admin-action-btn"
                           onClick={() => setSelectedLog(c)}
                         >
@@ -314,6 +375,42 @@ function CheckoutLogs() {
             )}
           </div>
 
+          <div
+          style={{
+            marginTop: "16px",
+            display: "flex",
+            justifyContent: "center",
+            gap: "12px"
+          }}
+        >
+          {filteredCheckouts.length > visibleCount && (
+            <button
+              type="button"
+              className="admin-action-btn"
+              onClick={() => setVisibleCount(prev => prev + 10)}
+            >
+              Show More
+            </button>
+          )}
+
+          {visibleCount > 5 && (
+            <button
+              type="button"
+              className="admin-action-btn"
+              onClick={() => {
+                setVisibleCount(5);
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+            >
+              Show Less
+            </button>
+          )}
+        </div>
+
+        <p style={{ margin: "12px 0", color: "rgb(102, 102, 102)", fontSize: "0.9rem" }}>
+          Showing {Math.min(visibleCount, filteredCheckouts.length)} of {filteredCheckouts.length} checkout logs
+        </p>
+
           {/* Modal for Photos */}
           {selectedLog && (
             <div className="modal-overlay" onClick={() => setSelectedLog(null)}>
@@ -325,9 +422,23 @@ function CheckoutLogs() {
                 flexDirection: 'column' 
               }} onClick={(e) => e.stopPropagation()}>
                 
-                <div className="fluid-header" style={{ paddingBottom: '10px' }}>
-                  <h3 style={{ margin: 0 }}>{selectedLog.roomNumber} Inspection Photos</h3>
-                  <button className="back-link" onClick={() => setSelectedLog(null)}>Close</button>
+                <div className="fluid-header modal-header">
+                  <button className="back-link" onClick={() => setSelectedLog(null)}>
+                    <svg 
+                      width="18" 
+                      height="18" 
+                      viewBox="0 0 24 24" 
+                      fill="none" 
+                      stroke="currentColor" 
+                      strokeWidth="2"
+                    >
+                      <path d="M15 18l-6-6 6-6"></path>
+                    </svg>
+                  </button>
+
+                  <h3 className="fluid-title-sm">
+                    {selectedLog.roomNumber} Inspection Photos
+                  </h3>
                 </div>
 
                 <div className="modal-body" style={{ overflowY: 'auto', padding: '10px 0' }}>
@@ -344,15 +455,24 @@ function CheckoutLogs() {
                           src={selectedLog.roomPhotoUrl} 
                           alt="Room" 
                           style={{ 
-                            width: '100%', 
-                            height: '250px', 
-                            objectFit: 'cover', 
-                            borderRadius: '8px', 
-                            border: '1px solid #ddd' 
+                            width: '100%',
+                            aspectRatio: '3 / 4',  
+                            objectFit: 'cover',
+                            borderRadius: '10px',
+                            border: '1px solid rgb(221, 221, 221)' 
                           }} 
                         />
                       ) : (
-                        <div style={{ height: '250px', background: '#f5f5f5', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#999' }}>
+                        <div style={{ 
+                          width: '100%',
+                          aspectRatio: '3 / 4',
+                          background: 'rgb(245, 245, 245)', 
+                          borderRadius: '10px', 
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          justifyContent: 'center', 
+                          color: 'rgb(153, 153, 153)' 
+                        }}>
                           No Room Photo 
                         </div>
                       )}
@@ -365,15 +485,24 @@ function CheckoutLogs() {
                           src={selectedLog.bathPhotoUrl} 
                           alt="Bath" 
                           style={{ 
-                            width: '100%', 
-                            height: '250px', 
-                            objectFit: 'cover', 
-                            borderRadius: '8px', 
-                            border: '1px solid #ddd' 
+                            width: '100%',
+                            aspectRatio: '3 / 4',  
+                            objectFit: 'cover',
+                            borderRadius: '10px',
+                            border: '1px solid rgb(221, 221, 221)' 
                           }} 
                         />
                       ) : (
-                        <div style={{ height: '250px', background: '#f5f5f5', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#999' }}>
+                        <div style={{ 
+                          width: '100%',
+                          aspectRatio: '3 / 4',
+                          background: 'rgb(245, 245, 245)', 
+                          borderRadius: '10px', 
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          justifyContent: 'center', 
+                          color: 'rgb(153, 153, 153)' 
+                        }}>
                           No Bath Photo
                         </div>
                       )}
