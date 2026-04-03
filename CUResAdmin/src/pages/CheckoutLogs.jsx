@@ -11,6 +11,7 @@ function CheckoutLogs() {
   const [loading, setLoading] = useState(true);
   const [selectedLog, setSelectedLog] = useState(null);
   const [visibleCount, setVisibleCount] = useState(5);
+  const [selectedReason, setSelectedReason] = useState(null);
 
   // Area Data
   const areaData = {
@@ -323,9 +324,37 @@ const visibleCheckouts = filteredCheckouts.slice(0, visibleCount);
 
                       {/* STATUS */}
                       <td>
-                        <span className={`fluid-badge ${c.allCriteriaMet ? 'pass' : 'fail'}`}>
-                          {c.allCriteriaMet ? 'PASS' : 'FAIL'}
-                        </span>
+                        <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                          
+                          <span className={`fluid-badge ${c.allCriteriaMet ? 'pass' : 'fail'}`}>
+                            {c.allCriteriaMet ? 'PASS' : 'FAIL'}
+                          </span>
+
+                          {/* Only show icon if FAIL and reason exists */}
+                          {!c.allCriteriaMet && c.failReason && (
+                            <button
+                              type="button"
+                              className="admin-failicon-btn"
+                              onClick={() => setSelectedReason(c)}
+                              style={{
+                                background: "none",
+                                border: "none",
+                                cursor: "pointer",
+                                display: "flex",
+                                alignItems: "center",
+                                color: "rgb(180, 40, 40)"
+                              }}
+                            >
+                              {/* Info / alert icon */}
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                  <circle cx="12" cy="12" r="10"></circle>
+                                  <line x1="12" y1="8" x2="12" y2="12"></line>
+                                  <circle cx="12" cy="16" r="1"></circle>
+                                </svg>
+                            </button>
+                          )}
+
+                        </div>
                       </td>
 
                       {/* KEYS */}
@@ -410,6 +439,33 @@ const visibleCheckouts = filteredCheckouts.slice(0, visibleCount);
         <p style={{ margin: "12px 0", color: "rgb(102, 102, 102)", fontSize: "0.9rem" }}>
           Showing {Math.min(visibleCount, filteredCheckouts.length)} of {filteredCheckouts.length} checkout logs
         </p>
+
+          {/* Modal for Fail Reason */}
+          {selectedReason && (
+            <div className="modal-overlay" onClick={() => setSelectedReason(null)}>
+              <div
+                className="fluid-modal-card"
+                style={{ maxWidth: "500px" }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="fluid-header modal-header">
+                  <button className="back-link" onClick={() => setSelectedReason(null)}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M15 18l-6-6 6-6"></path>
+                    </svg>
+                  </button>
+
+                  <h3 className="fluid-title-sm">
+                    Failure Reason
+                  </h3>
+                </div>
+
+                <div style={{ marginTop: "10px", color: "rgb(0, 0, 0)", fontSize: "0.95rem", textAlign:"center" }}>
+                  {selectedReason.failReason || "No reason provided"}
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Modal for Photos */}
           {selectedLog && (
