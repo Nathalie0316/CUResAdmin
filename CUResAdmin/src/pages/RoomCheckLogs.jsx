@@ -11,6 +11,13 @@ function RoomCheckLogs() {
   const [loading, setLoading] = useState(true);
   const [selectedCheck, setSelectedCheck] = useState(null);
 
+  const areaData = {
+    Griffith: [1, 2, 3],
+    Stevens: [1, 2, 3, 4],
+    Lee: [1, 2, 3],
+    Patterson: [1, 2, 3, 4]
+  };
+
   // Filter state for building and floor (Finalized filters).
   const [filters, setFilters] = useState({
   building: "",
@@ -85,38 +92,70 @@ function RoomCheckLogs() {
 
           {/* Fluid Filter Bar */}
           <div className="fluid-filter-bar">
+
+            {/* BUILDING */}
             <div className="filter-group">
               <label className="fluid-label-sm">Building</label>
-              <select className="fluid-input-sm" value={filters.building} onChange={(e) => setFilters({...filters, building: e.target.value})}>
-                <option value="">All Buildings</option>
-                <option value="Griffith">Griffith</option>
-                <option value="Stevens">Stevens</option>
-                <option value="Lee">Lee</option>
-                <option value="Patterson">Patterson</option>
-              </select>
+              <div className="select-wrapper">
+                <select
+                  className="fluid-input-sm"
+                  value={filters.building}
+                  onChange={(e) =>
+                    setFilters({
+                      ...filters,
+                      building: e.target.value,
+                      floor: ""
+                    })
+                  }
+                >
+                  <option value="">All Buildings</option>
+                  <option value="Griffith">Griffith</option>
+                  <option value="Stevens">Stevens</option>
+                  <option value="Lee">Lee</option>
+                  <option value="Patterson">Patterson</option>
+                </select>
+
+                <span className="select-arrow">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M6 9l6 6 6-6"></path>
+                  </svg>
+                </span>
+              </div>
             </div>
 
+            {/* FLOOR */}
             <div className="filter-group">
               <label className="fluid-label-sm">Floor</label>
-              <select className="fluid-input-sm" value={filters.floor} onChange={(e) => setFilters({...filters, floor: e.target.value})}>
-                <option value="">All Floors</option>
-                {[1, 2, 3, 4].map(f => <option key={f} value={f}>{f}</option>)}
-              </select>
+              <div className="select-wrapper">
+                <select
+                  className="fluid-input-sm"
+                  value={filters.floor}
+                  onChange={(e) =>
+                    setFilters({
+                      ...filters,
+                      floor: e.target.value
+                    })
+                  }
+                  disabled={!filters.building}
+                >
+                  <option value="">All Floors</option>
+                  {filters.building &&
+                    areaData[filters.building].map((f) => (
+                      <option key={f} value={f}>
+                        {f}
+                      </option>
+                    ))}
+                </select>
+
+                <span className="select-arrow">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M6 9l6 6 6-6"></path>
+                  </svg>
+                </span>
+              </div>
             </div>
 
-            {/* Added Search Bar*/}
-            <div className="filter-group">
-              <label className="fluid-label-sm">Search</label>
-              <input
-                type="text"
-                className="fluid-input-sm"
-                placeholder="Resident or Room #"
-                value={filters.search}
-                onChange={(e) => setFilters({ ...filters, search: e.target.value.toLowerCase() })}
-              />
-            </div>
-
-            {/* Added Start Date */}
+            {/* Start Date */}
             <div className="filter-group">
               <label className="fluid-label-sm">Start Date</label>
               <input
@@ -127,7 +166,7 @@ function RoomCheckLogs() {
               />
             </div>
 
-            {/* AddedEnd Date */}
+            {/* End Date */}
             <div className="filter-group">
               <label className="fluid-label-sm">End Date</label>
               <input
@@ -135,6 +174,18 @@ function RoomCheckLogs() {
                 className="fluid-input-sm"
                 value={filters.endDate}
                 onChange={(e) => setFilters({ ...filters, endDate: e.target.value })}
+              />
+            </div>
+
+            {/* Search Bar*/}
+            <div className="filter-group">
+              <label className="fluid-label-sm">Search</label>
+              <input
+                type="text"
+                className="fluid-input-sm"
+                placeholder="Name/Room Number"
+                value={filters.search}
+                onChange={(e) => setFilters({ ...filters, search: e.target.value.toLowerCase() })}
               />
             </div>
 
@@ -155,10 +206,11 @@ function RoomCheckLogs() {
               <table className="fluid-table">
                 <thead>
                   <tr>
-                    <th>Room</th>
+                    <th>Date & RA</th>
+                    <th>Location</th>
                     <th>Residents</th>
                     <th>Overall Status</th>
-                    <th>RA / Date</th>
+                    <th>Notes & Repairs</th>
                     <th>Photos</th>
                   </tr>
                 </thead>
@@ -169,12 +221,30 @@ function RoomCheckLogs() {
                     
                     return (
                       <tr key={c.id}>
+                        
+                        {/* Date & RA */}
                         <td>
-                          <div><strong>{c.building} {c.floor}</strong></div>
-                          <div style={{ fontSize: "0.85rem", color: "rgb(65, 64, 64)" }}>
-                            Room Number: {c.roomNumber}
+                          <div style={{ fontSize: "0.90rem", color: "rgb(0, 24, 104)" }}> 
+                            <strong>
+                            {c.date || "No date"}
+                            </strong>
+                          </div>
+                          <div style={{ fontSize: "0.85rem", color: "rgb(119, 119, 119)" }}>
+                            {c.submittedBy?.split("@")[0] || "Unknown RA"}
                           </div>
                         </td>
+
+                        {/* Location */}
+                        <td>
+                          <div style={{ fontSize: "0.85rem", color: "rgb(119, 119, 119)" }}>
+                            {c.building} {c.floor}
+                          </div>
+                          <div>
+                            {c.roomNumber}
+                          </div>
+                        </td>
+
+                        {/* Residents */}
                         <td style={{ fontSize: '0.85rem' }}>
                           {c.residents?.map((r, idx) => (
                             <div key={idx} style={{ color: r.status === 'Fail' ? '#d32f2f' : '#388e3c' }}>
@@ -182,21 +252,26 @@ function RoomCheckLogs() {
                             </div>
                           ))}
                         </td>
+
+                        {/* Overall Status */}
                         <td>
                           <span className={`fluid-badge ${!anyFail ? 'pass' : 'fail'}`}>
-                            {anyFail ? 'PARTIAL FAIL' : 'ALL PASS'}
+                            {anyFail ? 'ACTION REQ' : 'ALL PASS'}
                           </span>
                         </td>
+
+                        {/* Notes & Repairs */}
                         <td>
-                          <small>{c.submittedBy?.split('@')[0]}</small><br/>
-                          <small style={{color: 'rgb(65, 64, 64)'}}>{c.date}</small>
+
                         </td>
+
+                        {/* Photos */}
                         <td>
                           <button 
                             className="admin-action-btn"
                             onClick={() => setSelectedCheck(c)}
                           >
-                            View Details
+                            View Photos
                           </button>
                         </td>
                       </tr>
@@ -214,7 +289,18 @@ function RoomCheckLogs() {
                 
                 <div className="fluid-header">
                   <h3>{selectedCheck.building} Floor {selectedCheck.floor} Details</h3>
-                  <button className="back-link" onClick={() => setSelectedCheck(null)}>Close</button>
+                  <button className="back-link" onClick={() => setSelectedCheck(null)}>
+                    <svg 
+                      width="18" 
+                      height="18" 
+                      viewBox="0 0 24 24" 
+                      fill="none" 
+                      stroke="currentColor" 
+                      strokeWidth="2"
+                    >
+                      <path d="M15 18l-6-6 6-6"></path>
+                    </svg>
+                  </button>
                 </div>
 
                 <div className="modal-body" style={{ overflowY: 'auto' }}>

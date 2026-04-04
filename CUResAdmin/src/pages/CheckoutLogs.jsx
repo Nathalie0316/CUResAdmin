@@ -279,7 +279,7 @@ const visibleCheckouts = filteredCheckouts.slice(0, visibleCount);
                     <th>Type</th>
                     <th>Status</th>
                     <th>Keys</th>
-                    <th>Notes</th>
+                    <th>Notes & Repairs</th>
                     <th>Photos</th>
                   </tr>
                 </thead>
