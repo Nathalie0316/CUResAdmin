@@ -11,6 +11,7 @@ function RoomCheckLogs() {
   const [loading, setLoading] = useState(true);
   const [selectedCheck, setSelectedCheck] = useState(null);
   const [selectedReason, setSelectedReason] = useState(null); 
+  const [visibleCount, setVisibleCount] = useState(5);
 
   const areaData = {
     Griffith: [1, 2, 3],
@@ -38,6 +39,10 @@ function RoomCheckLogs() {
     });
     return () => unsubscribe();
   }, []);
+
+  useEffect(() => {
+    setVisibleCount(5);
+  }, [filters]);
 
   // Apply filters to the checks.
   const filteredChecks = checks.filter(c => {
@@ -68,6 +73,8 @@ function RoomCheckLogs() {
       matchesEnd
     );
   });
+
+  const visibleChecks = filteredChecks.slice(0, visibleCount);
 
   return (
     <PageTransition>
@@ -215,7 +222,7 @@ function RoomCheckLogs() {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredChecks.map(c => {
+                  {visibleChecks.map(c => {
                     // Check if anyone in the room failed
                     const anyFail = c.residents?.some(r => r.status === "Fail");
                     
@@ -307,6 +314,42 @@ function RoomCheckLogs() {
               </table>
             )}
           </div>
+
+          <div
+            style={{
+              marginTop: "16px",
+              display: "flex",
+              justifyContent: "center",
+              gap: "12px"
+            }}
+          >
+            {filteredChecks.length > visibleCount && (
+              <button
+                type="button"
+                className="admin-action-btn"
+                onClick={() => setVisibleCount(prev => prev + 10)}
+              >
+                Show More
+              </button>
+            )}
+
+            {visibleCount > 5 && (
+              <button
+                type="button"
+                className="admin-action-btn"
+                onClick={() => {
+                  setVisibleCount(5);
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+              >
+                Show Less
+              </button>
+            )}
+          </div>
+
+          <p style={{ margin: "12px 0", color: "rgb(102, 102, 102)", fontSize: "0.9rem" }}>
+            Showing {Math.min(visibleCount, filteredChecks.length)} of {filteredChecks.length} roomcheck logs
+          </p>
 
           {/* Fail Reason Modal */}
           {selectedReason && (
