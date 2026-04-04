@@ -347,7 +347,6 @@
 }
 
 /* For Fail Reason Icon */
-/* For Fail Reason Icon */
 .admin-failicon-btn {
   background: none;
   border: none;
@@ -371,4 +370,41 @@
   transform: scale(0.95);
 }
 
-/* ADDED SSPECIFICALLY FOR ROOMCHECK LOGS */
+/* ADDED SPECIFICALLY FOR ROOMCHECK LOGS */
+.resident-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.resident-inline {
+  font-size: 0.85rem;
+}
+
+/* Name = neutral, not bold */
+.resident-name {
+  color: rgb(0, 0, 0);
+  font-weight: 600;
+}
+
+/* Separator subtle */
+.resident-separator {
+  margin: 0 4px;
+  color: rgb(160, 160, 160);
+}
+
+/* Status = emphasized */
+.resident-status {
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+/* PASS */
+.resident-inline.pass .resident-status {
+  color: rgb(40, 167, 69);
+}
+
+/* FAIL */
+.resident-inline.fail .resident-status {
+  color: rgb(180, 40, 40);
+}

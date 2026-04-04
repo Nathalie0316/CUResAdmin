@@ -10,6 +10,7 @@ function RoomCheckLogs() {
   const [checks, setChecks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCheck, setSelectedCheck] = useState(null);
+  const [selectedReason, setSelectedReason] = useState(null); 
 
   const areaData = {
     Griffith: [1, 2, 3],
@@ -210,7 +211,6 @@ function RoomCheckLogs() {
                     <th>Location</th>
                     <th>Residents</th>
                     <th>Overall Status</th>
-                    <th>Notes & Repairs</th>
                     <th>Photos</th>
                   </tr>
                 </thead>
@@ -245,24 +245,50 @@ function RoomCheckLogs() {
                         </td>
 
                         {/* Residents */}
-                        <td style={{ fontSize: '0.85rem' }}>
-                          {c.residents?.map((r, idx) => (
-                            <div key={idx} style={{ color: r.status === 'Fail' ? '#d32f2f' : '#388e3c' }}>
-                              {r.name} ({r.status})
-                            </div>
-                          ))}
+                        <td>
+                          <div className="resident-list">
+                            {c.residents?.map((r, idx) => (
+                              <div
+                                key={idx}
+                                className={`resident-inline ${r.status === "Fail" ? "fail" : "pass"}`}
+                              >
+                                <span className="resident-name">{r.name}</span>
+                                <span className="resident-separator"> | </span>
+                                <span className="resident-status">{r.status}</span>
+                              </div>
+                            ))}
+                          </div>
                         </td>
 
                         {/* Overall Status */}
                         <td>
-                          <span className={`fluid-badge ${!anyFail ? 'pass' : 'fail'}`}>
-                            {anyFail ? 'ACTION REQ' : 'ALL PASS'}
-                          </span>
-                        </td>
+                          <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                            <span className={`fluid-badge ${!anyFail ? 'pass' : 'fail'}`}>
+                              {anyFail ? 'ACTION REQ' : 'ALL PASS'}
+                            </span>
 
-                        {/* Notes & Repairs */}
-                        <td>
-
+                            {anyFail && c.residents?.some((r) => r.reason) && (
+                              <button
+                                type="button"
+                                className="admin-failicon-btn"
+                                onClick={() => setSelectedReason(c)}
+                                style={{
+                                  background: "none",
+                                  border: "none",
+                                  cursor: "pointer",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  color: "rgb(180, 40, 40)"
+                                }}
+                              >
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                  <circle cx="12" cy="12" r="10"></circle>
+                                  <line x1="12" y1="8" x2="12" y2="12"></line>
+                                  <circle cx="12" cy="16" r="1"></circle>
+                                </svg>
+                              </button>
+                            )}
+                          </div>
                         </td>
 
                         {/* Photos */}
@@ -282,55 +308,155 @@ function RoomCheckLogs() {
             )}
           </div>
 
-          {/* Modal (This one might still change to include photos only) */}
+          {/* Fail Reason Modal */}
+          {selectedReason && (
+            <div className="modal-overlay" onClick={() => setSelectedReason(null)}>
+              <div
+                className="fluid-modal-card"
+                style={{ maxWidth: "550px" }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="fluid-header modal-header">
+                  <button className="back-link" onClick={() => setSelectedReason(null)}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M15 18l-6-6 6-6"></path>
+                    </svg>
+                  </button>
+
+                  <h3 className="fluid-title-sm">Failure Reasons</h3>
+                </div>
+
+                <div style={{ marginTop: "10px", display: "flex", flexDirection: "column", gap: "12px" }}>
+                  {selectedReason.residents
+                    ?.filter((r) => r.reason)
+                    .map((r, idx) => (
+                      <div
+                        key={idx}
+                        style={{
+                          padding: "12px",
+                          border: "1px solid rgb(235, 235, 235)",
+                          borderRadius: "10px",
+                          background: "rgba(0, 24, 104, 0.03)"
+                        }}
+                      >
+                        <div style={{ fontWeight: "700", color: "rgb(0, 24, 104)", marginBottom: "4px" }}>
+                          {r.name}
+                        </div>
+                        <div style={{ fontSize: "0.9rem", color: "rgb(0, 0, 0)" }}>
+                          {r.reason}
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Photos Modal */}
           {selectedCheck && (
             <div className="modal-overlay" onClick={() => setSelectedCheck(null)}>
-              <div className="fluid-modal-card" style={{ maxWidth: '800px', width: '95%', maxHeight: '90vh', display: 'flex', flexDirection: 'column' }} onClick={(e) => e.stopPropagation()}>
-                
-                <div className="fluid-header">
-                  <h3>{selectedCheck.building} Floor {selectedCheck.floor} Details</h3>
+              <div
+                className="fluid-modal-card"
+                style={{
+                  maxWidth: "800px",
+                  width: "95%",
+                  maxHeight: "85vh",
+                  display: "flex",
+                  flexDirection: "column"
+                }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="fluid-header modal-header">
                   <button className="back-link" onClick={() => setSelectedCheck(null)}>
-                    <svg 
-                      width="18" 
-                      height="18" 
-                      viewBox="0 0 24 24" 
-                      fill="none" 
-                      stroke="currentColor" 
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
                       strokeWidth="2"
                     >
                       <path d="M15 18l-6-6 6-6"></path>
                     </svg>
                   </button>
+
+                  <h3 className="fluid-title-sm">Roomcheck Photos</h3>
                 </div>
 
-                <div className="modal-body" style={{ overflowY: 'auto' }}>
-                  {/* Resident Status Section */}
-                  <div style={{ marginBottom: '20px' }}>
-                    <label className="fluid-label-sm">Resident Results</label>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '10px', marginTop: '10px' }}>
-                      {selectedCheck.residents?.map((res, i) => (
-                        <div key={i} style={{ padding: '10px', borderRadius: '8px', border: '1px solid #eee', background: res.status === 'Fail' ? '#fff5f5' : '#f5fff5' }}>
-                          <strong>{res.name}</strong>
-                          <div style={{ color: res.status === 'Fail' ? '#d32f2f' : '#388e3c', fontWeight: 'bold' }}>{res.status}</div>
-                          {res.reason && <p style={{ fontSize: '0.8rem', margin: '5px 0 0', fontStyle: 'italic' }}>"{res.reason}"</p>}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Photo Section */}
-                  <div style={{ display: 'grid', gridTemplateColumns: window.innerWidth > 600 ? '1fr 1fr' : '1fr', gap: '15px' }}>
-                    <div style={{ textAlign: 'center' }}>
-                      <p className="fluid-label-sm">Room Photo</p>
+                <div className="modal-body" style={{ overflowY: "auto", padding: "10px 0" }}>
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: window.innerWidth > 600 ? "1fr 1fr" : "1fr",
+                      gap: "15px"
+                    }}
+                  >
+                    <div style={{ textAlign: "center" }}>
+                      <p className="fluid-label-sm" style={{ marginBottom: "5px" }}>
+                        Room
+                      </p>
                       {selectedCheck.roomPhotoUrl ? (
-                        <img src={selectedCheck.roomPhotoUrl} alt="Room" style={{ width: '100%', height: '200px', objectFit: 'cover', borderRadius: '8px', border: '1px solid #ddd' }} />
-                      ) : <div style={{ height: '200px', background: '#f5f5f5', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>No Photo</div>}
+                        <img
+                          src={selectedCheck.roomPhotoUrl}
+                          alt="Room"
+                          style={{
+                            width: "100%",
+                            aspectRatio: "3 / 4",
+                            objectFit: "cover",
+                            borderRadius: "10px",
+                            border: "1px solid rgb(221, 221, 221)"
+                          }}
+                        />
+                      ) : (
+                        <div
+                          style={{
+                            width: "100%",
+                            aspectRatio: "3 / 4",
+                            background: "rgb(245, 245, 245)",
+                            borderRadius: "10px",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            color: "rgb(153, 153, 153)"
+                          }}
+                        >
+                          No Room Photo
+                        </div>
+                      )}
                     </div>
-                    <div style={{ textAlign: 'center' }}>
-                      <p className="fluid-label-sm">Bathroom Photo</p>
+
+                    <div style={{ textAlign: "center" }}>
+                      <p className="fluid-label-sm" style={{ marginBottom: "5px" }}>
+                        Bathroom
+                      </p>
                       {selectedCheck.bathPhotoUrl ? (
-                        <img src={selectedCheck.bathPhotoUrl} alt="Bath" style={{ width: '100%', height: '200px', objectFit: 'cover', borderRadius: '8px', border: '1px solid #ddd' }} />
-                      ) : <div style={{ height: '200px', background: '#f5f5f5', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>No Photo</div>}
+                        <img
+                          src={selectedCheck.bathPhotoUrl}
+                          alt="Bath"
+                          style={{
+                            width: "100%",
+                            aspectRatio: "3 / 4",
+                            objectFit: "cover",
+                            borderRadius: "10px",
+                            border: "1px solid rgb(221, 221, 221)"
+                          }}
+                        />
+                      ) : (
+                        <div
+                          style={{
+                            width: "100%",
+                            aspectRatio: "3 / 4",
+                            background: "rgb(245, 245, 245)",
+                            borderRadius: "10px",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            color: "rgb(153, 153, 153)"
+                          }}
+                        >
+                          No Bath Photo
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
