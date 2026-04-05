@@ -1,3 +1,29 @@
+/* Page Wrapper */
+.fluid-dash-page {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background: rgb(253, 253, 253);
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Main Card */
+.fluid-dash-card {
+  width: 100%;
+  max-width: 900px;
+  background: rgb(255, 255, 255);
+  padding: 2rem;
+  border-radius: 16px;
+  border: 1px solid rgb(235, 235, 235);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
 .fluid-header {
   display: flex;
   align-items: center;
@@ -8,140 +34,265 @@
   border-bottom: 2px solid #f0f0f0;
 }
 
-.back-link {
-  position: absolute;
-  left: 0;
-  background: #f5f5f5;
-  border: 1px solid #e0e0e0;
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-weight: 600;
-  color: #333;
-  cursor: pointer;
-  text-decoration: none;
-  transition: all 0.2s ease;
-}
 
-.back-link:hover {
-  background: #eeeeee;
-}
-
-.fluid-header h1 {
+.fluid-title {
   flex: 1;
   text-align: center;
   margin: 0;
   font-size: 1.6rem;
   font-weight: 800;
+  color: rgb(0, 24, 104);
 }
 
-.manage-action-container {
-  width: 100%;
-  max-width: 500px;
-  margin-top: 2rem;
-}
-
-.btn-add-new {
-  background-color: #001868; 
+/* Back Button */
+.back-link {
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 30px;
+  background: rgb(0, 24, 104);
   color: white;
-  width: 100%;
-  padding: 16px;
-  font-size: 1.1rem;
-  font-weight: bold;
   border: none;
-  border-radius: 12px;
-  margin-bottom: 25px;
+  border-radius: 10px;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 24, 104, 0.15);
-  transition: transform 0.2s;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0, 24, 104, 0.1);
 }
 
-.btn-add-new:active { transform: scale(0.98); }
+.back-link:hover {
+  background: rgb(0, 18, 78);
+  transform: translateY(-2px);
+}
 
-.user-button-list {
+.back-link:active {
+  transform: translateY(1px);
+}
+
+/* Top Action Bar */
+.manage-users-topbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+/* Add User Button */
+.btn-add-new {
+  background: rgb(0, 24, 104);
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0, 24, 104, 0.1);
+}
+
+.btn-add-new:hover {
+  background: rgb(0, 18, 78);
+  transform: translateY(-2px);
+}
+
+.btn-add-new:active {
+  transform: translateY(1px);
+}
+
+/* Table Wrapper */
+.fluid-table-container {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid rgb(235, 235, 235);
+  border-radius: 12px;
+  background: white;
+}
+
+/* Table */
+.fluid-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 800px;
+}
+
+.fluid-table th {
+  background: rgb(0, 24, 104);
+  padding: 15px;
+  text-align: left;
+  font-weight: 700;
+  color: rgb(255, 255, 255);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgb(0, 24, 104);
+}
+
+.fluid-table td {
+  padding: 15px;
+  border-bottom: 1px solid rgb(245, 245, 245);
+  font-size: 0.95rem;
+  vertical-align: middle;
+}
+
+.fluid-table tbody tr:hover {
+  background: rgb(249, 250, 254);
+}
+
+/* User Info Cells */
+.user-name-cell {
+  font-weight: 600;
+  color: rgb(0, 24, 104);
+}
+
+.manage-user-email {
+  color: rgb(0, 24, 104);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.manage-user-email:hover {
+  text-decoration: underline;
+}
+
+.manage-user-area {
+  color: rgb(51, 51, 51);
+  font-weight: 500;
+}
+
+/* Badges */
+.fluid-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.75rem;
+}
+
+.fluid-badge.role-badge {
+  background: rgba(0, 24, 104, 0.08);
+  color: rgb(0, 24, 104);
+  border: 1px solid rgba(0, 24, 104, 0.15);
+}
+
+/* Action Buttons */
+.manage-user-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.admin-action-btn {
+  background: rgb(0, 24, 104);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0, 24, 104, 0.1);
+}
+
+.admin-action-btn:hover {
+  background: rgb(0, 18, 78);
+  transform: translateY(-2px);
+}
+
+.admin-action-btn:active {
+  transform: translateY(1px);
+}
+
+/* Edit Button */
+.admin-edit-icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(0, 24, 104);
+  padding: 6px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+/* Hover */
+.admin-edit-icon-btn:hover {
+  transform: scale(1.1);
+}
+
+/* Click */
+.admin-edit-icon-btn:active {
+  transform: scale(0.95);
+}
+
+/* Delete Button */
+.admin-delete-icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(219, 1, 1);
+  padding: 6px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+/* Hover */
+.admin-delete-icon-btn:hover {
+  transform: scale(1.1);
+}
+
+/* Click */
+.admin-delete-icon-btn:active {
+  transform: scale(0.95);
+}
+
+/* Form Styling for Add/Edit pages */
+.form-group {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-}
-
-.user-item-btn {
-  background-color: #ffffff;
-  color: #333;
+  align-items: flex-start;
   width: 100%;
-  padding: 18px 25px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  border: 1px solid #eee;
-  border-radius: 12px;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between; 
-  align-items: center;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.02);
-}
-
-.user-item-btn:hover {
-  background-color: #f9f9f9;
-  border-color: #001868;
-  color: #001868;
-}
-
-.user-arrow {
-  font-size: 1.2rem;
-  color: #ccc;
-}
-
-.user-item-btn:hover .user-arrow {
-  color: #001868;
-  transform: translateX(3px);
-  transition: all 0.2s;
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    width: 100%;
-    margin-bottom: 20px;
-    animation: fadeIn 0.3s ease-in-out;
+  margin-bottom: 20px;
 }
 
 .form-group label {
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: #333;
-    margin-bottom: 8px;
-    letter-spacing: 0.3px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: rgb(51, 51, 51);
+  margin-bottom: 8px;
+  letter-spacing: 0.3px;
 }
 
-.form-group input, 
+.form-group input,
 .form-group select {
-    width: 100%;
-    padding: 14px 16px;
-    font-size: 1rem;
-    border: 1px solid #e0e0e0; 
-    border-radius: 10px;
-    background-color: #fafafa; 
-    color: #333;
-    outline: none;
-    transition: all 0.2s ease;
-    box-sizing: border-box;
-    box-shadow: none; 
+  width: 100%;
+  padding: 14px 16px;
+  font-size: 1rem;
+  border: 1px solid rgb(224, 224, 224);
+  border-radius: 10px;
+  background: rgb(255, 255, 255);
+  color: rgb(51, 51, 51);
+  outline: none;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
 }
 
 .form-group input:hover,
 .form-group select:hover {
-    border-color: #ccc;
+  border-color: rgb(180, 180, 180);
 }
 
-.form-group input:focus, 
+.form-group input:focus,
 .form-group select:focus {
-    border-color: #001868;
-    background-color: #ffffff;
-    box-shadow: 0 0 0 4px rgba(0, 24, 104, 0.05);
+  border-color: rgb(0, 24, 104);
+  box-shadow: 0 0 0 2px rgba(0, 24, 104, 0.15);
 }
 
 .form-group input::placeholder {
-    color: #aaa;
-    font-weight: 400;
+  color: rgb(170, 170, 170);
+  font-weight: 400;
 }

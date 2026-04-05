@@ -18,7 +18,6 @@ import RoomCheckLogs from "./pages/RoomCheckLogs";
 
 // Page Imports for User Management
 import ManageUsers from "./pages/ManageUsers";
-import UserDetails from "./pages/UserDetails";
 import AddUser from "./pages/AddUser";
 
 function App() {
@@ -73,16 +72,6 @@ function App() {
           element={
             <ProtectedRoute allowedRole="admin">
               <AddUser />
-            </ProtectedRoute>
-          }
-        />
-
-        {/* User Details: A dynamic route (using :id) to view/edit a specific user's info. */}
-        <Route
-          path="/admin/manage-users/:id"
-          element={
-            <ProtectedRoute allowedRole="admin">
-              <UserDetails />
             </ProtectedRoute>
           }
         />

@@ -1,47 +1,60 @@
 import { useState, useEffect } from "react";
 import { db } from "../firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import PageTransition from "../components/PageTransition";
 import "./ManageUsers.css";
 
 function ManageUsers() {
-  // Local state to hold the list of users fetched from Firestore.
   const [users, setUsers] = useState([]);
-  // Manage loading state to show a message while fetching users from the database.
   const [loading, setLoading] = useState(true);
-  // Initialize the navigate function.
   const navigate = useNavigate();
 
-  // Effect that runs once when the component mounts to fetch the list of users from Firestore.
+  const fetchUsers = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(db, "users"));
+      const userList = querySnapshot.docs.map((docSnap) => ({
+        id: docSnap.id,
+        ...docSnap.data()
+      }));
+      setUsers(userList);
+    } catch (err) {
+      console.error("Error fetching users:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(db, "users")); // Fetch all documents from the "users" collection in Firestore.
-        setUsers(querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))); // Map the documents to an array of user objects with their ID included.
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false); // Set loading to false after the fetch is complete.
-      }
-    };
-    fetchUsers(); // Call the function to fetch users when the component mounts.
+    fetchUsers();
   }, []);
+
+  const handleRemove = async (id, name) => {
+    const confirmed = window.confirm(`Are you sure you want to remove ${name || "this user"}?`);
+    if (!confirmed) return;
+
+    try {
+      await deleteDoc(doc(db, "users", id));
+      setUsers((prev) => prev.filter((user) => user.id !== id));
+    } catch (err) {
+      console.error("Error removing user:", err);
+      alert("Failed to remove user.");
+    }
+  };
 
   return (
     <PageTransition>
       <div className="fluid-dash-page">
         <div className="fluid-dash-card">
-          
-          {/* Header with Top-Left Back Button */}
+
           <div className="fluid-header">
             <button className="back-link" onClick={() => navigate("/admin")}>
-              <svg 
-                width="18" 
-                height="18" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="currentColor" 
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
                 strokeWidth="2"
               >
                 <path d="M15 18l-6-6 6-6"></path>
@@ -51,30 +64,116 @@ function ManageUsers() {
             <h1 className="fluid-title">Manage Users</h1>
           </div>
 
-          {/* Action Section */}
-          <div className="manage-action-container">
-            <button className="btn-add-new" onClick={() => navigate("/admin/manage-users/add")}>
+          {/* Add New User Button */}
+          <div className="manage-users-topbar">
+            <button
+              className="btn-add-new"
+              onClick={() => navigate("/admin/manage-users/add")}
+            >
               + Add New User
             </button>
-
-            <div className="user-button-list">
-              {loading ? (
-                <p style={{ marginTop: '20px', color: '#666' }}>Loading Users...</p>
-              ) : (
-                users.map(user => (
-                  <button 
-                    key={user.id} // Each button navigates to the Edit User page for that specific user using their ID.
-                    className="user-item-btn"
-                    onClick={() => navigate(`/admin/manage-users/${user.id}`)}
-                  >
-                    {/* Fallback text if the user has no name */}
-                    {user.name || "Unnamed User"}
-                    <span className="user-arrow">→</span>
-                  </button>
-                ))
-              )}
-            </div>
           </div>
+
+          {/* User Details Table */}
+          <div className="fluid-table-container">
+            {loading ? (
+              <p className="manage-loading-text">Loading Users...</p>
+            ) : users.length === 0 ? (
+              <p className="manage-loading-text">No users found.</p>
+            ) : (
+              <table className="fluid-table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Assigned Area</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {users.map((user) => (
+                    <tr key={user.id}>
+
+                      {/* User Name */}
+                      <td>
+                        <div className="user-name-cell">
+                          {user.name || "Unnamed User"}
+                        </div>
+                      </td>
+                      
+                      {/* User Email */}
+                      <td>
+                        <a className="manage-user-email" href={`mailto:${user.email}`}>
+                          {user.email || "No Email"}
+                        </a>
+                      </td>
+
+                      {/* User Role */}
+                      <td>
+                       <span className="fluid-badge role-badge">
+                          {user.role || "No Role"}
+                        </span>
+                      </td>
+
+                      {/* User Area */}
+                      <td>
+                        <span className="manage-user-area">
+                          {user.area || "Not Assigned"}
+                        </span>
+                      </td>
+
+                      {/* User Management Actions */}
+                      <td>
+                        <div className="manage-user-actions">
+                          <button
+                            type="button"
+                            onClick={() => navigate(`/admin/manage-users/edit/${user.id}`)}
+                            className="admin-edit-icon-btn"
+                            title="Edit User"
+                          >
+                            <svg
+                              width="16"
+                              height="16"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                            >
+                              <path d="M12 20h9"></path>
+                              <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+                            </svg>
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => handleRemove(user.id, user.name)}
+                            className="admin-delete-icon-btn"
+                          >
+                            <svg
+                              width="16"
+                              height="16"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                            >
+                              <path d="M3 6h18"></path>
+                              <path d="M8 6V4h8v2"></path>
+                              <path d="M19 6l-1 14H6L5 6"></path>
+                              <line x1="10" y1="11" x2="10" y2="17"></line>
+                              <line x1="14" y1="11" x2="14" y2="17"></line>
+                            </svg>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
+
         </div>
       </div>
     </PageTransition>
