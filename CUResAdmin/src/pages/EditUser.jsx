@@ -20,6 +20,7 @@ function EditUser() {
   // Local state for the dynamic dropdowns
   const [selectedBuilding, setSelectedBuilding] = useState("");
   const [selectedFloor, setSelectedFloor] = useState("");
+  const [selectedRole, setSelectedRole] = useState("");
 
   const [formData, setFormData] = useState({ name: "", role: "", area: "" });
   const [loading, setLoading] = useState(true);
@@ -32,12 +33,15 @@ function EditUser() {
       if (docSnap.exists()) {
         const data = docSnap.data();
         setFormData(data);
+        setSelectedRole(data.role || "");
 
-        // Split the "Building > Floor" string to pre-fill dropdowns.
-        if (data.area && data.area.includes(" > ")) {
+        if (data.role === "RA" && data.area && data.area.includes(" > ")) {
           const [building, floor] = data.area.split(" > ");
           setSelectedBuilding(building);
           setSelectedFloor(floor);
+        } else {
+          setSelectedBuilding("");
+          setSelectedFloor("");
         }
       }
       setLoading(false);
@@ -47,13 +51,18 @@ function EditUser() {
 
   // Synchronize building/floor selection back into the main formData.area string
   useEffect(() => {
-    if (selectedBuilding && selectedFloor) {
+    if (selectedRole === "RA" && selectedBuilding && selectedFloor) {
       setFormData(prev => ({
         ...prev,
         area: `${selectedBuilding} > ${selectedFloor}`
       }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        area: ""
+      }));
     }
-  }, [selectedBuilding, selectedFloor]);
+  }, [selectedBuilding, selectedFloor, selectedRole]);
 
   // Handle form submission to update the user document in Firestore.
   const handleUpdate = async (e) => {
@@ -61,7 +70,7 @@ function EditUser() {
     try {
       await updateDoc(doc(db, "users", id), formData);
       alert("User updated successfully!");
-      navigate(`/admin/manage-users/${id}`);
+      navigate("/admin/manage-users");
     } catch (err) {
       alert("Error updating user: " + err.message);
     }
@@ -76,11 +85,16 @@ function EditUser() {
         <div className="fluid-dash-card">
           
           <div className="fluid-header">
-            <button className="back-link" onClick={() => navigate(-1)}>Back</button>
-            <h1>Edit User</h1>
+            <button className="back-link" onClick={() => navigate("/admin/manage-users")}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M15 18l-6-6 6-6"></path>
+              </svg>
+            </button>
+
+            <h1 className="fluid-title">Edit User</h1>
           </div>
 
-          <form className="add-user-form" style={{ width: '100%', maxWidth: '450px', marginTop: '20px' }} onSubmit={handleUpdate}>
+          <form className="add-user-form" style={{ width: '100%', maxWidth: '450px' }} onSubmit={handleUpdate}>
             <div className="form-group">
               <label>Name:</label>
               <input 
@@ -92,48 +106,103 @@ function EditUser() {
             
             <div className="form-group">
               <label>Role:</label>
-              <select value={formData.role} onChange={(e) => setFormData({...formData, role: e.target.value})}>
-                <option value="RA">Residential Assistant</option>
-                <option value="Admin">Administrator</option>
-              </select>
-            </div>
+              <div className="select-wrapper-users">
+                <select
+                  value={selectedRole}
+                  onChange={(e) => {
+                    const role = e.target.value;
+                    setSelectedRole(role);
 
-            {/* Select Building */}
-            <div className="form-group">
-              <label>Building:</label>
-              <select 
-                required 
-                value={selectedBuilding}
-                onChange={(e) => {
-                  setSelectedBuilding(e.target.value);
-                  setSelectedFloor(""); // Reset floor if building changes
-                }}
-              >
-                <option value="">Select Building</option>
-                {Object.keys(areaData).map((building) => (
-                  <option key={building} value={building}>{building}</option>
-                ))}
-              </select>
-            </div>
+                    setFormData(prev => ({
+                      ...prev,
+                      role,
+                      area: role === "Admin" ? "" : prev.area
+                    }));
 
-            {/* Select Floor */}
-            {selectedBuilding && (
-              <div className="form-group" style={{ animation: "fadeIn 0.3s ease-in-out" }}>
-                <label>Floor:</label>
-                <select 
-                  required 
-                  value={selectedFloor}
-                  onChange={(e) => setSelectedFloor(e.target.value)}
+                    setSelectedBuilding("");
+                    setSelectedFloor("");
+                  }}
+                  required
+                  className="fluid-input"
                 >
-                  <option value="">Select Floor</option>
-                  {areaData[selectedBuilding].map((floor) => (
-                    <option key={floor} value={floor}>{floor}</option>
-                  ))}
+                  <option value="">Select Role</option>
+                  <option value="RA">Residential Assistant</option>
+                  <option value="Admin">Administrator</option>
                 </select>
+
+                <span className="select-arrow">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M6 9l6 6 6-6"></path>
+                  </svg>
+                </span>
+              </div>
+            </div>
+
+            {selectedRole === "RA" && (
+              <div className="fade-in-section role-dependent-section">
+                <div className="form-group">
+                  <label>Building:</label>
+                  <div className="select-wrapper-users">
+                    <select
+                      required
+                      value={selectedBuilding}
+                      onChange={(e) => {
+                        setSelectedBuilding(e.target.value);
+                        setSelectedFloor("");
+                      }}
+                      className="fluid-input"
+                    >
+                      <option value="">Select Building</option>
+                      {Object.keys(areaData).map((building) => (
+                        <option key={building} value={building}>{building}</option>
+                      ))}
+                    </select>
+
+                    <span className="select-arrow">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M6 9l6 6 6-6"></path>
+                      </svg>
+                    </span>
+                  </div>
+                </div>
+
+                {selectedBuilding && (
+                  <div className="form-group fade-in-section">
+                    <label>Floor:</label>
+                    <div className="select-wrapper-users">
+                      <select
+                        required
+                        value={selectedFloor}
+                        onChange={(e) => setSelectedFloor(e.target.value)}
+                        className="fluid-input"
+                      >
+                        <option value="">Select Floor</option>
+                        {areaData[selectedBuilding].map((floor) => (
+                          <option key={floor} value={floor}>{floor}</option>
+                        ))}
+                      </select>
+
+                      <span className="select-arrow">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M6 9l6 6 6-6"></path>
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 
-            <button type="submit" className="btn-edit" style={{marginTop: '30px'}}>Save Changes</button>
+            <div className="form-submit-container">
+              <button
+                type="submit"
+                className="btn-submit-user"
+                disabled={loading}
+              >
+                {loading ? "Saving..." : "Save Changes"}
+              </button>
+            </div>
+
           </form>
         </div>
       </div>

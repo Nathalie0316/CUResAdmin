@@ -296,3 +296,93 @@
   color: rgb(170, 170, 170);
   font-weight: 400;
 }
+
+/* Fade in for Location Depending on Role */
+.fade-in-section {
+  animation: fadeInUp 0.25s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Container to center button */
+.form-submit-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+/* Main submit button */
+.btn-submit-user {
+  background: rgb(0, 24, 104);
+  color: white;
+  border: none;
+  padding: 14px 24px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 60%;              /* nice centered width */
+  max-width: 280px;        /* prevents it from getting too big */
+  box-shadow: 0 6px 14px rgba(0, 24, 104, 0.15);
+}
+
+/* Hover */
+.btn-submit-user:hover {
+  background: rgb(0, 18, 78);
+  transform: translateY(-2px);
+}
+
+/* Click */
+.btn-submit-user:active {
+  transform: translateY(1px);
+}
+
+/* Disabled */
+.btn-submit-user:disabled {
+  background: rgb(180, 190, 220);
+  cursor: not-allowed;
+  transform: none;
+}
+
+.select-wrapper-users {
+  position: relative;
+  width: 100%;
+  height: 52px;
+}
+
+.select-wrapper-users .fluid-input {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 100%;
+  height: 52px;
+  min-height: 52px;
+  padding: 0 40px 0 16px;
+  box-sizing: border-box;
+}
+
+.select-wrapper-users .select-arrow {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(0, 24, 104);
+}
+
+.role-dependent-section {
+  margin-top: 20px
+}

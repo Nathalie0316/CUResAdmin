@@ -123,7 +123,7 @@ function RoomCheckForm() {
               </svg>
             </button>
 
-            <h1 className="form-title">
+            <h1 className="fluid-title">
               Roomchecks
             </h1>
 

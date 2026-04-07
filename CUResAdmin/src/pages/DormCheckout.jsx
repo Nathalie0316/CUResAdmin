@@ -98,7 +98,7 @@ function DormCheckout() {
               </svg>
             </button>
 
-            <h1 className="header-title">
+            <h1 className="fluid-title">
               Checkouts
             </h1>
           </div>

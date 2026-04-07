@@ -28,6 +28,9 @@ const areaData = {
 
 function AddUser() {
   const navigate = useNavigate();
+
+  // Track Roles 
+  const [selectedRole, setSelectedRole] = useState("");
   
   // Track what the user selects in the dropdowns separately from the final form data (UI state vs. submission state).
   const [selectedBuilding, setSelectedBuilding] = useState("");
@@ -38,7 +41,7 @@ function AddUser() {
     name: "",
     email: "",
     password: "TemporaryPassword123!", // Default password for new users (should be changed on first login, I have to add an option for this).
-    role: "RA",
+    role: "",
     area: ""
   });
 
@@ -47,15 +50,18 @@ function AddUser() {
 
   // Effect that runs every time selectedBuilding or selectedFloor changes and combines them into a single string for the database.
   useEffect(() => {
-    if (selectedBuilding && selectedFloor) {
+    if (selectedRole === "RA" && selectedBuilding && selectedFloor) {
       setFormData(prev => ({
         ...prev,
         area: `${selectedBuilding} > ${selectedFloor}`
       }));
     } else {
-      setFormData(prev => ({ ...prev, area: "" }));
+      setFormData(prev => ({
+        ...prev,
+        area: ""
+      }));
     }
-  }, [selectedBuilding, selectedFloor]);
+  }, [selectedBuilding, selectedFloor, selectedRole]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -106,9 +112,12 @@ function AddUser() {
           
           <div className="fluid-header">
             <button className="back-link" onClick={() => navigate("/admin/manage-users")}>
-              Back
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M15 18l-6-6 6-6"></path>
+              </svg>
             </button>
-            <h1>Add New User</h1>
+
+            <h1 className="fluid-title">Add New User</h1>
           </div>
 
           <form className="add-user-form" style={{ width: '100%', maxWidth: '450px' }} onSubmit={handleSubmit}>
@@ -132,52 +141,103 @@ function AddUser() {
               />
             </div>
 
-            <div className="form-group">
-              <label>Role:</label>
-              <select onChange={(e) => setFormData({...formData, role: e.target.value})}>
+            <div className="select-wrapper-users">
+              <select
+                value={selectedRole}
+                onChange={(e) => {
+                  const role = e.target.value;
+                  setSelectedRole(role);
+
+                  setFormData(prev => ({
+                    ...prev,
+                    role,
+                    area: role === "Admin" ? "" : prev.area
+                  }));
+
+                  setSelectedBuilding("");
+                  setSelectedFloor("");
+                }}
+                required
+                className="fluid-input"
+              >
+                <option value="">Select Role</option>
                 <option value="RA">Residential Assistant</option>
                 <option value="Admin">Administrator</option>
               </select>
+
+              <span className="select-arrow">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M6 9l6 6 6-6"></path>
+                </svg>
+              </span>
             </div>
 
-            {/* Select Building */}
-            <div className="form-group">
-              <label>Building:</label>
-              <select 
-                required 
-                value={selectedBuilding}
-                onChange={(e) => {
-                  setSelectedBuilding(e.target.value);
-                  setSelectedFloor(""); // Reset floor if building changes
-                }}
-              >
-                <option value="">Select Building</option>
-                {Object.keys(areaData).map((building) => (
-                  <option key={building} value={building}>{building}</option>
-                ))}
-              </select>
-            </div>
+            {selectedRole === "RA" && (
+              <div className="fade-in-section role-dependent-section">
+                {/* Select Building */}
+                <div className="form-group">
+                  <label>Building:</label>
+                  <div className="select-wrapper-users">
+                    <select
+                      required
+                      value={selectedBuilding}
+                      onChange={(e) => {
+                        setSelectedBuilding(e.target.value);
+                        setSelectedFloor("");
+                      }}
+                      className="fluid-input"
+                    >
+                      <option value="">Select Building</option>
+                      {Object.keys(areaData).map((building) => (
+                        <option key={building} value={building}>{building}</option>
+                      ))}
+                    </select>
 
-            {/* Select Floor (Conditionally Rendered by Building Selection) */}
-            {selectedBuilding && (
-              <div className="form-group" style={{ animation: "fadeIn 0.3s ease-in-out" }}>
-                <label>Floor:</label>
-                <select 
-                  required 
-                  value={selectedFloor}
-                  onChange={(e) => setSelectedFloor(e.target.value)}
-                >
-                  <option value="">Select Floor</option>
-                  {areaData[selectedBuilding].map((floor) => (
-                    <option key={floor} value={floor}>{floor}</option>
-                  ))}
-                </select>
+                    <span className="select-arrow">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M6 9l6 6 6-6"></path>
+                      </svg>
+                    </span>
+                  </div>
+                </div>
+
+                {/* Select Floor */}
+                {selectedBuilding && (
+                  <div className="form-group fade-in-section">
+                    <label>Floor:</label>
+                    <div className="select-wrapper-users">
+                      <select
+                        required
+                        value={selectedFloor}
+                        onChange={(e) => setSelectedFloor(e.target.value)}
+                        className="fluid-input"
+                      >
+                        <option value="">Select Floor</option>
+                        {areaData[selectedBuilding].map((floor) => (
+                          <option key={floor} value={floor}>{floor}</option>
+                        ))}
+                      </select>
+
+                      <span className="select-arrow">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M6 9l6 6 6-6"></path>
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 
-            <button type="submit" className="btn-add-new" style={{ marginTop: '20px' }} disabled={loading}>
+           <div className="form-submit-container">
+            <button
+              type="submit"
+              className="btn-submit-user"
+              disabled={loading}
+            >
               {loading ? "Creating..." : "Add User"}
             </button>
+           </div>
           </form>
         </div>
       </div>
