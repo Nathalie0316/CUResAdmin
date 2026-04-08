@@ -105,7 +105,9 @@ function DormCheckout() {
 
           <form onSubmit={handleSubmit}>
             <div className="form-grid">
-              <div className="form-column">
+
+              {/* Left */}
+              <div className="form-column form-column-left">
                 <label className="fluid-label">Date</label>
                 <input 
                   type="date" 

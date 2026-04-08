@@ -82,7 +82,7 @@ function HallHuddle() {
             <div className="form-grid" style={{ marginBottom: "1.5rem" }}>
               
               {/* LEFT COLUMN */}
-              <div className="form-column form-stack">
+              <div className="form-column form-column-left">
                 <label className="fluid-label">Date</label>
                 <input 
                   type="date" 

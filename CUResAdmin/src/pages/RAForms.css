@@ -489,13 +489,6 @@ WORK IN PROGRESS - TITLE CENTERING
   margin: 0;
 }
 
-/*
-.form-stack {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-} */
-
 .form-column-right {
   padding-top: 15px;
 }
