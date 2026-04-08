@@ -504,3 +504,11 @@ WORK IN PROGRESS - TITLE CENTERING
   min-height: 118px;
 }
 
+/* For vertical column divider on desktop */
+@media (min-width: 768px) {
+  .form-column-left {
+    border-right: 1px solid rgb(235, 235, 235); 
+    padding-right: 31px;
+    margin-right: 7px;
+  }
+}

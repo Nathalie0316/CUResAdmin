@@ -133,7 +133,7 @@ function RoomCheckForm() {
             <div className="form-grid">
               
               {/* Left Column: Logistics */}
-              <div className="form-column">
+              <div className="form-column form-column-left">
                 <label className="fluid-label">Date</label>
                 <input 
                   type="date" 

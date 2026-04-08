@@ -30,7 +30,7 @@ function ManageUsers() {
   }, []);
 
   const handleRemove = async (id, name) => {
-    const confirmed = window.confirm(`Are you sure you want to remove ${name || "this user"}?`);
+    const confirmed = window.confirm(`Are you sure you want to remove ${name || "this user"} from the system?`);
     if (!confirmed) return;
 
     try {
