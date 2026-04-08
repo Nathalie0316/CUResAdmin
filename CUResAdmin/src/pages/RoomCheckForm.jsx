@@ -60,6 +60,25 @@ function RoomCheckForm() {
     setResidents(newRes);
   };
 
+  const resetForm = () => {
+    setDate(new Date().toISOString().split('T')[0]);
+    setBuilding("");
+    setFloor("");
+    setRoomNumber("");
+
+    setResidents([
+      { name: "", status: "", reason: "" },
+      { name: "", status: "", reason: "" },
+      { name: "", status: "", reason: "" },
+    ]);
+
+    setRoomPhoto(null);
+    setBathPhoto(null);
+
+    if (roomPhotoRef.current) roomPhotoRef.current.value = null;
+    if (bathPhotoRef.current) bathPhotoRef.current.value = null;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!building || !floor) return alert("Please select a building and floor.");
@@ -93,7 +112,8 @@ function RoomCheckForm() {
       if (docRef.id) {
         console.log("Document written with ID: ", docRef.id);
         alert("Roomcheck submitted successfully!");
-        navigate("/ra-dashboard");
+        resetForm();
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }
 
     } catch (error) {
