@@ -61,7 +61,7 @@ function AdminDashboard() {
               Manage Users
             </button>
             <button className="fluid-dash-btn" onClick={() => navigate("/admin/profile")}>
-              Profile Management
+              Password Management
             </button>
           </div>
 

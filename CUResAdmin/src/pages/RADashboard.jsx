@@ -58,7 +58,7 @@ function RADashboard() {
             Hall Huddle Reports
           </button>
           <button className="fluid-dash-btn" onClick={() => navigate("/profile")}>
-            Profile Management
+            Password Management
           </button>
         </div>
 

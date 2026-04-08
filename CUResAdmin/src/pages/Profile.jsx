@@ -64,7 +64,7 @@ function Profile() {
               </svg>
             </button>
 
-            <h1 className="fluid-title">Profile Settings</h1>
+            <h1 className="fluid-title">Reset Password</h1>
           </div>
 
           <div className="profile-section">
