@@ -70,7 +70,18 @@ function ManageUsers() {
               className="btn-add-new"
               onClick={() => navigate("/admin/manage-users/add")}
             >
-              + Add New User
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path d="M12 5v14"></path>
+                <path d="M5 12h14"></path>
+              </svg>
+              <span>Add New User</span>
             </button>
           </div>
 

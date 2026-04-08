@@ -95,7 +95,7 @@ function AddUser() {
       await signOut(secondaryAuth);
       await deleteApp(secondaryApp);
 
-      alert("User Created! You are still logged in as Admin.");
+      alert("User Created! You are still logged into your account.");
       navigate("/admin/manage-users");
     } catch (err) {
       console.error(err);
@@ -235,7 +235,7 @@ function AddUser() {
               className="btn-submit-user"
               disabled={loading}
             >
-              {loading ? "Creating..." : "Add User"}
+              {loading ? "Creating..." : "Submit New User"}
             </button>
            </div>
           </form>

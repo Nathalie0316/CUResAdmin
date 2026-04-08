@@ -79,24 +79,45 @@
 
 /* Add User Button */
 .btn-add-new {
-  background: rgb(0, 24, 104);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  background: rgb(255, 204, 0);
   color: white;
   border: none;
   padding: 10px 16px;
   border-radius: 10px;
+
   font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.2px;
+
   cursor: pointer;
   transition: all 0.2s ease;
   box-shadow: 0 4px 10px rgba(0, 24, 104, 0.1);
 }
 
 .btn-add-new:hover {
-  background: rgb(0, 18, 78);
+  background: rgba(234, 188, 5, 0.863);
   transform: translateY(-2px);
 }
 
 .btn-add-new:active {
   transform: translateY(1px);
+}
+
+.btn-add-new svg {
+  flex-shrink: 0;
+}
+
+.btn-add-new:hover svg {
+  transform: scale(1.08);
+}
+
+.btn-add-new svg {
+  transition: transform 0.2s ease;
 }
 
 /* Table Wrapper */
@@ -144,7 +165,7 @@
 }
 
 .manage-user-email {
-  color: rgb(0, 24, 104);
+  color: rgb(0, 0, 0);
   font-weight: 500;
   text-decoration: none;
 }
@@ -168,9 +189,8 @@
 }
 
 .fluid-badge.role-badge {
-  background: rgba(0, 24, 104, 0.08);
   color: rgb(0, 24, 104);
-  border: 1px solid rgba(0, 24, 104, 0.15);
+  font-size: 0.90rem;
 }
 
 /* Action Buttons */
@@ -322,7 +342,7 @@
 
 /* Main submit button */
 .btn-submit-user {
-  background: rgb(0, 24, 104);
+  background: rgb(255, 204, 0);;
   color: white;
   border: none;
   padding: 14px 24px;
@@ -338,7 +358,7 @@
 
 /* Hover */
 .btn-submit-user:hover {
-  background: rgb(0, 18, 78);
+  background: rgba(234, 188, 5, 0.863);
   transform: translateY(-2px);
 }
 
