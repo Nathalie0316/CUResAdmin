@@ -43,6 +43,28 @@ function DormCheckout() {
     return await getDownloadURL(snapshot.ref);
   };
 
+  const resetForm = () => {
+    setFormData({
+      date: new Date().toISOString().split('T')[0],
+      checkoutType: "",
+      building: "",
+      floor: "",
+      roomNumber: "",
+      residentName: "",
+      allCriteriaMet: null,
+      failReason: "",
+      roomKey: "",
+      closetKey: "",
+      repairs: ""
+    });
+
+    setRoomPhoto(null);
+    setBathPhoto(null);
+
+    if (roomPhotoRef.current) roomPhotoRef.current.value = null;
+    if (bathPhotoRef.current) bathPhotoRef.current.value = null;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.building || !formData.floor || formData.allCriteriaMet === null) {
@@ -69,8 +91,9 @@ function DormCheckout() {
       });
 
       if (docRef.id) {
-        alert("Checkout Submitted Successfully!");
-        navigate("/ra-dashboard");
+        alert("Checkout submitted successfully!");
+        resetForm();
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }
     } catch (error) {
       console.error("Submission Error:", error);

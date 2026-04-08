@@ -26,6 +26,18 @@ function HallHuddle() {
     responses: ""
   });
 
+  const resetForm = () => {
+    setFormData({
+      date: new Date().toISOString().split('T')[0],
+      building: "",
+      floor: "",
+      allPresent: null,
+      absentList: "",
+      engagementNotes: "",
+      responses: ""
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -44,8 +56,9 @@ function HallHuddle() {
       });
 
       if (docRef.id) {
-        alert("Hall Huddle Report Submitted!");
-        navigate("/ra-dashboard");
+        alert("Hall Huddle report submitted successfully!");
+        resetForm();
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }
     } catch (error) {
       console.error("Huddle Submission Error:", error);
