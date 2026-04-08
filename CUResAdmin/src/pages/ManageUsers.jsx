@@ -117,10 +117,27 @@ function ManageUsers() {
                       </td>
 
                       {/* User Area */}
-                      <td>
-                        <span className="manage-user-area">
-                          {user.area || "Not Assigned"}
-                        </span>
+                      <td className="manage-user-area">
+                        {user.area && user.area.includes(" > ") ? (
+                          (() => {
+                            const [building, floor] = user.area.split(" > ");
+                            return (
+                              <div>
+                                <span style={{ color: "rgb(0, 24, 104)", fontWeight: "600" }}>
+                                  {building}
+                                </span>
+                                {" | "}
+                                <span style={{ color: "rgb(51, 51, 51)", fontWeight: "600" }}>
+                                  {floor}
+                                </span>
+                              </div>
+                            );
+                          })()
+                        ) : (
+                          <span style={{ color: "rgb(180, 180, 180)" }}>
+                            Not Assigned
+                          </span>
+                        )}
                       </td>
 
                       {/* User Management Actions */}
