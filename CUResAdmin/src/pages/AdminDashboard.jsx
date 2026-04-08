@@ -38,12 +38,12 @@ function AdminDashboard() {
                     
                     {/* Added a Greeting for the specific Admin with their name*/}
             
-                    <p1 style={{ fontSize: '1.5rem', marginTop: '40px', marginBottom: '2px' , fontWeight: '600', color: 'rgb(0, 0, 0)' }}>
+                    <p style={{ fontSize: '1.5rem', marginTop: '40px', marginBottom: '2px' , fontWeight: '600', color: 'rgb(0, 0, 0)' }}>
                       Welcome, {adminName}!
-                    </p1>
-                    <p1 style={{ fontSize: '2rem', marginTop: '10px', marginBottom: '5px' , fontWeight: '800', color: 'rgb(0, 40, 104)' }}>
+                    </p>
+                    <p style={{ fontSize: '2rem', marginTop: '10px', marginBottom: '5px' , fontWeight: '800', color: 'rgb(0, 40, 104)' }}>
                       Admin Dashboard
-                    </p1>
+                    </p>
           </div>          
           </div>
 
