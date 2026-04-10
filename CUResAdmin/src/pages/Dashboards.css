@@ -2,6 +2,8 @@
   min-height: 100vh;
   display: flex;
   justify-content: center;
+  align-items: center;
+  width: 100%;
   background-color: rgb(253, 253, 253); 
   padding: 20px;
   box-sizing: border-box;
@@ -11,6 +13,7 @@
 .fluid-dash-card {
   width: 100%;
   max-width: 900px;
+  margin: 0 auto;
   background: rgb(255, 255, 255);
   padding: 2rem;
   border-radius: 16px;
