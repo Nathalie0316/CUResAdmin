@@ -9,7 +9,8 @@ import EditUser from "./pages/EditUser";
 import RoomCheckForm from "./pages/RoomCheckForm";
 import DormCheckout from "./pages/DormCheckout"; 
 import HallHuddle from "./pages/HallHuddle"; 
-import Profile from "./pages/Profile"; // New Profile Management Page for RAs
+import Profile from "./pages/Profile"; // New Profile Management Page
+import AboutPage from "./pages/AboutPage";
 
 // New Page Imports for Logs for Admins
 import HallHuddleLogs from "./pages/HallHuddleLogs";
@@ -112,6 +113,16 @@ function App() {
           element={
             <ProtectedRoute allowedRole="admin">
               <RoomCheckLogs />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* About Page */}
+        <Route
+          path="/admin/about"
+          element={
+            <ProtectedRoute allowedRole="admin">
+              <AboutPage />
             </ProtectedRoute>
           }
         />
