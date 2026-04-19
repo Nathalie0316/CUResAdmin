@@ -1,16 +1,27 @@
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
-// Define the ProtectedRoute component. 
-// Take 'children' as a prop (the components wrapped inside it).
-const ProtectedRoute = ({ children }) => {
-  const { user } = useAuth(); // Get the current user from AuthContext.
+// Protect routes based on auth and role
+const ProtectedRoute = ({ children, allowedRole }) => {
+  const { user, role, loading } = useAuth();
 
-// If no user is logged in, redirect to the login page.
+  // Wait for auth state
+  if (loading) {
+    return null;
+  }
+
+  // Redirect if not logged in
   if (!user) {
     return <Navigate to="/login" replace />;
   }
-// If a user is logged in, render the child components (the protected page).
+
+  // Redirect if role not allowed
+  if (allowedRole && role?.trim().toLowerCase() !== allowedRole.toLowerCase()) {
+    const fallbackRoute =
+      role?.trim().toLowerCase() === "admin" ? "/admin" : "/ra";
+    return <Navigate to={fallbackRoute} replace />;
+  }
+
   return children;
 };
 

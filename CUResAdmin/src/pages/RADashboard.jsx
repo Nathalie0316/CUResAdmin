@@ -1,7 +1,6 @@
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
-import seal from "../assets/bearlogo.png"; 
 import culogo from "../assets/campus-life-horizontal.png";
 import { useEffect, useState } from "react";
 import PageTransition from "../components/PageTransition";
